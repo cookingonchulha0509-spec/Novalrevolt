@@ -616,12 +616,13 @@
     </nav>
 
     <!-- MAIN APPLICATION SCRIPT - 100% Logic Untouched -->
-    <script type="module">
+  <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, get, child, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        // === FIXED LINE: Added ', update' at the end of the import list ===
+        import { getDatabase, ref, get, child, push, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getMessaging, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-        
+
         const firebaseConfig = {
             apiKey: "AIzaSyD9_Qi9tJCyqUISQJ5QJ6gn9ZDW8D7aVbw",
             authDomain: "revolt-3a06d.firebaseapp.com",
