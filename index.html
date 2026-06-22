@@ -4,433 +4,229 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NOVALREVOLT | Premium Streetwear</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-        /* CSS Reset & Core Variables - Luxury Premium Streetwear Theme */
-        :root {
-            --bg-color: #FAFAFA; /* Soft luxury background */
-            --surface-color: #FFFFFF;
-            --text-color: #050505; /* Sophisticated deep black */
-            --text-secondary: #666666; /* Easy on the eyes grey */
-            --cta-color: #000000;
-            --border-color: #E5E5E5;
-            --nav-height: 65px;
-            --transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        :root{--bg-color:#FAFAFA;--surface-color:#FFFFFF;--text-color:#050505;--text-secondary:#666666;--cta-color:#000000;--border-color:#E5E5E5;--nav-height:65px;--transition:0.4s cubic-bezier(0.25,1,0.5,1)}
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+        body{font-family:'Inter',sans-serif;background-color:var(--bg-color);color:var(--text-color);line-height:1.5;overflow-x:hidden;width:100vw}
+        #splash-screen{position:fixed;inset:0;width:100%;height:100dvh;background:#FFFFFF;z-index:10000;display:flex;justify-content:center;align-items:center;overflow:hidden;transition:opacity .6s ease,visibility .6s ease;padding:20px}
+        #splash-screen img{max-width:70%;max-height:120px;object-fit:contain;animation:pulse 2s infinite cubic-bezier(0.4,0,0.2,1)}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
+        ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#ccc}
+        h1,h2,h3,h4,h5,h6{font-weight:700;letter-spacing:-.01em}a{text-decoration:none;color:inherit}
+        button{border:none;background:none;cursor:pointer;font-family:inherit;transition:var(--transition)}
+        img,video{max-width:100%;display:block}.hidden{display:none!important}
+        #app-container{padding-bottom:calc(var(--nav-height) + 20px);min-height:100vh;position:relative}
+        .screen{display:none;max-width:1200px;margin:0 auto;will-change:transform,opacity;transform:translateZ(0)}
+        .screen.active{display:block;animation:fadeInScreen .4s cubic-bezier(0.25,1,0.5,1) forwards}
+        .content-wrapper{padding:0 15px}
+        @keyframes fadeInScreen{from{opacity:0;transform:translateY(15px) translateZ(0)}to{opacity:1;transform:translateY(0) translateZ(0)}}
+        @keyframes slideInUp{from{opacity:0;transform:translateY(10px) translateZ(0)}to{opacity:1;transform:translateY(0) translateZ(0)}}
+        #global-loader{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(250,250,250,.95);z-index:9999;display:flex;justify-content:center;align-items:center}
+        .spinner{width:35px;height:35px;border:2px solid var(--border-color);border-top-color:var(--cta-color);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{0%{transform:rotate(0) translateZ(0)}100%{transform:rotate(360deg) translateZ(0)}}
+        .skeleton{background:linear-gradient(90deg,#EBE8E3 25%,#f5f4f0 50%,#EBE8E3 75%);background-size:200% 100%;animation:shimmer 1.5s infinite linear;border-radius:2px}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .skeleton-text{height:12px;width:80%;margin-bottom:6px}.skeleton-text-short{height:12px;width:50%;margin:0 auto}
+        header{display:flex;align-items:center;justify-content:center;padding:15px 15px 12px;border-bottom:1px solid var(--border-color);position:sticky;top:0;background:rgba(255,255,255,.98);z-index:100;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transform:translateZ(0);height:60px}
+        #back-btn{position:absolute;left:10px;top:50%;transform:translateY(-50%);padding:10px;z-index:101;display:flex;align-items:center;justify-content:center}
+        #back-btn:active{opacity:.6;transform:translateY(-50%) scale(.9)}
+        .header-logo-text{font-size:1.25rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--text-color);margin:0;padding:0}
+        .search-container{padding:15px 15px 5px;position:relative;background:var(--bg-color)}
+        .search-input{width:100%;padding:12px 15px 12px 40px;border:none;border-bottom:1px solid #ddd;border-radius:0;font-size:.9rem;background:transparent;outline:none;text-transform:uppercase;letter-spacing:.05em;font-weight:500;-webkit-appearance:none;transition:border-color .3s;color:var(--text-color)}
+        .search-input:focus{border-color:var(--text-color)}.search-input::placeholder{color:#999}
+        .search-icon{position:absolute;left:15px;top:25px;width:16px;height:16px;stroke:#999;fill:none;stroke-width:2}
+        nav.bottom-nav{position:fixed;bottom:0;left:0;width:100%;height:var(--nav-height);background:rgba(255,255,255,.98);border-top:1px solid var(--border-color);display:flex;justify-content:space-around;align-items:center;z-index:1000;padding-bottom:env(safe-area-inset-bottom);transform:translateZ(0)}
+        .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b0b0b0;font-size:.65rem;width:100%;height:100%;position:relative;text-transform:uppercase;letter-spacing:.1em;font-weight:600;transition:color .3s ease}
+        .nav-item:active{transform:scale(.95)}.nav-item svg{width:20px;height:20px;margin-bottom:4px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform .3s ease}
+        .nav-item.active{color:var(--text-color)}.nav-item.active svg{transform:translateY(-2px);stroke-width:2}
+        .cart-badge{position:absolute;top:8px;right:28%;background:var(--cta-color);color:#fff;font-size:.6rem;font-weight:700;width:16px;height:16px;display:flex;justify-content:center;align-items:center;border-radius:50%;border:1px solid #fff}
+        .banner-slider{position:relative;width:100vw;aspect-ratio:1/1;max-height:60vh;overflow:hidden;margin-bottom:35px;background:#eee;transform:translateZ(0)}
+        @media(min-width:768px){.banner-slider{aspect-ratio:16/9;max-width:100%;max-height:none}}
+        .banner-track{display:flex;transition:transform .6s cubic-bezier(0.25,1,0.5,1);height:100%;will-change:transform}
+        .banner-slide{min-width:100%;height:100%;position:relative;transform:translateZ(0)}
+        .banner-slide img{width:100%;height:100%;object-fit:cover}
+        .banner-slide::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:30%;background:linear-gradient(to top,rgba(0,0,0,.2),transparent);pointer-events:none}
+        .section-header{margin:0 15px 25px;text-align:center}
+        .section-title{font-size:1.4rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-color)}
+        .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px 15px;padding:0 15px;margin-bottom:50px}
+        .product-card{cursor:pointer;text-align:center;display:flex;flex-direction:column;transition:opacity .3s ease}
+        .product-card:active{opacity:.7}
+        .product-image-container{width:100%;aspect-ratio:3/4;overflow:hidden;background:#f4f4f4;margin-bottom:12px;position:relative;transform:translateZ(0)}
+        .product-image-container img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .8s ease;will-change:transform}
+        .product-card:hover .product-image-container img{transform:scale(1.05) translateZ(0)}
+        .badge-sale{position:absolute;top:10px;left:10px;background:#e02b2b;color:#fff;font-size:.7rem;font-weight:600;padding:5px 10px;text-transform:uppercase;letter-spacing:.05em;z-index:2;border-radius:2px}
+        .product-info{padding:0 5px;display:flex;flex-direction:column;align-items:center;gap:4px}
+        .product-title{font-size:.85rem;font-weight:500;color:#777;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;width:100%;text-transform:capitalize}
+        .product-price-row{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:2px}
+        .price-original{font-size:.8rem;color:#aaa;text-decoration:line-through;font-weight:500}
+        .price-current{font-size:.95rem;font-weight:700;color:var(--text-color)}
+        .add-to-wishlist-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:.85rem;color:#555;cursor:pointer;font-weight:500;transition:color .3s;padding:5px}
+        .add-to-wishlist-btn:active{color:#000}.add-to-wishlist-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+        .dark-footer{background-color:#050505;color:#fff;padding:50px 25px 80px;margin-top:40px}
+        .footer-grid{display:grid;grid-template-columns:1fr;gap:40px}
+        @media(min-width:768px){.footer-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+        .footer-heading{font-size:1.2rem;font-weight:700;letter-spacing:.05em;margin-bottom:20px;text-transform:uppercase;color:#fff}
+        .footer-links{list-style:none;padding:0}.footer-links li{margin-bottom:16px}
+        .footer-links a{color:#a0a0a0;font-size:.95rem;font-weight:400;transition:color .3s ease;display:flex;align-items:center;gap:10px}
+        .footer-links a:hover{color:#fff}.footer-links svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+        .footer-bottom{border-top:1px solid #222;margin-top:40px;padding-top:25px;text-align:center;font-size:.8rem;color:#666;letter-spacing:.05em;text-transform:uppercase}
+        .footer-connect-section{padding:15px 0;font-family:'Poppins',sans-serif}
+        .connect-heading{font-size:2.4rem;font-weight:900;text-transform:uppercase;letter-spacing:3px;color:#fff;margin:0 0 25px}
+        .footer-socials{display:flex;gap:18px}
+        .social-icon{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:#a0a0a0;background:rgba(255,255,255,.03);transition:all .4s cubic-bezier(0.175,.885,.32,1.275);text-decoration:none}
+        .social-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;transition:all .3s ease}
+        .social-icon.youtube svg polygon{fill:none;transition:fill .3s ease}
+        .social-icon:hover{color:#fff;transform:translateY(-6px);box-shadow:0 12px 20px rgba(0,0,0,.3)}
+        .social-icon.instagram:hover{background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);border-color:transparent}
+        .social-icon.youtube:hover{background:#FF0000;border-color:#FF0000}.social-icon.youtube:hover svg polygon{fill:#fff}
+        .social-icon:hover svg{transform:scale(1.08)}
+        .pd-layout{display:flex;flex-direction:column}
+        @media (min-width:768px){.pd-layout{flex-direction:row;gap:40px;padding:20px}.pd-media,.pd-details{flex:1}}
+        .pd-media{width:100vw;margin-left:-15px;position:relative;transform:translateZ(0)}
+        @media (min-width:768px){.pd-media{width:100%;margin-left:0}}
+        .pd-gallery{display:flex;flex-direction:column;gap:10px;width:100%}
+        .pd-main-img-container{width:100%;aspect-ratio:3/4;overflow:hidden;background:#f4f4f4;position:relative}
+        .pd-main-slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;width:100%;height:100%;scroll-behavior:smooth}
+        .pd-main-slider::-webkit-scrollbar{display:none}.pd-main-slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start}
+        .pd-main-slide img{width:100%;height:100%;object-fit:cover;object-position:top}
+        .pd-thumbnails{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:0 15px}
+        .pd-thumbnails::-webkit-scrollbar{display:none}
+        @media (min-width:768px){.pd-thumbnails{padding:0}}
+        .pd-thumb{width:70px;height:93px;flex-shrink:0;cursor:pointer;opacity:.5;transition:.3s;border:2px solid transparent;background:#f4f4f4;overflow:hidden}
+        .pd-thumb.active{opacity:1;border-color:var(--text-color)}.pd-thumb img{width:100%;height:100%;object-fit:cover}
+        .pd-details{padding:25px 0}
+        .pd-title{font-size:1.7rem;margin-bottom:8px;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:.02em}
+        .pd-price{font-size:1.35rem;font-weight:600;margin-bottom:15px;color:#111}
+        .pd-description{color:#555;font-size:.95rem;margin-bottom:30px;line-height:1.7;font-weight:400}
+        .video-wrapper{position:relative;width:100%;aspect-ratio:3/4;display:flex;justify-content:center;align-items:center;background:#f4f4f4;overflow:hidden;cursor:pointer}
+        .video-wrapper video{width:100%;height:100%;object-fit:cover}
+        .video-play-btn{position:absolute;z-index:10;width:60px;height:60px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;transition:opacity .3s ease}
+        .video-play-btn svg{width:30px;height:30px;fill:currentColor;margin-left:5px}
+        .video-loader{position:absolute;z-index:10;width:40px;height:40px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;pointer-events:none;display:none;transform:translateZ(0);will-change:transform}
+        .video-wrapper.is-playing .video-play-btn{opacity:0;pointer-events:none}
+        .video-wrapper.is-buffering .video-loader{display:block}.video-wrapper.is-buffering .video-play-btn{display:none}
+        .selector-group{margin-bottom:25px}
+        .selector-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:block;color:var(--text-secondary);font-weight:600}
+        .selector-options{display:flex;flex-wrap:wrap;gap:10px}
+        .selector-btn{padding:12px 20px;border:1px solid var(--border-color);background:var(--surface-color);font-size:.85rem;border-radius:0;font-weight:500;transition:.2s;text-transform:uppercase;color:#333}
+        .selector-btn:active{transform:scale(.95);opacity:.8}
+        .selector-btn.selected{border-color:var(--text-color);background:var(--text-color);color:var(--surface-color);font-weight:600}
+        .qty-wrapper{display:flex;align-items:center;border:1px solid var(--border-color);width:max-content;background:var(--surface-color)}
+        .qty-btn{padding:12px 20px;font-size:1.1rem;color:#333}.qty-btn:active{opacity:.5}
+        .qty-val{padding:0 15px;font-size:1rem;font-weight:600;color:#111}
+        .btn-primary{width:100%;padding:18px;background:var(--cta-color);color:#fff;font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-top:10px;border-radius:0;text-align:center;display:block;transition:.3s;-webkit-appearance:none;border:none;cursor:pointer}
+        .btn-primary:active{transform:scale(.98);background:#333}
+        .reviews-section{margin-top:50px;padding-top:40px;border-top:1px solid var(--border-color)}
+        .review-item{margin-bottom:25px;padding-bottom:25px;border-bottom:1px solid #f0f0f0}
+        .review-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+        .review-avatar{width:35px;height:35px;background:var(--text-color);color:var(--surface-color);border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:600;font-size:.9rem;text-transform:uppercase}
+        .review-name{font-weight:600;font-size:.9rem;text-transform:uppercase;letter-spacing:.05em;color:#111}
+        .review-text{font-size:.95rem;color:#555;line-height:1.6}
+        .add-review-box{margin-top:30px;padding:25px;background:#fff;border:1px solid var(--border-color)}
+        .star-rating-input{font-size:1.8rem;color:#e0e0e0;cursor:pointer;margin-bottom:15px}
+        .star-rating-input span:hover,.star-rating-input span.active{color:#f5b301}
+        .recommended-section{margin-top:50px;padding-top:40px;border-top:1px solid var(--border-color)}
+        .recommended-title{font-size:1.1rem;margin-bottom:25px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:center;color:var(--text-color)}
+        .modal-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.7);z-index:2000;display:flex;justify-content:center;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .4s ease;transform:translateZ(0);backdrop-filter:blur(4px)}
+        .modal-overlay.active{opacity:1;pointer-events:auto}
+        @media (min-width:768px){.modal-overlay{align-items:center}}
+        .modal-content{background:var(--bg-color);width:100%;max-width:500px;padding:40px 25px;border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .5s cubic-bezier(0.25,1,0.5,1);max-height:90vh;overflow-y:auto;will-change:transform}
+        @media (min-width:768px){.modal-content{border-radius:4px}}
+        .modal-overlay.active .modal-content{transform:translateY(0)}
+        .form-group{margin-bottom:25px}
+        .form-label{display:block;font-size:.75rem;margin-bottom:8px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+        .form-input{width:100%;padding:15px 0;border:none;border-bottom:1px solid #ccc;border-radius:0;font-family:inherit;font-size:1rem;background:transparent;color:var(--text-color);outline:none;transition:.3s;-webkit-appearance:none}
+        .form-input:focus{border-color:var(--text-color)}
+        .auth-toggle{text-align:center;font-size:.85rem;margin-top:25px;color:var(--text-secondary);cursor:pointer;text-decoration:underline;font-weight:500}
+        .btn-google{background:#fff;color:#222;border:1px solid #ddd;width:100%;padding:15px;display:flex;justify-content:center;align-items:center;gap:10px;font-weight:600;margin-top:15px;font-size:.9rem;border-radius:0}
+        .btn-google:active{transform:scale(.98);background:#f9f9f9}
+        .payment-methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px}
+        .payment-method-card{display:block;cursor:pointer;position:relative}
+        .payment-method-card input{position:absolute;opacity:0;cursor:pointer}
+        .pm-content{border:1px solid var(--border-color);padding:15px;text-align:center;border-radius:4px;transition:.3s;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);display:flex;flex-direction:column;align-items:center;gap:8px;background:#fff}
+        .pm-content svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2}
+        .payment-method-card input:checked~.pm-content{border-color:var(--text-color);color:var(--text-color);background:#fafafa}
+        .cart-item{display:flex;gap:20px;padding:25px 0;border-bottom:1px solid var(--border-color);transition:opacity .3s ease}
+        .cart-item-img{width:90px;aspect-ratio:3/4;background:#f4f4f4;object-fit:cover}
+        .cart-item-details{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+        .cart-item-title{font-size:.95rem;font-weight:600;color:#111}
+        .cart-item-price{font-size:1.1rem;font-weight:700;margin-top:auto;color:#111}
+        .cart-remove{font-size:.75rem;color:#777;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;text-decoration:underline;padding-bottom:2px}
+        .cart-remove:active{opacity:.5}
+        .order-card{padding:25px;border:1px solid var(--border-color);background:#fff;margin-bottom:20px}
+        .tracking-wrapper{margin-top:20px;padding-top:20px;border-top:1px dashed var(--border-color)}
+        .tracking-container{position:relative;display:flex;justify-content:space-between;align-items:flex-start;margin-top:25px;margin-bottom:10px}
+        .tracking-progress-bg{position:absolute;top:7px;left:10px;right:10px;height:2px;background:#e0e0e0;z-index:1}
+        .tracking-progress-fill{height:100%;background:#050505;transition:width .8s cubic-bezier(0.25,1,0.5,1)}
+        .tracking-stage{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+        .tracking-dot{width:16px;height:16px;border-radius:50%;background:#e0e0e0;border:2px solid #fff;transition:.3s}
+        .tracking-stage.active .tracking-dot{background:#050505;box-shadow:0 0 0 2px #050505}
+        .tracking-label{font-size:.6rem;font-weight:600;text-transform:uppercase;color:#aaa;transition:.3s;line-height:1.2;letter-spacing:.05em;text-align:center;max-width:65px}
+        .tracking-stage.active .tracking-label{color:#111}
+        #reels-screen{padding:0;max-width:100%;height:calc(100dvh - var(--nav-height));background:#000;overflow:hidden;transform:translateZ(0)}
+        .reels-container{height:100%;width:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+        .reels-container::-webkit-scrollbar{display:none}
+        .reel-item{height:100%;width:100%;scroll-snap-align:start;position:relative;background:#000;display:flex;justify-content:center;align-items:center;cursor:pointer;transform:translateZ(0);will-change:transform,opacity}
+        .reel-item video{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease;transform:translateZ(0);will-change:opacity,transform}
+        .reel-item.is-playing video{opacity:1}
+        .reel-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:opacity .4s ease;transform:translateZ(0);will-change:opacity}
+        .reel-item.is-playing .reel-poster{opacity:0;pointer-events:none}
+        .reel-play-btn{position:absolute;z-index:10;width:65px;height:65px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;transition:opacity .3s ease,transform .2s cubic-bezier(0.25,1,0.5,1);pointer-events:none}
+        .reel-play-btn svg{width:28px;height:28px;fill:currentColor;margin-left:4px}
+        .reel-item.is-playing .reel-play-btn{opacity:0;transform:scale(.8)}
+        .reel-loader{position:absolute;z-index:10;width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;pointer-events:none;display:none;transform:translateZ(0);will-change:transform}
+        .reel-item.is-buffering .reel-loader{display:block}.reel-item.is-buffering .reel-play-btn{display:none}
+        .reel-overlay{position:absolute;bottom:80px;left:15px;right:15px;display:flex;align-items:flex-end;gap:12px;z-index:12;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.8);pointer-events:none;background:linear-gradient(to top,rgba(0,0,0,.7) 0,transparent 100%);padding-bottom:20px;margin:0 -15px -80px;padding-left:15px;padding-right:15px}
+        .creator-avatar{width:42px;height:42px;border-radius:50%;border:2px solid #fff;object-fit:cover;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+        .reel-text{flex:1;display:flex;flex-direction:column}
+        .creator-name{font-weight:700;font-size:.95rem;letter-spacing:.05em}
+        .verified-badge{margin-left:4px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+        .reel-caption{font-size:.85rem;font-weight:400;opacity:.95;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;margin-top:4px}
+        .empty-state{text-align:center;padding:80px 20px;color:var(--text-secondary);font-size:.95rem;font-weight:500}
+        #toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:#111;color:#fff;padding:14px 28px;font-size:.85rem;z-index:30000;transition:transform .4s cubic-bezier(0.25,1,0.5,1);font-weight:500;border-radius:4px;will-change:transform;box-shadow:0 4px 12px rgba(0,0,0,.15);letter-spacing:.05em}
+        #toast.show{transform:translateX(-50%) translateY(0)}
+        .payment-loader{margin-top:20px;display:flex;flex-direction:column;align-items:center}.payment-loader p{text-align:center}
+        #gw-qrcode-container img,#gw-qrcode-container canvas{margin:0 auto;display:block;border-radius:8px;}
+        
+        /* Premium Gateway Specific Styles */
+        .app-icon-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; overflow-x: hidden; width: 100vw; }
-
-        /* Responsive Splash Screen */
-        #splash-screen { position: fixed; inset: 0; width: 100%; height: 100dvh; background: #FFFFFF; z-index: 10000; display: flex; justify-content: center; align-items: center; overflow: hidden; transition: opacity 0.6s ease, visibility 0.6s ease; padding: 20px; }
-        #splash-screen img { max-width: 70%; max-height: 120px; object-fit: contain; animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.97); } }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 3px; height: 3px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cccccc; }
-
-        /* Typography & Utilities */
-        h1, h2, h3, h4, h5, h6 { font-weight: 700; letter-spacing: -0.01em; } 
-        a { text-decoration: none; color: inherit; }
-        button { border: none; background: none; cursor: pointer; font-family: inherit; transition: var(--transition); }
-        img, video { max-width: 100%; display: block; }
-        .hidden { display: none !important; }
-        
-        /* Layout Structure */
-        #app-container { padding-bottom: calc(var(--nav-height) + 20px); min-height: 100vh; position: relative; }
-        .screen { display: none; max-width: 1200px; margin: 0 auto; will-change: transform, opacity; transform: translateZ(0); }
-        .screen.active { display: block; animation: fadeInScreen 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        .content-wrapper { padding: 0 15px; }
-
-        @keyframes fadeInScreen { from { opacity: 0; transform: translateY(15px) translateZ(0); } to { opacity: 1; transform: translateY(0) translateZ(0); } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px) translateZ(0); } to { opacity: 1; transform: translateY(0) translateZ(0); } }
-
-        /* Loaders & Skeletons */
-        #global-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(250, 250, 250, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .spinner { width: 35px; height: 35px; border: 2px solid var(--border-color); border-top-color: var(--cta-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg) translateZ(0); } 100% { transform: rotate(360deg) translateZ(0); } }
-
-        .skeleton { background: linear-gradient(90deg, #EBE8E3 25%, #f5f4f0 50%, #EBE8E3 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 2px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .skeleton-text { height: 12px; width: 80%; margin-bottom: 6px; }
-        .skeleton-text-short { height: 12px; width: 50%; margin: 0 auto; }
-
-        /* Header */
-        header { display: flex; align-items: center; justify-content: center; padding: 15px 15px 12px 15px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 100; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateZ(0); height: 60px; }
-        #back-btn { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px; z-index: 101; display: flex; align-items: center; justify-content: center; }
-        #back-btn:active { opacity: 0.6; transform: translateY(-50%) scale(0.9); }
-        .header-logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: 0.20em; text-transform: uppercase; color: var(--text-color); margin: 0; padding: 0; }
-
-        /* Search Bar */
-        .search-container { padding: 15px 15px 5px 15px; position: relative; background: var(--bg-color); }
-        .search-input { width: 100%; padding: 12px 15px 12px 40px; border: none; border-bottom: 1px solid #ddd; border-radius: 0; font-size: 0.9rem; background: transparent; outline: none; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; -webkit-appearance: none; transition: border-color 0.3s; color: var(--text-color); }
-        .search-input:focus { border-color: var(--text-color); }
-        .search-input::placeholder { color: #999; }
-        .search-icon { position: absolute; left: 15px; top: 25px; width: 16px; height: 16px; stroke: #999; fill: none; stroke-width: 2; }
-
-        /* Bottom Navigation */
-        nav.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); transform: translateZ(0); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #b0b0b0; font-size: 0.65rem; width: 100%; height: 100%; position: relative; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; transition: color 0.3s ease; }
-        .nav-item:active { transform: scale(0.95); }
-        .nav-item svg { width: 20px; height: 20px; margin-bottom: 4px; stroke: currentColor; fill: none; stroke-width: 1.5; transition: transform 0.3s ease; }
-        .nav-item.active { color: var(--text-color); }
-        .nav-item.active svg { transform: translateY(-2px); stroke-width: 2; }
-        .cart-badge { position: absolute; top: 8px; right: 28%; background: var(--cta-color); color: #fff; font-size: 0.6rem; font-weight: bold; width: 16px; height: 16px; display: flex; justify-content: center; align-items: center; border-radius: 50%; border: 1px solid #fff; }
-
-        /* Home Feed */
-        .banner-slider { position: relative; width: 100vw; aspect-ratio: 1 / 1; max-height: 60vh; overflow: hidden; margin-bottom: 35px; background: #eee; transform: translateZ(0); }
-        @media(min-width: 768px) { .banner-slider { aspect-ratio: 16/9; max-width: 100%; max-height: none; } }
-        .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; will-change: transform; }
-        .banner-slide { min-width: 100%; height: 100%; position: relative; transform: translateZ(0); }
-        .banner-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .banner-slide::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 30%; background: linear-gradient(to top, rgba(0,0,0,0.2), transparent); pointer-events: none; }
-
-        /* Product Grid */
-        .section-header { margin: 0 15px 25px 15px; text-align: center; }
-        .section-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-color); }
-        
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 15px; padding: 0 15px; margin-bottom: 50px; }
-        .product-card { cursor: pointer; text-align: center; display: flex; flex-direction: column; transition: opacity 0.3s ease; }
-        .product-card:active { opacity: 0.7; }
-        
-        .product-image-container { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #f4f4f4; margin-bottom: 12px; position: relative; transform: translateZ(0); }
-        .product-image-container img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.8s ease; will-change: transform; }
-        .product-card:hover .product-image-container img { transform: scale(1.05) translateZ(0); }
-        
-        .badge-sale { position: absolute; top: 10px; left: 10px; background: #e02b2b; color: #fff; font-size: 0.7rem; font-weight: 600; padding: 5px 10px; text-transform: uppercase; letter-spacing: 0.05em; z-index: 2; border-radius: 2px; }
-
-        .product-info { padding: 0 5px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .product-title { font-size: 0.85rem; font-weight: 500; color: #777; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; width: 100%; text-transform: capitalize; }
-        
-        .product-price-row { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 2px; }
-        .price-original { font-size: 0.8rem; color: #aaa; text-decoration: line-through; font-weight: 500; }
-        .price-current { font-size: 0.95rem; font-weight: 700; color: var(--text-color); }
-        
-        .add-to-wishlist-btn { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; font-size: 0.85rem; color: #555; cursor: pointer; font-weight: 500; transition: color 0.3s; padding: 5px; }
-        .add-to-wishlist-btn:active { color: #000; }
-        .add-to-wishlist-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-
-        /* Dark Professional Footer */
-        .dark-footer { background-color: #050505; color: #fff; padding: 50px 25px 80px 25px; margin-top: 40px; }
-        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
-        @media(min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
-        .footer-heading { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 20px; text-transform: uppercase; color: #fff; }
-        .footer-links { list-style: none; padding: 0; }
-        .footer-links li { margin-bottom: 16px; }
-        .footer-links a { color: #a0a0a0; font-size: 0.95rem; font-weight: 400; transition: color 0.3s ease; display: flex; align-items: center; gap: 10px; }
-        .footer-links a:hover { color: #fff; }
-        .footer-links svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
-        .footer-bottom { border-top: 1px solid #222; margin-top: 40px; padding-top: 25px; text-align: center; font-size: 0.8rem; color: #666; letter-spacing: 0.05em; text-transform: uppercase; }
-
-        /* Support / Social Additions */
-   /* Container styling */
-.footer-connect-section {
-    padding: 20px 0;
-    font-family: 'Poppins', 'Segoe UI', sans-serif; /* Professional Font */
-}
-
-/* Big Heading Styling */
-.connect-heading {
-    font-size: 2.2rem; /* Big Akshar */
-    font-weight: 800;  /* Extra Bold */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #ffffff; /* Dark theme ke hisab se white, change if needed */
-    margin-bottom: 20px;
-}
-
-/* Socials Flex Container */
-.footer-socials { 
-    display: flex; 
-    gap: 15px; 
-}
-
-/* Base Social Icon Styling */
-.social-icon { 
-    width: 44px; /* Slightly bigger for better touch target */
-    height: 44px; 
-    border-radius: 50%; 
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Soft premium border */
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: #a0a0a0; 
-    background: rgba(255, 255, 255, 0.03); /* Subtle background fill */
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Premium smooth curve */
-    text-decoration: none;
-}
-
-/* SVG Inside Icon */
-.social-icon svg { 
-    width: 20px; 
-    height: 20px; 
-    stroke: currentColor; 
-    fill: none; 
-    stroke-width: 2; 
-    transition: transform 0.4s ease;
-}
-
-/* Professional Hover Effects (Icons pop according to brand colors) */
-/* Section Container */
-.footer-connect-section {
-    padding: 15px 0;
-    font-family: 'Poppins', 'Segoe UI', -apple-system, sans-serif;
-}
-
-/* Big Bold Heading */
-.connect-heading {
-    font-size: 2.4rem; /* Big Akshar */
-    font-weight: 900;  /* Extra Bold */
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #ffffff;    /* Change according to your background */
-    margin: 0 0 25px 0;
-}
-
-/* Flexbox Layout for Icons */
-.footer-socials { 
-    display: flex; 
-    gap: 18px; 
-}
-
-/* Base Social Icon Styling */
-.social-icon { 
-    width: 46px; 
-    height: 46px; 
-    border-radius: 50%; 
-    border: 1px solid rgba(255, 255, 255, 0.15); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: #a0a0a0; 
-    background: rgba(255, 255, 255, 0.03); 
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Premium bounce effect */
-    text-decoration: none;
-}
-
-/* SVG Styling */
-.social-icon svg { 
-    width: 22px; 
-    height: 22px; 
-    stroke: currentColor; 
-    fill: none; 
-    stroke-width: 2; 
-    transition: all 0.3s ease;
-}
-
-/* Specific YouTube SVG adjustment (fill rule) */
-.social-icon.youtube svg polygon {
-    fill: none;
-    transition: fill 0.3s ease;
-}
-
-/* --- Professional Hover States --- */
-
-.social-icon:hover { 
-    color: #ffffff;
-    transform: translateY(-6px); /* Elevates on hover */
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Instagram Real Gradient Color */
-.social-icon.instagram:hover { 
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-    border-color: transparent; 
-}
-
-/* YouTube Real Red Color */
-.social-icon.youtube:hover { 
-    background: #FF0000; 
-    border-color: #FF0000; 
-}
-
-/* YouTube inner triangle turns white on hover */
-.social-icon.youtube:hover svg polygon {
-    fill: #ffffff;
-}
-
-/* Scale effect inside SVG */
-.social-icon:hover svg {
-    transform: scale(1.08);
-}
-
-
-        /* Product Details & Swipeable Gallery */
-        .pd-layout { display: flex; flex-direction: column; }
-        @media (min-width: 768px) { .pd-layout { flex-direction: row; gap: 40px; padding: 20px;} .pd-media, .pd-details { flex: 1; } }
-        .pd-media { width: 100vw; margin-left: -15px; position: relative; transform: translateZ(0); }
-        @media (min-width: 768px) { .pd-media { width: 100%; margin-left: 0; } }
-        
-        .pd-gallery { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .pd-main-img-container { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #f4f4f4; position: relative; }
-        
-        /* Premium Swipe Gallery Enhancements */
-        .pd-main-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; height: 100%; scroll-behavior: smooth; }
-        .pd-main-slider::-webkit-scrollbar { display: none; }
-        .pd-main-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; }
-        .pd-main-slide img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-        
-        .pd-thumbnails { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 0 15px; }
-        .pd-thumbnails::-webkit-scrollbar { display: none; }
-        @media (min-width: 768px) { .pd-thumbnails { padding: 0; } }
-        .pd-thumb { width: 70px; height: 93px; flex-shrink: 0; cursor: pointer; opacity: 0.5; transition: 0.3s; border: 2px solid transparent; background: #f4f4f4; overflow: hidden; }
-        .pd-thumb.active { opacity: 1; border-color: var(--text-color); }
-        .pd-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Soft Typography for Details */
-        .pd-details { padding: 25px 0; }
-        .pd-title { font-size: 1.7rem; margin-bottom: 8px; font-weight: 800; color: #111; text-transform: uppercase; letter-spacing: 0.02em; }
-        .pd-price { font-size: 1.35rem; font-weight: 600; margin-bottom: 15px; color: #111; }
-        .pd-description { color: #555555; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.7; font-weight: 400; }
-
-        /* Video Player Adjustments */
-        .video-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; display: flex; justify-content: center; align-items: center; background: #f4f4f4; overflow: hidden; cursor: pointer; }
-        .video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
-        .video-play-btn { position: absolute; z-index: 10; width: 60px; height: 60px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; transition: opacity 0.3s ease; }
-        .video-play-btn svg { width: 30px; height: 30px; fill: currentColor; margin-left: 5px; }
-        .video-loader { position: absolute; z-index: 10; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; pointer-events: none; display: none; transform: translateZ(0); will-change: transform; }
-        .video-wrapper.is-playing .video-play-btn { opacity: 0; pointer-events: none; }
-        .video-wrapper.is-buffering .video-loader { display: block; }
-        .video-wrapper.is-buffering .video-play-btn { display: none; }
-
-        /* Selections */
-        .selector-group { margin-bottom: 25px; }
-        .selector-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: block; color: var(--text-secondary); font-weight: 600; }
-        .selector-options { display: flex; flex-wrap: wrap; gap: 10px; }
-        .selector-btn { padding: 12px 20px; border: 1px solid var(--border-color); background: var(--surface-color); font-size: 0.85rem; border-radius: 0; font-weight: 500; transition: 0.2s; text-transform: uppercase; color: #333; }
-        .selector-btn:active { transform: scale(0.95); opacity: 0.8; }
-        .selector-btn.selected { border-color: var(--text-color); background: var(--text-color); color: var(--surface-color); font-weight: 600; }
-        .qty-wrapper { display: flex; align-items: center; border: 1px solid var(--border-color); width: max-content; background: var(--surface-color); }
-        .qty-btn { padding: 12px 20px; font-size: 1.1rem; color: #333; }
-        .qty-btn:active { opacity: 0.5; }
-        .qty-val { padding: 0 15px; font-size: 1rem; font-weight: 600; color: #111; }
-        
-        .btn-primary { width: 100%; padding: 18px; background: var(--cta-color); color: #ffffff; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 10px; border-radius: 0; text-align: center; display: block; transition: 0.3s; -webkit-appearance: none; border: none; }
-        .btn-primary:active { transform: scale(0.98); background: #333; }
-
-        /* Dynamic Reviews Section */
-        .reviews-section { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border-color); }
-        .review-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #f0f0f0; }
-        .review-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .review-avatar { width: 35px; height: 35px; background: var(--text-color); color:var(--surface-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 600; font-size:0.9rem; text-transform: uppercase; }
-        .review-name { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #111;}
-        .review-text { font-size: 0.95rem; color: #555; line-height: 1.6; }
-        .add-review-box { margin-top: 30px; padding: 25px; background: #fff; border: 1px solid var(--border-color); }
-        .star-rating-input { font-size: 1.8rem; color: #e0e0e0; cursor: pointer; margin-bottom: 15px; }
-        .star-rating-input span:hover, .star-rating-input span.active { color: #f5b301; } 
-
-        /* Recommended Section */
-        .recommended-section { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border-color); }
-        .recommended-title { font-size: 1.1rem; margin-bottom: 25px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; color: var(--text-color); }
-
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 2000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; transform: translateZ(0); backdrop-filter: blur(4px); }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        @media (min-width: 768px) { .modal-overlay { align-items: center; } }
-        .modal-content { background: var(--bg-color); width: 100%; max-width: 500px; padding: 40px 25px; border-radius: 12px 12px 0 0; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); max-height: 90vh; overflow-y: auto; will-change: transform; }
-        @media (min-width: 768px) { .modal-content { border-radius: 4px; } }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        
-        .form-group { margin-bottom: 25px; }
-        .form-label { display: block; font-size: 0.75rem; margin-bottom: 8px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
-        .form-input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid #ccc; border-radius: 0; font-family: inherit; font-size: 1rem; background: transparent; color: var(--text-color); outline: none; transition: 0.3s; -webkit-appearance: none; }
-        .form-input:focus { border-color: var(--text-color); }
-
-        .auth-toggle { text-align: center; font-size: 0.85rem; margin-top: 25px; color: var(--text-secondary); cursor: pointer; text-decoration: underline; font-weight: 500; }
-        .btn-google { background: #fff; color: #222; border: 1px solid #ddd; width: 100%; padding: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-weight: 600; margin-top: 15px; font-size: 0.9rem; border-radius: 0; }
-        .btn-google:active { transform: scale(0.98); background: #f9f9f9; }
-
-        /* Cart & Orders */
-        .cart-item { display: flex; gap: 20px; padding: 25px 0; border-bottom: 1px solid var(--border-color); transition: opacity 0.3s ease; }
-        .cart-item-img { width: 90px; aspect-ratio: 3/4; background: #f4f4f4; object-fit: cover; }
-        .cart-item-details { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .cart-item-title { font-size: 0.95rem; font-weight: 600; color: #111; }
-        .cart-item-price { font-size: 1.1rem; font-weight: 700; margin-top: auto; color: #111;}
-        .cart-remove { font-size: 0.75rem; color: #777; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: underline; padding-bottom: 2px; }
-        .cart-remove:active { opacity: 0.5; }
-        .order-card { padding: 25px; border: 1px solid var(--border-color); background: #fff; margin-bottom: 20px; }
-        
-        .tracking-wrapper { margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
-        .tracking-container { position: relative; display: flex; justify-content: space-between; align-items: flex-start; margin-top: 25px; margin-bottom: 10px; }
-        .tracking-progress-bg { position: absolute; top: 7px; left: 10px; right: 10px; height: 2px; background: #e0e0e0; z-index: 1; }
-        .tracking-progress-fill { height: 100%; background: #050505; transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
-        .tracking-stage { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
-        .tracking-dot { width: 16px; height: 16px; border-radius: 50%; background: #e0e0e0; border: 2px solid #fff; transition: 0.3s; }
-        .tracking-stage.active .tracking-dot { background: #050505; box-shadow: 0 0 0 2px #050505; }
-        .tracking-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; color: #aaa; transition: 0.3s; line-height: 1.2; letter-spacing: 0.05em; text-align: center; max-width: 65px;}
-        .tracking-stage.active .tracking-label { color: #111; }
-
-        /* Reels - Full Screen Architecture */
-        #reels-screen { padding: 0; max-width: 100%; height: calc(100dvh - var(--nav-height)); background: #000; overflow: hidden; transform: translateZ(0); }
-        .reels-container { height: 100%; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; scrollbar-width: none; }
-        .reels-container::-webkit-scrollbar { display: none; }
-        
-        /* Ultra-Fast Video Stream & Poster Mechanics */
-        .reel-item { height: 100%; width: 100%; scroll-snap-align: start; position: relative; background: #000; display: flex; justify-content: center; align-items: center; cursor: pointer; transform: translateZ(0); will-change: transform, opacity; }
-        .reel-item video { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; transform: translateZ(0); will-change: opacity, transform; }
-        .reel-item.is-playing video { opacity: 1; }
-        .reel-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: opacity 0.4s ease; transform: translateZ(0); will-change: opacity; }
-        .reel-item.is-playing .reel-poster { opacity: 0; pointer-events: none; }
-        
-        .reel-play-btn { position: absolute; z-index: 10; width: 65px; height: 65px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; transition: opacity 0.3s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: none; }
-        .reel-play-btn svg { width: 28px; height: 28px; fill: currentColor; margin-left: 4px; }
-        .reel-item.is-playing .reel-play-btn { opacity: 0; transform: scale(0.8); }
-        
-        .reel-loader { position: absolute; z-index: 10; width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; pointer-events: none; display: none; transform: translateZ(0); will-change: transform; }
-        .reel-item.is-buffering .reel-loader { display: block; }
-        .reel-item.is-buffering .reel-play-btn { display: none; }
-        
-        /* Metadata Overlay - Instagram Native */
-        .reel-overlay { position: absolute; bottom: 80px; left: 15px; right: 15px; display: flex; align-items: flex-end; gap: 12px; z-index: 12; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.8); pointer-events: none; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); padding-bottom: 20px; margin: 0 -15px -80px -15px; padding-left: 15px; padding-right: 15px; }
-        .creator-avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .reel-text { flex: 1; display: flex; flex-direction: column; }
-        .creator-name { font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; }
-        .verified-badge { margin-left: 4px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
-        .reel-caption { font-size: 0.85rem; font-weight: 400; opacity: 0.95; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; margin-top: 4px; }
-
-        /* General Utils */
-        .empty-state { text-align: center; padding: 80px 20px; color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; }
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; color: #fff; padding: 14px 28px; font-size: 0.85rem; z-index: 3000; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); font-weight: 500; border-radius: 4px; will-change: transform; box-shadow: 0 4px 12px rgba(0,0,0,0.15); letter-spacing: 0.05em; }
-        #toast.show { transform: translateX(-50%) translateY(0); }
+        .app-icon-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
+        }
+        .pg-primary-card:active {
+            transform: scale(0.96) !important;
+            box-shadow: 0 4px 12px rgba(15,166,84,0.1) !important;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Pure White Initial Loading Splash -->
     <div id="splash-screen"><img src="logo.png" alt="NOVALREVOLT"></div>
     <div id="global-loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast"></div>
-
     <header id="main-header">
         <button id="back-btn" class="hidden" onclick="window.app.goBack()">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <!-- High Contrast Brand Header Identity -->
         <h1 class="header-logo-text">NOVALREVOLT</h1>
     </header>
-
     <div id="app-container">
-        <!-- HOME SCREEN -->
         <div id="home-screen" class="screen active">
             <div class="search-container">
                 <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="search-input" class="search-input" placeholder="Search Collection" onkeyup="window.app.handleSearch()">
             </div>
-            <div class="banner-slider">
-                <div class="banner-track" id="banner-track">
-                    <div class="banner-slide skeleton" style="width: 100%; height: 100%;"></div>
-                </div>
-            </div>
-            
+            <div class="banner-slider"><div class="banner-track" id="banner-track"><div class="banner-slide skeleton" style="width: 100%; height: 100%;"></div></div></div>
             <div class="section-header"><h2 class="section-title">New Arrivals</h2></div>
-            
-            <!-- Redesigned Product Grid Wrapper -->
             <div class="product-grid" id="home-product-grid"></div>
-
-            <!-- Redesigned Dark Professional Footer -->
             <footer class="dark-footer">
                 <div class="footer-grid">
                     <div>
@@ -454,950 +250,366 @@
                     <div>
                         <h2 class="footer-heading">Contact Us</h2>
                         <ul class="footer-links">
-                            <li>
-                                <a href="tel:+918272080428">
-                                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                    +91 82720 80428
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://wa.me/918272080428?text=Hello%20NovaRevolt%20Support,%20I%20have%20an%20inquiry." target="_blank">
-                                    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                                    WhatsApp Support
-                                </a>
-                            </li>
-                            <li>
-                                <a href="mailto:novalrevolt47@gmail.com">
-                                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                    novalrevolt47@gmail.com
-                                </a>
-                            </li>
+                            <li><a href="tel:+918272080428"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>+91 82720 80428</a></li>
+                            <li><a href="https://wa.me/918272080428?text=Hello%20NovaRevolt%20Support,%20I%20have%20an%20inquiry." target="_blank"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>WhatsApp Support</a></li>
+                            <li><a href="mailto:novalrevolt47@gmail.com"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>novalrevolt47@gmail.com</a></li>
                         </ul>
-                        <!-- Professional Social Additions -->
-                     <div class="footer-connect-section">
-    <!-- Big Professional Heading -->
-    <h2 class="connect-heading">STAY CONNECTED</h2>
-    
-    <div class="footer-socials">
-        <!-- Instagram -->
-        <a href="https://instagram.com/novelrevolt" target="_blank" class="social-icon instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-        </a>
-
-        <!-- YouTube -->
-        <a href="https://www.youtube.com/@NOVALREVOLT-r3d" target="_blank" class="social-icon youtube" aria-label="YouTube">
-            <svg viewBox="0 0 24 24">
-         <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-            </svg>
-        </a>
-    </div>
-</div>
-                <div class="footer-bottom">
-                    &copy; 2026 NOVALREVOLT. All Rights Reserved.
+                        <div class="footer-connect-section">
+                            <h2 class="connect-heading">STAY CONNECTED</h2>
+                            <div class="footer-socials">
+                                <a href="https://instagram.com/novelrevolt" target="_blank" class="social-icon instagram" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                                <a href="https://www.youtube.com/@NOVALREVOLT-r3d" target="_blank" class="social-icon youtube" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="footer-bottom">&copy; 2026 NOVALREVOLT. All Rights Reserved.</div>
             </footer>
         </div>
-
-        <!-- REELS SCREEN -->
-        <div id="reels-screen" class="screen">
-            <div class="reels-container" id="reels-container"></div>
-        </div>
-
-        <!-- CART SCREEN -->
+        <div id="reels-screen" class="screen"><div class="reels-container" id="reels-container"></div></div>
         <div id="cart-screen" class="screen content-wrapper">
-            <h2 class="section-title" style="margin-top: 25px; font-size: 1.4rem;">Your Cart</h2>
+            <h2 class="section-title" style="margin-top:25px;font-size:1.4rem">Your Cart</h2>
             <div id="cart-container"></div>
             <div id="cart-summary-wrapper" class="hidden">
-                <div style="margin-top: 30px; padding: 25px; background: #fff; border: 1px solid var(--border-color);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color:var(--text-secondary); font-weight:500;"><span>Subtotal</span><span id="cart-subtotal" style="color:var(--text-color);">₹0</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color:var(--text-secondary); font-weight:500;"><span>Shipping</span><span style="color:var(--text-color);">Complimentary</span></div>
-                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 15px;"><span>Total</span><span id="cart-total">₹0</span></div>
+                <div style="margin-top:30px;padding:25px;background:#fff;border:1px solid var(--border-color)">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:.9rem;color:var(--text-secondary);font-weight:500"><span>Subtotal</span><span id="cart-subtotal" style="color:var(--text-color)">₹0</span></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:.9rem;color:var(--text-secondary);font-weight:500"><span>Shipping</span><span style="color:var(--text-color)">Complimentary</span></div>
+                    <div style="display:flex;justify-content:space-between;font-weight:700;font-size:1.2rem;border-top:1px solid var(--border-color);padding-top:20px;margin-top:15px"><span>Total</span><span id="cart-total">₹0</span></div>
                 </div>
-                <button class="btn-primary" style="margin-top:20px;" onclick="window.app.openCheckout()">Proceed to Checkout</button>
+                <button class="btn-primary" style="margin-top:20px" onclick="window.app.openCheckout()">Proceed to Checkout</button>
             </div>
         </div>
-
-        <!-- ORDERS SCREEN -->
         <div id="orders-screen" class="screen content-wrapper">
-            <h2 class="section-title" style="margin-top: 25px; font-size: 1.4rem; margin-bottom: 25px;">Order History</h2>
+            <h2 class="section-title" style="margin-top:25px;font-size:1.4rem;margin-bottom:25px">Order History</h2>
             <div id="orders-container"></div>
         </div>
-
-        <!-- PRODUCT DETAILS SCREEN -->
-        <div id="product-detail-screen" class="screen">
-            <div id="pd-content" class="content-wrapper"></div>
-        </div>
+        <div id="product-detail-screen" class="screen"><div id="pd-content" class="content-wrapper"></div></div>
     </div>
-
-    <!-- AUTHENTICATION MODAL -->
+    
+    <!-- Auth Modal -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
-                <h3 id="auth-title" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;">LOGIN</h3>
-                <button style="font-size: 2rem; line-height: 1; color: #333;" onclick="window.app.closeAuth()">&times;</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:35px">
+                <h3 id="auth-title" style="font-size:1.4rem;font-weight:700;letter-spacing:.05em">LOGIN</h3>
+                <button style="font-size:2rem;line-height:1;color:#333" onclick="window.app.closeAuth()">&times;</button>
             </div>
             <form id="auth-form" onsubmit="window.app.handleEmailAuth(event)">
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="auth-email" class="form-input" required placeholder="name@domain.com">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="auth-pass" class="form-input" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn-primary" id="btn-auth-submit" style="margin-top:20px;">Sign In</button>
+                <div class="form-group"><label class="form-label">Email Address</label><input type="email" id="auth-email" class="form-input" required placeholder="name@domain.com"></div>
+                <div class="form-group"><label class="form-label">Password</label><input type="password" id="auth-pass" class="form-input" required placeholder="••••••••"></div>
+                <button type="submit" class="btn-primary" id="btn-auth-submit" style="margin-top:20px">Sign In</button>
             </form>
-            <div style="text-align: center; margin: 30px 0; color: #777; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em;">OR</div>
-            <button class="btn-google" onclick="window.app.handleGoogleLogin()">
-                <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Sign in with Google
-            </button>
+            <div style="text-align:center;margin:30px 0;color:#777;font-size:.75rem;text-transform:uppercase;font-weight:600;letter-spacing:.1em">OR</div>
+            <button class="btn-google" onclick="window.app.handleGoogleLogin()"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Sign in with Google</button>
             <div class="auth-toggle" id="auth-toggle-text" onclick="window.app.toggleAuthMode()">Create an account</div>
         </div>
     </div>
-
-    <!-- CHECKOUT MODAL -->
+    
+    <!-- Checkout Details Form Modal -->
     <div id="checkout-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                <h3 style="font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;">CHECKOUT</h3>
-                <button style="font-size: 2rem; line-height: 1; color: #333;" onclick="window.app.closeCheckout()">&times;</button>
+        <div class="modal-content" style="position:relative">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
+                <h3 id="checkout-modal-title" style="font-size:1.4rem;font-weight:700;letter-spacing:.05em">CHECKOUT</h3>
+                <button style="font-size:2rem;line-height:1;color:#333" onclick="window.app.closeCheckout()">&times;</button>
             </div>
             <form id="checkout-form" onsubmit="window.app.placeOrder(event)">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" id="co-name" class="form-input" required placeholder="Enter full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" id="co-phone" class="form-input" required placeholder="+91 9876543210">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Delivery Address</label>
-                    <textarea id="co-address" class="form-input" required placeholder="Apartment, suite, etc." style="resize:vertical; min-height:60px; padding-top:10px;"></textarea>
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 35px; background: #fafafa; padding: 20px; border: 1px solid var(--border-color);">
-                    <label class="form-label" style="font-size:0.7rem;">Precise Location (Recommended)</label>
-                    <button type="button" class="btn-primary" style="background: transparent; color: #222; border: 1px solid #ddd; margin-top: 10px; padding: 12px; font-size: 0.75rem;" onclick="window.app.fetchLocation()">Fetch Current Location GPS</button>
-                    <input type="hidden" id="co-gps-link">
-                    <div id="co-gps-status" style="font-size: 0.75rem; margin-top: 10px; font-weight: 600; text-transform:uppercase; letter-spacing:0.05em;"></div>
-                </div>
-
+                <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="co-name" class="form-input" required placeholder="Enter full name"></div>
+                <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" id="co-phone" class="form-input" required placeholder="+91 9876543210"></div>
+                <div class="form-group"><label class="form-label">Delivery Address</label><textarea id="co-address" class="form-input" required placeholder="Apartment, suite, etc." style="resize:vertical;min-height:60px;padding-top:10px"></textarea></div>
+                <div class="form-group" style="margin-bottom:25px;background:#fafafa;padding:20px;border:1px solid var(--border-color)"><label class="form-label" style="font-size:.7rem">Precise Location (Recommended)</label><button type="button" class="btn-primary" style="background:0 0;color:#222;border:1px solid #ddd;margin-top:10px;padding:12px;font-size:.75rem" onclick="window.app.fetchLocation()">Fetch Current Location GPS</button><input type="hidden" id="co-gps-link"><div id="co-gps-status" style="font-size:.75rem;margin-top:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em"></div></div>
+                <div class="form-group" style="margin-bottom:35px"><label class="form-label">Select Payment Method</label><div class="payment-methods-grid"><label class="payment-method-card"><input type="radio" name="payment_method" value="UPI" checked><div class="pm-content"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg><span>UPI / QR Pay</span></div></label><label class="payment-method-card"><input type="radio" name="payment_method" value="COD"><div class="pm-content"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>Cash on Delivery</span></div></label></div></div>
                 <button type="submit" class="btn-primary" id="btn-place-order">Complete Purchase</button>
             </form>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="window.app.navigate('home')">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span>Home</span>
-        </button>
-        <button class="nav-item" onclick="window.app.navigate('reels')">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
-            <span>Discover</span>
-        </button>
-        <button class="nav-item" onclick="window.app.navigate('orders')">
-            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-            <span>Orders</span>
-        </button>
-        <button class="nav-item" onclick="window.app.navigate('cart')">
-            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-            <span>Cart</span>
-            <div id="nav-cart-badge" class="cart-badge hidden">0</div>
-        </button>
-    </nav>
+    <!-- FULL SCREEN PROFESSIONAL ZEPTO-STYLE PAYMENT GATEWAY -->
+    <div id="payment-gateway-screen" class="hidden" style="position:fixed;inset:0;background:#f4f6f8;z-index:99999;display:flex;flex-direction:column;transform:translateZ(0);font-family:'Inter', sans-serif;">
+        <!-- MAIN GATEWAY UI -->
+        <div id="pg-main-ui" style="flex:1;overflow-y:auto;padding-bottom:50px;">
+            <!-- Header -->
+            <div style="background:#fff;padding:16px 20px;display:flex;align-items:center;gap:15px;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+                <button onclick="window.app.closePaymentGateway()" style="padding:8px;margin-left:-8px;background:#f8f9fa;border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div style="flex:1;">
+                    <div style="font-size:1.15rem;font-weight:900;color:#111;letter-spacing:-0.02em;">Secure Checkout</div>
+                    <div style="font-size:0.75rem;color:#666;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw;" id="gw-address"></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;background:#e8f5e9;color:#0fa654;padding:4px 8px;border-radius:20px;font-size:0.7rem;font-weight:800;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/></svg> 100% Safe
+                </div>
+            </div>
 
-    <!-- MAIN APPLICATION SCRIPT - 100% Logic Untouched -->
-  <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        // === FIXED LINE: Added ', update' at the end of the import list ===
-        import { getDatabase, ref, get, child, push, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getMessaging, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9_Qi9tJCyqUISQJ5QJ6gn9ZDW8D7aVbw",
-            authDomain: "revolt-3a06d.firebaseapp.com",
-            databaseURL: "https://revolt-3a06d-default-rtdb.firebaseio.com",
-            projectId: "revolt-3a06d",
-            storageBucket: "revolt-3a06d.firebasestorage.app",
-            messagingSenderId: "323255440638",
-            appId: "1:323255440638:web:75877fe3a9aaa55ccec1af"
-        };
-        const supabaseUrl = 'https://hianvppezhevucysqhut.supabase.co';
-        
-        let appInstance, db, auth, googleProvider, messaging, reelObserver;
-        let hasUserInteractedWithReels = false;
-
-        try {
-            appInstance = initializeApp(firebaseConfig);
-            db = getDatabase(appInstance);
-            auth = getAuth(appInstance);
-            googleProvider = new GoogleAuthProvider();
-            
-            try {
-                messaging = getMessaging(appInstance);
-                onMessage(messaging, (payload) => {
-                    if(payload.notification) showToast(payload.notification.title);
-                });
-            } catch(e) { console.warn("FCM disabled or unsupported on client", e); }
-        } catch(e) { console.error("Firebase Init Error", e); }
-
-        const resolveMediaUrl = (filename) => {
-            if (!filename) return '';
-            if (filename.startsWith('http')) return filename;
-            return `${supabaseUrl}/storage/v1/object/public/proplay-assets/${filename}`;
-        };
-
-        const state = {
-            products: [], banners: [], reels: [], orders: [],
-            cart: JSON.parse(localStorage.getItem('novarevolt_cart')) || [],
-            currentProduct: null,
-            user: null,
-            userId: localStorage.getItem('novarevolt_userid') || 'user_' + Math.random().toString(36).substr(2, 9),
-            authMode: 'login'
-        };
-        localStorage.setItem('novarevolt_userid', state.userId);
-
-        if (auth) {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    state.user = user;
-                    state.userId = user.uid;
-                    localStorage.setItem('novarevolt_userid', state.userId);
-                } else { state.user = null; }
-            });
-        }
-
-        const showLoader = () => { const el = document.getElementById('global-loader'); if(el) el.classList.remove('hidden'); };
-        const hideLoader = () => { const el = document.getElementById('global-loader'); if(el) el.classList.add('hidden'); };
-        const hideSplash = () => {
-            const splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 600);
-            }
-        };
-        const showToast = (msg) => {
-            const toast = document.getElementById('toast');
-            if(!toast) return;
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        };
-        const formatCurrency = (amt) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amt || 0);
-
-        const updateCartBadge = () => {
-            const badge = document.getElementById('nav-cart-badge');
-            if(!badge) return;
-            if(state.cart.length > 0) {
-                badge.innerText = state.cart.length;
-                badge.classList.remove('hidden');
-            } else { badge.classList.add('hidden'); }
-        }
-
-        const showSkeletonProducts = () => {
-            const grid = document.getElementById('home-product-grid');
-            if (!grid) return;
-            if (state.products.length === 0) {
-                grid.innerHTML = Array(4).fill(`
-                    <div class="product-card">
-                        <div class="product-image-container skeleton"></div>
-                        <div class="product-info" style="padding-top:5px;">
-                            <div class="skeleton skeleton-text"></div>
-                            <div class="skeleton skeleton-text-short"></div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        };
-
-        window.app = {};
-        window.app.history = [];
-
-        window.app.navigate = (screenId, isBack = false) => {
-            const currentScreen = document.querySelector('.screen.active');
-            const currentId = currentScreen ? currentScreen.id.replace('-screen', '') : null;
-
-            if (!isBack && currentId && currentId !== screenId) {
-                if (['home', 'reels', 'orders', 'cart'].includes(screenId)) {
-                    window.app.history = [];
-                } else {
-                    window.app.history.push(currentId);
-                }
-            }
-
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            const targetScreen = document.getElementById(`${screenId}-screen`);
-            if(targetScreen) targetScreen.classList.add('active');
-            
-            const navBtn = document.querySelector(`.nav-item[onclick="window.app.navigate('${screenId}')"]`);
-            if(navBtn) navBtn.classList.add('active');
-
-            const backBtn = document.getElementById('back-btn');
-            if (backBtn) {
-                if (window.app.history.length > 0) backBtn.classList.remove('hidden');
-                else backBtn.classList.add('hidden');
-            }
-
-            if(screenId !== 'reels' && screenId !== 'product-detail') {
-                document.querySelectorAll('video').forEach(v => {
-                    v.muted = true;
-                    const w = v.closest('.video-wrapper, .reel-item');
-                    if(w) { w.classList.remove('is-playing', 'is-buffering'); }
-                    
-                    if (w && w.classList.contains('reel-item')) {
-                        v.pause();
-                    } else {
-                        const playPromise = v.play();
-                        if(playPromise !== undefined) {
-                            playPromise.then(() => { v.pause(); }).catch(() => { v.pause(); });
-                        } else { v.pause(); }
-                    }
-                });
-            }
-
-            if (screenId === 'cart') renderCart();
-            if (screenId === 'orders') fetchAndRenderOrders();
-            if (screenId === 'home') { if(state.products.length === 0) fetchHomeData(); else renderProducts(state.products); }
-            if (screenId === 'reels') { if(state.reels.length === 0) fetchReels(); }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.app.goBack = () => {
-            if(window.app.history && window.app.history.length > 0) {
-                const prevScreen = window.app.history.pop();
-                window.app.navigate(prevScreen, true);
-            }
-        };
-
-        const fetchHomeData = async () => {
-            showSkeletonProducts();
-            try {
-                if (!db) throw new Error("Firebase DB not initialized.");
-                const [bannersSnap, productsSnap] = await Promise.all([
-                    get(child(ref(db), 'banners')), get(child(ref(db), 'products'))
-                ]);
-
-                if (bannersSnap.exists()) {
-                    const bData = bannersSnap.val();
-                    state.banners = Array.isArray(bData) ? bData : Object.keys(bData).map(k => ({id: k, ...bData[k]}));
-                    renderBanners();
-                }
-                if (productsSnap.exists()) {
-                    const pData = productsSnap.val();
-                    state.products = Array.isArray(pData) ? pData : Object.keys(pData).map(k => ({id: k, ...pData[k]}));
-                    renderProducts(state.products);
-                }
-            } catch (error) {
-                const grid = document.getElementById('home-product-grid');
-                if(grid) grid.innerHTML = `<div class="empty-state">Unable to load collection.</div>`;
-            } finally {
-                updateCartBadge();
-                hideSplash();
-            }
-        };
-
-        const renderBanners = () => {
-            const track = document.getElementById('banner-track');
-            if(!track || state.banners.length === 0) return;
-            track.innerHTML = ''; 
-
-            state.banners.forEach((b) => {
-                const slide = document.createElement('div');
-                slide.className = 'banner-slide';
-                slide.innerHTML = `<img src="${resolveMediaUrl(b.image || b.imageUrl)}" loading="lazy">`;
-                track.appendChild(slide);
-            });
-
-            let currentSlide = 0;
-            setInterval(() => {
-                currentSlide = (currentSlide + 1) % state.banners.length;
-                if(track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }, 4500);
-        };
-
-        window.app.handleSearch = () => {
-            const input = document.getElementById('search-input');
-            if(!input) return;
-            const query = input.value.toLowerCase();
-            const filtered = state.products.filter(p => p.title.toLowerCase().includes(query) || (p.description && p.description.toLowerCase().includes(query)));
-            renderProducts(filtered);
-        };
-
-        const renderProducts = (productsToRender) => {
-            const grid = document.getElementById('home-product-grid');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            if(productsToRender.length === 0) {
-                grid.innerHTML = '<div class="empty-state">No products found.</div>';
-                return;
-            }
-
-            productsToRender.forEach(p => {
-                const mediaSrc = p.imageUrl || (p.images ? p.images[0] : null) || p.image;
-                const imgUrl = resolveMediaUrl(mediaSrc);
-                const currentPrice = p.price || 0;
-                const originalPrice = p.originalPrice || Math.round(currentPrice * 1.5);
+            <!-- Amount Payable Card -->
+            <div style="margin:20px 16px;background:linear-gradient(135deg, #111 0%, #222 100%);border-radius:20px;padding:24px;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;">
+                <!-- decorative circle -->
+                <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
                 
-                let badgeHtml = '';
-                if(p.outOfStock) {
-                    badgeHtml = `<div class="badge-sale" style="background:#e02b2b;">Out Of Stock</div>`;
-                } else if(currentPrice < originalPrice) {
-                    badgeHtml = `<div class="badge-sale">Sale!</div>`;
-                }
+                <div style="position:relative;z-index:2;">
+                    <div style="font-size:0.8rem;color:#aaa;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Amount Payable</div>
+                    <div style="font-size:1.8rem;font-weight:900;letter-spacing:-0.02em;" id="gw-amount"></div>
+                </div>
+                <div style="position:relative;z-index:2;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.1);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+            </div>
 
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.onclick = () => window.app.openProduct(p.id);
-                
-                card.innerHTML = `
-                    <div class="product-image-container">
-                        ${badgeHtml}
-                        <img src="${imgUrl}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">${p.title}</div>
-                        <div class="product-price-row">
-                            <span class="price-original">${formatCurrency(originalPrice)}</span>
-                            <span class="price-current">${formatCurrency(currentPrice)}</span>
-                        </div>
-                        <div class="add-to-wishlist-btn" onclick="event.stopPropagation(); window.app.toggleWishlist('${p.id}')">
-                            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                            <span>Add to Wishlist</span>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        };
-
-        window.app.toggleWishlist = (id) => {
-            showToast('Item saved to wishlist');
-        };
-
-        window.app.playVideo = (wrapperId) => {
-            const wrapper = document.getElementById(wrapperId);
-            if(!wrapper) return;
-            const video = wrapper.querySelector('video');
-            if(!video) return;
-
-            video.onwaiting = () => wrapper.classList.add('is-buffering');
-            video.onplaying = () => wrapper.classList.remove('is-buffering');
-
-            if (video.paused) {
-                video.muted = false;
-                const playPromise = video.play();
-                if(playPromise !== undefined) {
-                    playPromise.then(() => {
-                        wrapper.classList.add('is-playing');
-                    }).catch(e => {
-                        wrapper.classList.remove('is-playing', 'is-buffering');
-                    });
-                }
-            } else {
-                video.muted = true;
-                const playPromise = video.play();
-                if(playPromise !== undefined) {
-                    playPromise.then(() => { video.pause(); wrapper.classList.remove('is-playing'); }).catch(() => { video.pause(); wrapper.classList.remove('is-playing'); });
-                } else { video.pause(); wrapper.classList.remove('is-playing'); }
-            }
-        };
-
-        window.app.openProduct = (productId) => {
-            openProductDetails(productId);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        // Keeps Old Method Available for fallback safety
-        window.app.setMainImage = (url, thumbElem) => {
-            const mainImg = document.getElementById('pd-main-img');
-            if(mainImg) mainImg.src = url;
-            const thumbs = document.querySelectorAll('.pd-thumb');
-            thumbs.forEach(t => t.classList.remove('active'));
-            if(thumbElem) thumbElem.classList.add('active');
-        };
-
-        window.app.scrollToSlide = (idx) => {
-            const slider = document.getElementById('pd-main-slider');
-            if(!slider) return;
-            const slide = document.getElementById(`pd-slide-${idx}`);
-            if(slide) {
-                slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
-            }
-        };
-
-        window.app.handleGalleryScroll = (slider) => {
-            clearTimeout(slider.scrollTimeout);
-            slider.scrollTimeout = setTimeout(() => {
-                const scrollLeft = slider.scrollLeft;
-                const width = slider.clientWidth;
-                const index = Math.round(scrollLeft / width);
-                const thumbs = document.querySelectorAll('.pd-thumb');
-                thumbs.forEach((t, i) => {
-                    if(i === index) t.classList.add('active');
-                    else t.classList.remove('active');
-                });
-            }, 50);
-        };
-
-        const openProductDetails = async (productId) => {
-            const product = state.products.find(p => p.id === productId);
-            if(!product) return;
-            state.currentProduct = product;
+            <!-- Primary Action: Any UPI App -->
+            <div style="margin:25px 16px 10px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Preferred Payment</div>
             
-            state.selections = {
-                size: product.sizes && product.sizes.length > 0 ? product.sizes[0] : null,
-                color: product.colors && product.colors.length > 0 ? product.colors[0] : null,
-                qty: 1
-            };
-
-            const container = document.getElementById('pd-content');
-            if(!container) return;
-            
-            const mediaSrc = product.videoUrl || product.videoFilename || product.imageUrl || (product.images ? product.images[0] : null) || product.image;
-            const mediaUrl = resolveMediaUrl(mediaSrc);
-            const isVideo = mediaUrl.match(/\.(mp4|webm|mov)$/i) != null;
-            let mediaHtml = '';
-
-            if (isVideo) {
-                mediaHtml = `
-                    <div class="video-wrapper pd-video" id="pd-video-wrapper" onclick="window.app.playVideo('pd-video-wrapper')">
-                        <video preload="metadata" playsinline webkit-playsinline loop muted poster="${resolveMediaUrl(product.imageUrl || product.image || '')}">
-                            <source src="${mediaUrl}" type="video/mp4">
-                        </video>
-                        <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-                        <div class="video-loader"></div>
-                    </div>`;
-            } else {
-                const images = product.images && product.images.length > 0 ? product.images : [mediaSrc];
-                // Includes enhanced Swipe Slider + Thumbnail Sync Logic
-                mediaHtml = `
-                    <div class="pd-gallery">
-                        <div class="pd-main-img-container">
-                            <div class="pd-main-slider" id="pd-main-slider" onscroll="window.app.handleGalleryScroll(this)">
-                                ${images.map((img, idx) => `
-                                    <div class="pd-main-slide" id="pd-slide-${idx}">
-                                        <img src="${resolveMediaUrl(img)}" alt="${product.title}">
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        ${images.length > 1 ? `
-                        <div class="pd-thumbnails">
-                            ${images.map((img, idx) => `
-                                <div class="pd-thumb ${idx === 0 ? 'active' : ''}" onclick="window.app.scrollToSlide(${idx})">
-                                    <img src="${resolveMediaUrl(img)}" loading="lazy">
-                                </div>
-                            `).join('')}
-                        </div>` : ''}
-                    </div>`;
-            }
-
-            const sizesHtml = product.sizes ? `
-                <div class="selector-group">
-                    <span class="selector-label">Select Size</span>
-                    <div class="selector-options" id="pd-sizes">
-                        ${product.sizes.map(s => `<button class="selector-btn ${s === state.selections.size ? 'selected' : ''}" onclick="window.app.selectOption('size', '${s}')">${s}</button>`).join('')}
+            <div style="margin:0 16px 20px;background:#fff;border-radius:20px;padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(15,166,84,0.12);border:2px solid #0fa654;transition:transform 0.2s;" onclick="window.app.triggerAppIntent('upi://pay')" class="pg-primary-card">
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <div style="width:60px;height:60px;border-radius:14px;background:#f9fafb;display:flex;justify-content:center;align-items:center;padding:6px;border:1px solid #eee;">
+                        <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" style="width:100%;height:100%;object-fit:contain;" alt="UPI Apps">
                     </div>
-                </div>` : '';
-
-            const colorsHtml = product.colors ? `
-                <div class="selector-group">
-                    <span class="selector-label">Select Color</span>
-                    <div class="selector-options" id="pd-colors">
-                        ${product.colors.map(c => `<button class="selector-btn ${c === state.selections.color ? 'selected' : ''}" onclick="window.app.selectOption('color', '${c}')">${c}</button>`).join('')}
-                    </div>
-                </div>` : '';
-
-            // Generate Recommended Products HTML
-            const recommended = state.products.filter(pr => pr.id !== product.id).sort(() => 0.5 - Math.random()).slice(0, 4);
-            let recommendedHtml = '';
-            if(recommended.length > 0) {
-                recommendedHtml = `
-                    <div class="recommended-section">
-                        <h3 class="recommended-title">You May Also Like</h3>
-                        <div class="product-grid" style="padding:0; margin-bottom:0;">
-                            ${recommended.map(p => {
-                                const mSrc = p.imageUrl || (p.images ? p.images[0] : null) || p.image;
-                                const iUrl = resolveMediaUrl(mSrc);
-                                const cPrice = p.price || 0;
-                                const oPrice = p.originalPrice || Math.round(cPrice * 1.5);
-                                let bHtml = '';
-                                if(p.outOfStock) {
-                                    bHtml = '<div class="badge-sale" style="background:#e02b2b;">Out Of Stock</div>';
-                                } else if(cPrice < oPrice) {
-                                    bHtml = '<div class="badge-sale">Sale!</div>';
-                                }
-                                return `
-                                    <div class="product-card" onclick="window.app.openProduct('${p.id}')">
-                                        <div class="product-image-container">
-                                            ${bHtml}
-                                            <img src="${iUrl}" loading="lazy">
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="product-title">${p.title}</div>
-                                            <div class="product-price-row">
-                                                <span class="price-original">${formatCurrency(oPrice)}</span>
-                                                <span class="price-current">${formatCurrency(cPrice)}</span>
-                                            </div>
-                                            <div class="add-to-wishlist-btn" onclick="event.stopPropagation(); window.app.toggleWishlist('${p.id}')">
-                                                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                                                <span>Add to Wishlist</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
+                    <div>
+                        <div style="font-size:1.15rem;font-weight:900;color:#111;margin-bottom:4px;">Pay by any UPI App</div>
+                        <div style="font-size:0.75rem;color:#0fa654;font-weight:700;display:flex;align-items:center;gap:5px;">
+                            <span style="display:inline-block;width:6px;height:6px;background:#0fa654;border-radius:50%;box-shadow:0 0 0 2px rgba(15,166,84,0.3);animation:pulse 2s infinite;"></span>
+                            Fastest & Secure
                         </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = `
-                <div class="pd-layout">
-                    <div class="pd-media">${mediaHtml}</div>
-                    <div class="pd-details">
-                        <h2 class="pd-title">${product.title}</h2>
-                        <div class="pd-price">${formatCurrency(product.price)}</div>
-                        <div class="pd-description">${product.description || 'Experience ultimate luxury and comfort with our premium streetwear collection.'}</div>
-                        ${sizesHtml} ${colorsHtml}
-                        <div class="selector-group">
-                            <span class="selector-label">Quantity</span>
-                            <div class="qty-wrapper">
-                                <button class="qty-btn" onclick="window.app.updateQty(-1)">-</button>
-                                <span class="qty-val" id="pd-qty">1</span>
-                                <button class="qty-btn" onclick="window.app.updateQty(1)">+</button>
-                            </div>
-                        </div>
-                        <button class="btn-primary" onclick="window.app.addToCart()">Add to Cart</button>
-                        
-                        <div class="reviews-section" id="dynamic-reviews-section">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 25px; font-weight: 700; letter-spacing:0.05em; text-transform:uppercase;">Reviews</h3>
-                            <div id="reviews-list"><div class="skeleton skeleton-text" style="height:40px;"></div></div>
-                            
-                            <div class="add-review-box">
-                                <h4 style="margin-bottom:15px; font-size:0.85rem; color:#666; text-transform:uppercase;">Write a Review</h4>
-                                <div class="star-rating-input" id="review-stars">
-                                    <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
-                                </div>
-                                <input type="hidden" id="review-rating-val" value="5">
-                                <input type="text" id="review-name" class="form-input" placeholder="Your Name" style="margin-bottom:15px; padding:10px 0;">
-                                <textarea id="review-text" class="form-input" placeholder="Share your experience..." style="margin-bottom:15px; resize:vertical; min-height:50px; padding:10px 0;"></textarea>
-                                <button class="btn-primary" style="padding:15px; font-size:0.8rem;" onclick="window.app.submitReview('${product.id}')">Submit Review</button>
-                            </div>
-                        </div>
-
-                        ${recommendedHtml}
                     </div>
                 </div>
-            `;
+                <div style="width:36px;height:36px;border-radius:50%;background:#0fa654;color:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 12px rgba(15,166,84,0.3);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </div>
 
-            window.app.navigate('product-detail');
-            await fetchAndRenderReviews(product.id);
-            setupReviewStars();
-        };
+            <!-- Direct Apps Grid -->
+            <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Quick Select</div>
+            <div style="display:flex;gap:12px;margin:0 16px 25px;">
+                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('tez://upi/pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
+                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
+                        <img src="https://www.image2url.com/r2/default/images/1782113842622-7744483a-65d5-4bf8-b5e3-44a3cdf729d8.png" alt="GPay" style="width:24px;">
+                    </div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#333;">GPay</div>
+                </div>
+                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('paytmmp://pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
+                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
+                        <img src="https://www.image2url.com/r2/default/images/1782113304392-66690640-3203-4657-9dae-d6bc3c309233.png" alt="Paytm" style="width:28px;">
+                    </div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#333;">Paytm</div>
+                </div>
+                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('phonepe://pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
+                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
+                        <img src="https://www.image2url.com/r2/default/images/1782113416023-cd7d9a7f-a350-412f-8a42-c48da5933fe9.png" alt="PhonePe" style="width:26px;">
+                    </div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#333;">PhonePe</div>
+                </div>
+            </div>
 
-        const fetchAndRenderReviews = async (productId) => {
-            const list = document.getElementById('reviews-list');
-            if(!list) return;
-            try {
-                const snap = await get(child(ref(db), `reviews/${productId}`));
-                if(snap.exists()){
-                    const data = snap.val();
-                    const reviews = Object.keys(data).map(k => data[k]);
-                    list.innerHTML = reviews.map(r => `
-                        <div class="review-item">
-                            <div class="review-head">
-                                <div class="review-avatar">${r.name ? r.name.charAt(0) : 'U'}</div>
-                                <div>
-                                    <div class="review-name">${r.name || 'Anonymous'}</div>
-                                    <div style="color: #f5b301; font-size:0.8rem; letter-spacing:2px;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-                                </div>
-                            </div>
-                            <p class="review-text">${r.text}</p>
+            <!-- Pay via QR Code -->
+            <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Other Options</div>
+            <div style="margin:0 16px 20px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
+                <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="window.app.toggleQRView()">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:48px;height:48px;border-radius:12px;background:#f4f6f8;display:flex;justify-content:center;align-items:center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
                         </div>
-                    `).join('');
-                } else {
-                    list.innerHTML = '<p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:20px;">No reviews yet.</p>';
-                }
-            } catch(e) { list.innerHTML = 'Error loading reviews.'; }
-        };
-
-        const setupReviewStars = () => {
-            const stars = document.querySelectorAll('#review-stars span');
-            const hiddenInput = document.getElementById('review-rating-val');
-            stars.forEach(s => s.classList.add('active'));
-
-            stars.forEach(star => {
-                star.onclick = function() {
-                    const rating = this.getAttribute('data-val');
-                    if(hiddenInput) hiddenInput.value = rating;
-                    stars.forEach(s => {
-                        if(s.getAttribute('data-val') <= rating) s.classList.add('active');
-                        else s.classList.remove('active');
-                    });
-                };
-            });
-        };
-
-        window.app.submitReview = async (productId) => {
-            const nameEl = document.getElementById('review-name');
-            const textEl = document.getElementById('review-text');
-            const ratingEl = document.getElementById('review-rating-val');
-            if(!nameEl || !textEl || !ratingEl) return;
-            
-            const name = nameEl.value.trim();
-            const text = textEl.value.trim();
-            const rating = parseInt(ratingEl.value);
-
-            if(!name || !text) return showToast("Name and text required");
-            showLoader();
-            try {
-                await push(ref(db, `reviews/${productId}`), {
-                    name, text, rating, timestamp: new Date().toISOString()
-                });
-                showToast("Review submitted!");
-                nameEl.value = '';
-                textEl.value = '';
-                await fetchAndRenderReviews(productId);
-            } catch(e) { showToast("Failed to submit"); }
-            finally { hideLoader(); }
-        };
-
-        window.app.selectOption = (type, val) => {
-            state.selections[type] = val;
-            const container = document.getElementById(`pd-${type}s`);
-            if(!container) return;
-            container.querySelectorAll('.selector-btn').forEach(btn => {
-                if(btn.innerText === val) btn.classList.add('selected');
-                else btn.classList.remove('selected');
-            });
-        };
-        
-        window.app.updateQty = (delta) => {
-            let newQty = state.selections.qty + delta;
-            if(newQty < 1) newQty = 1;
-            state.selections.qty = newQty;
-            const qtyEl = document.getElementById('pd-qty');
-            if(qtyEl) qtyEl.innerText = newQty;
-        };
-
-        window.app.addToCart = () => {
-            const product = state.currentProduct;
-            if(!product) return;
-            const mediaSrc = product.imageUrl || (product.images ? product.images[0] : null) || product.image;
-            const item = {
-                cartId: Date.now().toString(),
-                productId: product.id,
-                title: product.title,
-                price: product.price,
-                image: mediaSrc,
-                size: state.selections.size,
-                color: state.selections.color,
-                qty: state.selections.qty
-            };
-            state.cart.push(item);
-            localStorage.setItem('novarevolt_cart', JSON.stringify(state.cart));
-            updateCartBadge();
-            showToast('Added to Cart');
-        };
-
-        const renderCart = () => {
-            const container = document.getElementById('cart-container');
-            const summaryWrapper = document.getElementById('cart-summary-wrapper');
-            if(!container || !summaryWrapper) return;
-            
-            container.innerHTML = '';
-
-            if (state.cart.length === 0) {
-                container.innerHTML = `<div class="empty-state">Your cart is empty.</div>`;
-                summaryWrapper.classList.add('hidden');
-                return;
-            }
-
-            let subtotal = 0;
-            state.cart.forEach(item => {
-                subtotal += (item.price * item.qty);
-                const el = document.createElement('div');
-                el.className = 'cart-item';
-                el.innerHTML = `
-                    <img src="${resolveMediaUrl(item.image)}" class="cart-item-img">
-                    <div class="cart-item-details">
                         <div>
-                            <div class="cart-item-title">${item.title}</div>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; text-transform:uppercase; letter-spacing:0.05em;">${item.size ? `Size: ${item.size}` : ''} | Qty: ${item.qty}</div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div class="cart-item-price">${formatCurrency(item.price * item.qty)}</div>
-                            <span class="cart-remove" onclick="window.app.removeFromCart('${item.cartId}')">Remove</span>
+                            <div style="font-size:1.05rem;font-weight:800;color:#111;">Scan QR Code</div>
+                            <div style="font-size:0.75rem;color:#777;font-weight:600;margin-top:2px;">Scan via any app on another phone</div>
                         </div>
                     </div>
-                `;
-                container.appendChild(el);
-            });
-            
-            const subtotalEl = document.getElementById('cart-subtotal');
-            const totalEl = document.getElementById('cart-total');
-            if(subtotalEl) subtotalEl.innerText = formatCurrency(subtotal);
-            if(totalEl) totalEl.innerText = formatCurrency(subtotal);
-            summaryWrapper.classList.remove('hidden');
-        };
+                    <svg id="gw-qr-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.3s;"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
 
-        window.app.removeFromCart = (cartId) => {
-            state.cart = state.cart.filter(i => i.cartId !== cartId);
-            localStorage.setItem('novarevolt_cart', JSON.stringify(state.cart));
-            updateCartBadge();
-            renderCart();
-        };
+                <!-- Hidden QR Expandable Zone -->
+                <div id="gw-qr-section" class="hidden" style="margin-top:20px;padding-top:25px;border-top:1px dashed #e5e5e5;text-align:center;">
+                    <div style="font-size:.9rem;color:#666;margin-bottom:10px;text-transform:uppercase;font-weight:700;letter-spacing:.05em">Scan to pay <strong style="color:#111;font-size:1.4rem;display:block;margin-top:5px;font-weight:900;" id="gw-qr-amount-text"></strong></div>
+                    <div id="gw-qr-timer" style="font-size:2.2rem;font-weight:900;color:#d92468;margin-bottom:20px;letter-spacing:2px;font-variant-numeric: tabular-nums;">02:00</div>
+                    <div style="display:flex;justify-content:center;margin-bottom:25px">
+                        <div id="gw-qrcode-container" style="padding:20px;background:#fff;border:1px solid #eee;border-radius:20px;display:inline-block;box-shadow:0 12px 30px rgba(0,0,0,.08)"></div>
+                    </div>
+                    <div class="payment-loader">
+                        <div class="spinner" style="margin:0 auto 15px;width:35px;height:35px;border-width:3px;border-top-color:#0fa654;"></div>
+                        <p style="font-size:.85rem;font-weight:800;color:#333;text-transform:uppercase;letter-spacing:.05em">Awaiting Payment...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        window.app.openAuth = () => { const el = document.getElementById('auth-modal'); if(el) el.classList.add('active'); };
-        window.app.closeAuth = () => { const el = document.getElementById('auth-modal'); if(el) el.classList.remove('active'); };
-        window.app.toggleAuthMode = () => {
-            state.authMode = state.authMode === 'login' ? 'signup' : 'login';
-            const titleEl = document.getElementById('auth-title');
-            const btnEl = document.getElementById('btn-auth-submit');
-            const toggleEl = document.getElementById('auth-toggle-text');
-            if(titleEl) titleEl.innerText = state.authMode === 'login' ? 'LOGIN' : 'REGISTER';
-            if(btnEl) btnEl.innerText = state.authMode === 'login' ? 'Sign In' : 'Create Account';
-            if(toggleEl) toggleEl.innerText = state.authMode === 'login' ? "Create an account" : "Sign in to existing account";
-        };
+        <!-- STATUS OVERLAYS (Queue, Timeout, Success) -->
+        <div id="pg-queue-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
+            <div class="spinner" style="margin:0 auto 25px;border-top-color:#0fa654;"></div>
+            <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Queue Busy</h3>
+            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Another user is making a payment.<br>Please wait 1-2 minutes to avoid clashes.</p>
+            <button class="btn-primary" style="background:#0fa654;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="document.getElementById('btn-place-order').click()">Try Again</button>
+            <button style="margin-top:20px;color:#666;font-weight:600;text-decoration:underline;font-size:0.9rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
+        </div>
+        
+        <div id="pg-timeout-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
+            <div style="width:70px;height:70px;border-radius:50%;border:3px solid #e02b2b;color:#e02b2b;display:flex;justify-content:center;align-items:center;margin:0 auto 25px"><svg viewBox="0 0 24 24" width="35" height="35" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+            <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Payment Timeout</h3>
+            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;font-weight:500;">You did not complete the payment in time. The lock has been released.</p>
+            <button class="btn-primary" style="background:#0fa654;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
+        </div>
+        
+        <div id="pg-success-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#0fa654;height:100%;text-align:center;">
+            <div style="display:flex;justify-content:center;margin-bottom:30px">
+                <div style="width:80px;height:80px;border-radius:50%;background:#fff;color:#0fa654;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.1);"><svg viewBox="0 0 24 24" width="45" height="45" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            </div>
+            <h3 style="font-size:1.6rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;color:#fff;">Payment Successful</h3>
+            <p style="font-size:1rem;color:rgba(255,255,255,0.9);margin-bottom:35px;font-weight:500;">Your streetwear is secured.</p>
+        </div>
+    </div>
 
-        window.app.handleEmailAuth = async (e) => {
-            e.preventDefault();
-            const emailEl = document.getElementById('auth-email');
-            const passEl = document.getElementById('auth-pass');
-            if(!emailEl || !passEl) return;
-            const email = emailEl.value;
-            const pass = passEl.value;
-            if(!email || !pass) return;
-            
-            showLoader();
-            try {
-                let userCredential;
-                if (state.authMode === 'signup') {
-                    userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                    showToast("Account created.");
-                } else {
-                    userCredential = await signInWithEmailAndPassword(auth, email, pass);
-                    showToast("Logged in.");
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="window.app.navigate('home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></button>
+        <button class="nav-item" onclick="window.app.navigate('reels')"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg><span>Discover</span></button>
+        <button class="nav-item" onclick="window.app.navigate('orders')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg><span>Orders</span></button>
+        <button class="nav-item" onclick="window.app.navigate('cart')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span>Cart</span><div id="nav-cart-badge" class="cart-badge hidden">0</div></button>
+    </nav>
+    <script type="module">
+        import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getDatabase,ref,get,child,push,set,update,onValue}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";import{getAuth,signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";import{getMessaging,onMessage}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+        const firebaseConfig={apiKey:"AIzaSyD9_Qi9tJCyqUISQJ5QJ6gn9ZDW8D7aVbw",authDomain:"revolt-3a06d.firebaseapp.com",databaseURL:"https://revolt-3a06d-default-rtdb.firebaseio.com",projectId:"revolt-3a06d",storageBucket:"revolt-3a06d.firebasestorage.app",messagingSenderId:"323255440638",appId:"1:323255440638:web:75877fe3a9aaa55ccec1af"};
+        const supabaseUrl='https://hianvppezhevucysqhut.supabase.co';let appInstance,db,auth,googleProvider,messaging,reelObserver;
+        try{appInstance=initializeApp(firebaseConfig);db=getDatabase(appInstance);auth=getAuth(appInstance);googleProvider=new GoogleAuthProvider();try{messaging=getMessaging(appInstance);onMessage(messaging,(payload)=>{if(payload.notification)showToast(payload.notification.title)})}catch(e){}}catch(e){}
+        const resolveMediaUrl=(filename)=>{if(!filename)return'';if(filename.startsWith('http'))return filename;return`${supabaseUrl}/storage/v1/object/public/proplay-assets/${filename}`};
+        const state={products:[],banners:[],reels:[],orders:[],cart:JSON.parse(localStorage.getItem('novarevolt_cart'))||[],currentProduct:null,user:null,userId:localStorage.getItem('novarevolt_userid')||'user_'+Math.random().toString(36).substr(2,9),authMode:'login'};
+        localStorage.setItem('novarevolt_userid',state.userId);
+        if(auth){onAuthStateChanged(auth,(user)=>{if(user){state.user=user;state.userId=user.uid;localStorage.setItem('novarevolt_userid',state.userId)}else{state.user=null}})};
+        const showLoader=()=>{const el=document.getElementById('global-loader');if(el)el.classList.remove('hidden')};
+        const hideLoader=()=>{const el=document.getElementById('global-loader');if(el)el.classList.add('hidden')};
+        const hideSplash=()=>{const splash=document.getElementById('splash-screen');if(splash){splash.style.opacity='0';setTimeout(()=>splash.style.display='none',600)}};
+        const showToast=(msg)=>{const toast=document.getElementById('toast');if(!toast)return;toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3000)};
+        const formatCurrency=(amt)=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(amt||0);
+        const updateCartBadge=()=>{const badge=document.getElementById('nav-cart-badge');if(!badge)return;if(state.cart.length>0){badge.innerText=state.cart.length;badge.classList.remove('hidden')}else{badge.classList.add('hidden')}};
+        const showSkeletonProducts=()=>{const grid=document.getElementById('home-product-grid');if(!grid)return;if(state.products.length===0){grid.innerHTML=Array(4).fill(`<div class="product-card"><div class="product-image-container skeleton"></div><div class="product-info" style="padding-top:5px;"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-short"></div></div></div>`).join('')}};
+        window.app={history:[],paymentListenerUnsubscribe:null,countdownInterval:null,currentUpiString:'',currentOrderData:null};
+        window.app.navigate=(screenId,isBack=false)=>{const currentScreen=document.querySelector('.screen.active');const currentId=currentScreen?currentScreen.id.replace('-screen',''):null;if(!isBack&&currentId&&currentId!==screenId){if(['home','reels','orders','cart'].includes(screenId))window.app.history=[];else window.app.history.push(currentId)}document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const targetScreen=document.getElementById(`${screenId}-screen`);if(targetScreen)targetScreen.classList.add('active');const navBtn=document.querySelector(`.nav-item[onclick="window.app.navigate('${screenId}')"]`);if(navBtn)navBtn.classList.add('active');const backBtn=document.getElementById('back-btn');if(backBtn){if(window.app.history.length>0)backBtn.classList.remove('hidden');else backBtn.classList.add('hidden')}if(screenId!=='reels'&&screenId!=='product-detail'){document.querySelectorAll('video').forEach(v=>{v.muted=true;const w=v.closest('.video-wrapper, .reel-item');if(w)w.classList.remove('is-playing','is-buffering');if(w&&w.classList.contains('reel-item'))v.pause();else{const playPromise=v.play();if(playPromise!==undefined)playPromise.then(()=>v.pause()).catch(()=>v.pause());else v.pause()}})}if(screenId==='cart')renderCart();if(screenId==='orders')fetchAndRenderOrders();if(screenId==='home'){if(state.products.length===0)fetchHomeData();else renderProducts(state.products)}if(screenId==='reels'){if(state.reels.length===0)fetchReels()}window.scrollTo({top:0,behavior:'smooth'})};
+        window.app.goBack=()=>{if(window.app.history.length>0)window.app.navigate(window.app.history.pop(),true)};
+        const fetchHomeData=async()=>{showSkeletonProducts();try{if(!db)throw new Error("DB missing");const[bannersSnap,productsSnap]=await Promise.all([get(child(ref(db),'banners')),get(child(ref(db),'products'))]);if(bannersSnap.exists()){const bData=bannersSnap.val();state.banners=Array.isArray(bData)?bData:Object.keys(bData).map(k=>({id:k,...bData[k]}));renderBanners()}if(productsSnap.exists()){const pData=productsSnap.val();state.products=Array.isArray(pData)?pData:Object.keys(pData).map(k=>({id:k,...pData[k]}));renderProducts(state.products)}}catch(error){const grid=document.getElementById('home-product-grid');if(grid)grid.innerHTML=`<div class="empty-state">Unable to load collection.</div>`}finally{updateCartBadge();hideSplash()}};
+        const renderBanners=()=>{const track=document.getElementById('banner-track');if(!track||state.banners.length===0)return;track.innerHTML='';state.banners.forEach((b)=>{const slide=document.createElement('div');slide.className='banner-slide';slide.innerHTML=`<img src="${resolveMediaUrl(b.image||b.imageUrl)}" loading="lazy">`;track.appendChild(slide)});let currentSlide=0;setInterval(()=>{currentSlide=(currentSlide+1)%state.banners.length;if(track)track.style.transform=`translateX(-${currentSlide*100}%)`},4500)};
+        window.app.handleSearch=()=>{const query=document.getElementById('search-input')?.value.toLowerCase()||'';const filtered=state.products.filter(p=>p.title.toLowerCase().includes(query)||(p.description&&p.description.toLowerCase().includes(query)));renderProducts(filtered)};
+        const getProductCardHtml=(p)=>{const mediaSrc=p.imageUrl||(p.images?p.images[0]:null)||p.image;const imgUrl=resolveMediaUrl(mediaSrc);const currentPrice=p.price||0;const originalPrice=p.originalPrice||Math.round(currentPrice*1.5);let badgeHtml=p.outOfStock?`<div class="badge-sale" style="background:#e02b2b;">Out Of Stock</div>`:(currentPrice<originalPrice?`<div class="badge-sale">Sale!</div>`:'');return`<div class="product-card" onclick="window.app.openProduct('${p.id}')"><div class="product-image-container">${badgeHtml}<img src="${imgUrl}" loading="lazy"></div><div class="product-info"><div class="product-title">${p.title}</div><div class="product-price-row"><span class="price-original">${formatCurrency(originalPrice)}</span><span class="price-current">${formatCurrency(currentPrice)}</span></div><div class="add-to-wishlist-btn" onclick="event.stopPropagation(); window.app.toggleWishlist('${p.id}')"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span>Add to Wishlist</span></div></div></div>`};
+        const renderProducts=(productsToRender)=>{const grid=document.getElementById('home-product-grid');if(!grid)return;if(productsToRender.length===0){grid.innerHTML='<div class="empty-state">No products found.</div>';return}grid.innerHTML=productsToRender.map(p=>getProductCardHtml(p)).join('')};
+        window.app.toggleWishlist=(id)=>showToast('Item saved to wishlist');
+        window.app.playVideo=(wrapperId)=>{const wrapper=document.getElementById(wrapperId);const video=wrapper?.querySelector('video');if(!video)return;video.onwaiting=()=>wrapper.classList.add('is-buffering');video.onplaying=()=>wrapper.classList.remove('is-buffering');if(video.paused){video.muted=false;const playPromise=video.play();if(playPromise!==undefined)playPromise.then(()=>wrapper.classList.add('is-playing')).catch(()=>wrapper.classList.remove('is-playing','is-buffering'))}else{video.muted=true;const playPromise=video.play();if(playPromise!==undefined)playPromise.then(()=>{video.pause();wrapper.classList.remove('is-playing')}).catch(()=>{video.pause();wrapper.classList.remove('is-playing')});else{video.pause();wrapper.classList.remove('is-playing')}}};
+        window.app.openProduct=(productId)=>{openProductDetails(productId);window.scrollTo({top:0,behavior:'smooth'})};
+        window.app.scrollToSlide=(idx)=>{const slider=document.getElementById('pd-main-slider');const slide=document.getElementById(`pd-slide-${idx}`);if(slider&&slide)slider.scrollTo({left:slide.offsetLeft,behavior:'smooth'})};
+        window.app.handleGalleryScroll=(slider)=>{clearTimeout(slider.scrollTimeout);slider.scrollTimeout=setTimeout(()=>{const index=Math.round(slider.scrollLeft/slider.clientWidth);document.querySelectorAll('.pd-thumb').forEach((t,i)=>i===index?t.classList.add('active'):t.classList.remove('active'))},50)};
+        const openProductDetails=async(productId)=>{const product=state.products.find(p=>p.id===productId);if(!product)return;state.currentProduct=product;state.selections={size:product.sizes?.length?product.sizes[0]:null,color:product.colors?.length?product.colors[0]:null,qty:1};const container=document.getElementById('pd-content');if(!container)return;const mediaSrc=product.videoUrl||product.videoFilename||product.imageUrl||(product.images?product.images[0]:null)||product.image;const mediaUrl=resolveMediaUrl(mediaSrc);const isVideo=mediaUrl.match(/\.(mp4|webm|mov)$/i)!=null;let mediaHtml='';if(isVideo){mediaHtml=`<div class="video-wrapper pd-video" id="pd-video-wrapper" onclick="window.app.playVideo('pd-video-wrapper')"><video preload="metadata" playsinline webkit-playsinline loop muted poster="${resolveMediaUrl(product.imageUrl||product.image||'')}"><source src="${mediaUrl}" type="video/mp4"></video><div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="video-loader"></div></div>`}else{const images=product.images?.length?product.images:[mediaSrc];mediaHtml=`<div class="pd-gallery"><div class="pd-main-img-container"><div class="pd-main-slider" id="pd-main-slider" onscroll="window.app.handleGalleryScroll(this)">${images.map((img,idx)=>`<div class="pd-main-slide" id="pd-slide-${idx}"><img src="${resolveMediaUrl(img)}"></div>`).join('')}</div></div>${images.length>1?`<div class="pd-thumbnails">${images.map((img,idx)=>`<div class="pd-thumb ${idx===0?'active':''}" onclick="window.app.scrollToSlide(${idx})"><img src="${resolveMediaUrl(img)}" loading="lazy"></div>`).join('')}</div>`:''}</div>`}const sizesHtml=product.sizes?`<div class="selector-group"><span class="selector-label">Select Size</span><div class="selector-options" id="pd-sizes">${product.sizes.map(s=>`<button class="selector-btn ${s===state.selections.size?'selected':''}" onclick="window.app.selectOption('size', '${s}')">${s}</button>`).join('')}</div></div>`:'';const colorsHtml=product.colors?`<div class="selector-group"><span class="selector-label">Select Color</span><div class="selector-options" id="pd-colors">${product.colors.map(c=>`<button class="selector-btn ${c===state.selections.color?'selected':''}" onclick="window.app.selectOption('color', '${c}')">${c}</button>`).join('')}</div></div>`:'';const recommended=state.products.filter(pr=>pr.id!==product.id).sort(()=>0.5-Math.random()).slice(0,4);const recommendedHtml=recommended.length>0?`<div class="recommended-section"><h3 class="recommended-title">You May Also Like</h3><div class="product-grid" style="padding:0; margin-bottom:0;">${recommended.map(p=>getProductCardHtml(p)).join('')}</div></div>`:'';container.innerHTML=`<div class="pd-layout"><div class="pd-media">${mediaHtml}</div><div class="pd-details"><h2 class="pd-title">${product.title}</h2><div class="pd-price">${formatCurrency(product.price)}</div><div class="pd-description">${product.description||'Experience ultimate luxury and comfort with our premium streetwear collection.'}</div>${sizesHtml} ${colorsHtml}<div class="selector-group"><span class="selector-label">Quantity</span><div class="qty-wrapper"><button class="qty-btn" onclick="window.app.updateQty(-1)">-</button><span class="qty-val" id="pd-qty">1</span><button class="qty-btn" onclick="window.app.updateQty(1)">+</button></div></div><button class="btn-primary" onclick="window.app.addToCart()">Add to Cart</button><div class="reviews-section" id="dynamic-reviews-section"><h3 style="font-size: 1.1rem; margin-bottom: 25px; font-weight: 700; letter-spacing:0.05em; text-transform:uppercase;">Reviews</h3><div id="reviews-list"><div class="skeleton skeleton-text" style="height:40px;"></div></div><div class="add-review-box"><h4 style="margin-bottom:15px; font-size:0.85rem; color:#666; text-transform:uppercase;">Write a Review</h4><div class="star-rating-input" id="review-stars"><span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span></div><input type="hidden" id="review-rating-val" value="5"><input type="text" id="review-name" class="form-input" placeholder="Your Name" style="margin-bottom:15px; padding:10px 0;"><textarea id="review-text" class="form-input" placeholder="Share your experience..." style="margin-bottom:15px; resize:vertical; min-height:50px; padding:10px 0;"></textarea><button class="btn-primary" style="padding:15px; font-size:0.8rem;" onclick="window.app.submitReview('${product.id}')">Submit Review</button></div></div>${recommendedHtml}</div></div>`;window.app.navigate('product-detail');await fetchAndRenderReviews(product.id);setupReviewStars()};
+        const fetchAndRenderReviews=async(productId)=>{const list=document.getElementById('reviews-list');if(!list)return;try{const snap=await get(child(ref(db),`reviews/${productId}`));if(snap.exists()){const data=snap.val();const reviews=Object.keys(data).map(k=>data[k]);list.innerHTML=reviews.map(r=>`<div class="review-item"><div class="review-head"><div class="review-avatar">${r.name?r.name.charAt(0):'U'}</div><div><div class="review-name">${r.name||'Anonymous'}</div><div style="color: #f5b301; font-size:0.8rem; letter-spacing:2px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div></div></div><p class="review-text">${r.text}</p></div>`).join('')}else list.innerHTML='<p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:20px;">No reviews yet.</p>'}catch(e){list.innerHTML='Error loading reviews.'}};
+        const setupReviewStars=()=>{const stars=document.querySelectorAll('#review-stars span');const hiddenInput=document.getElementById('review-rating-val');stars.forEach(s=>s.classList.add('active'));stars.forEach(star=>{star.onclick=function(){const rating=this.getAttribute('data-val');if(hiddenInput)hiddenInput.value=rating;stars.forEach(s=>s.getAttribute('data-val')<=rating?s.classList.add('active'):s.classList.remove('active'))}})};
+        window.app.submitReview=async(productId)=>{const nameEl=document.getElementById('review-name'),textEl=document.getElementById('review-text'),ratingEl=document.getElementById('review-rating-val');if(!nameEl||!textEl||!ratingEl)return;const name=nameEl.value.trim(),text=textEl.value.trim(),rating=parseInt(ratingEl.value);if(!name||!text)return showToast("Name and text required");showLoader();try{await push(ref(db,`reviews/${productId}`),{name,text,rating,timestamp:new Date().toISOString()});showToast("Review submitted!");nameEl.value='';textEl.value='';await fetchAndRenderReviews(productId)}catch(e){showToast("Failed to submit")}finally{hideLoader()}};
+        window.app.selectOption=(type,val)=>{state.selections[type]=val;document.querySelectorAll(`#pd-${type}s .selector-btn`).forEach(btn=>btn.innerText===val?btn.classList.add('selected'):btn.classList.remove('selected'))};
+        window.app.updateQty=(delta)=>{let newQty=Math.max(1,state.selections.qty+delta);state.selections.qty=newQty;const qtyEl=document.getElementById('pd-qty');if(qtyEl)qtyEl.innerText=newQty};
+        window.app.addToCart=()=>{const product=state.currentProduct;if(!product)return;state.cart.push({cartId:Date.now().toString(),productId:product.id,title:product.title,price:product.price,image:product.imageUrl||(product.images?product.images[0]:null)||product.image,size:state.selections.size,color:state.selections.color,qty:state.selections.qty});localStorage.setItem('novarevolt_cart',JSON.stringify(state.cart));updateCartBadge();showToast('Added to Cart')};
+        const renderCart=()=>{const container=document.getElementById('cart-container'),summaryWrapper=document.getElementById('cart-summary-wrapper');if(!container||!summaryWrapper)return;if(state.cart.length===0){container.innerHTML=`<div class="empty-state">Your cart is empty.</div>`;summaryWrapper.classList.add('hidden');return}let subtotal=0;container.innerHTML=state.cart.map(item=>{subtotal+=(item.price*item.qty);return`<div class="cart-item"><img src="${resolveMediaUrl(item.image)}" class="cart-item-img"><div class="cart-item-details"><div><div class="cart-item-title">${item.title}</div><div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; text-transform:uppercase; letter-spacing:0.05em;">${item.size?`Size: ${item.size}`:''} | Qty: ${item.qty}</div></div><div style="display:flex; justify-content:space-between; align-items:center;"><div class="cart-item-price">${formatCurrency(item.price*item.qty)}</div><span class="cart-remove" onclick="window.app.removeFromCart('${item.cartId}')">Remove</span></div></div></div>`}).join('');const subtotalEl=document.getElementById('cart-subtotal'),totalEl=document.getElementById('cart-total');if(subtotalEl)subtotalEl.innerText=formatCurrency(subtotal);if(totalEl)totalEl.innerText=formatCurrency(subtotal);summaryWrapper.classList.remove('hidden')};
+        window.app.removeFromCart=(cartId)=>{state.cart=state.cart.filter(i=>i.cartId!==cartId);localStorage.setItem('novarevolt_cart',JSON.stringify(state.cart));updateCartBadge();renderCart()};
+        window.app.openAuth=()=>document.getElementById('auth-modal')?.classList.add('active');window.app.closeAuth=()=>document.getElementById('auth-modal')?.classList.remove('active');
+        window.app.toggleAuthMode=()=>{state.authMode=state.authMode==='login'?'signup':'login';const titleEl=document.getElementById('auth-title'),btnEl=document.getElementById('btn-auth-submit'),toggleEl=document.getElementById('auth-toggle-text');if(titleEl)titleEl.innerText=state.authMode==='login'?'LOGIN':'REGISTER';if(btnEl)btnEl.innerText=state.authMode==='login'?'Sign In':'Create Account';if(toggleEl)toggleEl.innerText=state.authMode==='login'?"Create an account":"Sign in to existing account"};
+        window.app.handleEmailAuth=async(e)=>{e.preventDefault();const email=document.getElementById('auth-email')?.value,pass=document.getElementById('auth-pass')?.value;if(!email||!pass)return;showLoader();try{let cred=state.authMode==='signup'?await createUserWithEmailAndPassword(auth,email,pass):await signInWithEmailAndPassword(auth,email,pass);state.user=cred.user;state.userId=cred.user.uid;localStorage.setItem('novarevolt_userid',state.userId);showToast(state.authMode==='signup'?"Account created.":"Logged in.");window.app.closeAuth();if(document.getElementById('cart-screen').classList.contains('active'))window.app.openCheckout();else if(document.getElementById('orders-screen').classList.contains('active'))fetchAndRenderOrders()}catch(err){showToast(err.message.replace('Firebase: ',''))}finally{hideLoader()}};
+        window.app.handleGoogleLogin=async()=>{showLoader();try{const result=await signInWithPopup(auth,googleProvider);state.user=result.user;state.userId=result.user.uid;localStorage.setItem('novarevolt_userid',state.userId);showToast("Logged in.");window.app.closeAuth();if(document.getElementById('cart-screen').classList.contains('active'))window.app.openCheckout();else if(document.getElementById('orders-screen').classList.contains('active'))fetchAndRenderOrders()}catch(err){showToast("Login failed.")}finally{hideLoader()}};
+        
+        window.app.openCheckout=()=>{
+            if(!state.user)return window.app.openAuth();
+            document.getElementById('checkout-form').classList.remove('hidden');
+            document.getElementById('payment-gateway-screen').classList.add('hidden');
+            const btn=document.getElementById('btn-place-order');
+            if(btn){btn.innerText='Complete Purchase';btn.disabled=false}
+            if(window.app.paymentListenerUnsubscribe){window.app.paymentListenerUnsubscribe();window.app.paymentListenerUnsubscribe=null}
+            if(window.app.countdownInterval){clearInterval(window.app.countdownInterval);window.app.countdownInterval=null}
+            document.getElementById('checkout-modal')?.classList.add('active');
+            try{
+                const saved=JSON.parse(localStorage.getItem('novarevolt_checkout_info')||'{}');
+                ['name','phone','address'].forEach(k=>{
+                    if(saved[k]){
+                        const el=document.getElementById(`co-${k}`);
+                        if(el)el.value=saved[k]
+                    }
+                });
+                if(saved.gpsLink){
+                    const gpsEl=document.getElementById('co-gps-link'),st=document.getElementById('co-gps-status');
+                    if(gpsEl&&st){
+                        gpsEl.value=saved.gpsLink;
+                        st.innerHTML=`<div style="display:flex; align-items:center; color:#16a34a; font-size:0.85rem; animation: slideInUp 0.4s ease;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg> Location restored</div>`
+                    }
                 }
-                
-                // Instantly update UI State
-                state.user = userCredential.user;
-                state.userId = userCredential.user.uid;
-                localStorage.setItem('novarevolt_userid', state.userId);
-                
-                window.app.closeAuth();
-                
-                // Refresh specific screens if active
-                if(document.getElementById('cart-screen').classList.contains('active')) {
-                    window.app.openCheckout(); 
-                } else if(document.getElementById('orders-screen').classList.contains('active')) {
-                    fetchAndRenderOrders();
-                }
-            } catch (err) { showToast(err.message.replace('Firebase: ', '')); }
-            finally { hideLoader(); }
+            }catch(e){}
         };
 
-        window.app.handleGoogleLogin = async () => {
-            showLoader();
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                
-                // Instantly update UI State
-                state.user = result.user;
-                state.userId = result.user.uid;
-                localStorage.setItem('novarevolt_userid', state.userId);
-                
-                showToast("Logged in.");
-                window.app.closeAuth();
-                
-                // Automatically redirect to action without refresh
-                if(document.getElementById('cart-screen').classList.contains('active')) {
-                    window.app.openCheckout();
-                } else if(document.getElementById('orders-screen').classList.contains('active')) {
-                    fetchAndRenderOrders();
+        window.app.closeCheckout=async()=>{
+            document.getElementById('checkout-modal')?.classList.remove('active');
+            if(window.app.countdownInterval){clearInterval(window.app.countdownInterval);window.app.countdownInterval=null}
+            if(window.app.paymentListenerUnsubscribe){window.app.paymentListenerUnsubscribe();window.app.paymentListenerUnsubscribe=null}
+            try{
+                if(db&&state.userId){
+                    const lockRef=ref(db,'payment_gateway/lock');
+                    const snap=await get(lockRef);
+                    if(snap.exists()&&snap.val().userId===state.userId&&snap.val().status==='pending'){
+                        await set(lockRef,null)
+                    }
                 }
-            } catch (err) { showToast("Login failed."); }
-            finally { hideLoader(); }
+            }catch(e){}
         };
 
-        window.app.openCheckout = () => {
-            if (!state.user) {
-                window.app.openAuth();
-                return;
+        window.app.fetchLocation=()=>{
+            const status=document.getElementById('co-gps-status'),linkEl=document.getElementById('co-gps-link');
+            if(!status||!linkEl)return;
+            status.innerText="Fetching...";status.style.color="#888";
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition((pos)=>{
+                    linkEl.value=`https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    status.innerHTML=`<div style="display:flex; align-items:center; color:#16a34a; font-size:0.85rem; animation: slideInUp 0.4s ease;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg> Current location successfully added</div>`
+                },(err)=>{
+                    status.innerText="Failed. Enter manually.";status.style.color="red"
+                },{enableHighAccuracy:true,timeout:10000})
+            }else{
+                status.innerText="Not supported.";status.style.color="red"
             }
-            const modal = document.getElementById('checkout-modal');
-            if(modal) modal.classList.add('active');
-            try {
-                const saved = JSON.parse(localStorage.getItem('novarevolt_checkout_info') || '{}');
-                const nameEl = document.getElementById('co-name');
-                const phoneEl = document.getElementById('co-phone');
-                const addrEl = document.getElementById('co-address');
-                const gpsEl = document.getElementById('co-gps-link');
-                const st = document.getElementById('co-gps-status');
-                
-                if(saved.name && nameEl) nameEl.value = saved.name;
-                if(saved.phone && phoneEl) phoneEl.value = saved.phone;
-                if(saved.address && addrEl) addrEl.value = saved.address;
-                if(saved.gpsLink && gpsEl && st) {
-                    gpsEl.value = saved.gpsLink;
-                    st.innerHTML = `<div style="display:flex; align-items:center; color:#16a34a; font-size:0.85rem; animation: slideInUp 0.4s ease;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg> Location restored</div>`;
-                }
-            } catch(e) {}
         };
 
-        window.app.closeCheckout = () => { const el = document.getElementById('checkout-modal'); if(el) el.classList.remove('active'); };
-
-        window.app.fetchLocation = () => {
-            const status = document.getElementById('co-gps-status');
-            const linkEl = document.getElementById('co-gps-link');
-            if(!status || !linkEl) return;
-            
-            status.innerText = "Fetching...";
-            status.style.color = "#888";
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const link = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                        linkEl.value = link;
-                        status.innerHTML = `
-                            <div style="display:flex; align-items:center; color:#16a34a; font-size:0.85rem; animation: slideInUp 0.4s ease;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg>
-                                Current location successfully added
-                            </div>
-                        `;
-                    },
-                    (err) => {
-                        status.innerText = "Failed. Enter manually.";
-                        status.style.color = "red";
-                    },
-                    { enableHighAccuracy: true, timeout: 10000 }
-                );
+        // --- PAYMENT GATEWAY UI TOGGLES AND ACTIONS ---
+        window.app.toggleQRView = () => {
+            const qrSection = document.getElementById('gw-qr-section');
+            const chevron = document.getElementById('gw-qr-chevron');
+            if (qrSection.classList.contains('hidden')) {
+                qrSection.classList.remove('hidden');
+                chevron.style.transform = 'rotate(90deg)';
+                setTimeout(() => { document.getElementById('pg-main-ui').scrollTo({ top: document.getElementById('pg-main-ui').scrollHeight, behavior: 'smooth' }); }, 100);
             } else {
-                status.innerText = "Not supported.";
-                status.style.color = "red";
+                qrSection.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
             }
         };
 
-        window.app.placeOrder = (e) => {
-            e.preventDefault();
-            if (!db) return showToast('Database missing.');
+        window.app.triggerAppIntent = (scheme) => {
+            if (!window.app.currentUpiString) return;
+            let url = window.app.currentUpiString;
+            if (scheme !== 'upi://pay') {
+                url = url.replace('upi://pay', scheme);
+            }
+            window.location.href = url;
+        };
 
+        window.app.closePaymentGateway = async () => {
+            document.getElementById('payment-gateway-screen').classList.add('hidden');
+            if (window.app.countdownInterval) {
+                clearInterval(window.app.countdownInterval);
+                window.app.countdownInterval = null;
+            }
+            if (window.app.paymentListenerUnsubscribe) {
+                window.app.paymentListenerUnsubscribe();
+                window.app.paymentListenerUnsubscribe = null;
+            }
+            try {
+                if (db && state.userId) {
+                    const lockRef = ref(db, 'payment_gateway/lock');
+                    const snap = await get(lockRef);
+                    if (snap.exists() && snap.val().userId === state.userId && snap.val().status === 'pending') {
+                        await set(lockRef, null);
+                    }
+                }
+            } catch (e) {}
+            document.getElementById('checkout-modal').classList.add('active');
+        };
+
+        // MAIN GATEWAY LOGIC
+        window.app.placeOrder = async (e) => {
+            if (e) e.preventDefault();
+            if (!db) return showToast('Database missing.');
             const btn = document.getElementById('btn-place-order');
-            if(btn) { btn.innerText = 'Processing...'; btn.disabled = true; }
+            if (btn) { btn.innerText = 'Processing...'; btn.disabled = true; }
 
             const name = document.getElementById('co-name')?.value || '';
             const phone = document.getElementById('co-phone')?.value || '';
@@ -1410,309 +622,186 @@
                 if (coords.length === 2) { lat = parseFloat(coords[0]); lng = parseFloat(coords[1]); }
             }
 
-            // Permanent Local Storage persistence
+            const paymentMethodInput = document.querySelector('input[name="payment_method"]:checked');
+            const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'UPI';
             localStorage.setItem('novarevolt_checkout_info', JSON.stringify({ name, phone, address, gpsLink }));
 
             const totalAmount = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            
-            // Strictly compile items with explicit mapping to persist user-selected attributes (size & color)
-            const mappedItems = state.cart.map(item => ({
-                productId: item.productId,
-                title: item.title,
-                price: item.price,
-                qty: item.qty,
-                image: item.image,
-                size: item.size || 'N/A',
-                color: item.color || 'N/A'
-            }));
-            
-            const orderData = {
+            const mappedItems = state.cart.map(i => ({ productId: i.productId, title: i.title, price: i.price, qty: i.qty, image: i.image, size: i.size || 'N/A', color: i.color || 'N/A' }));
+
+            const baseOrderData = {
                 userId: state.userId,
                 customer: { name, phone, address, lat, lng, gpsLink },
                 items: mappedItems,
-                totalAmount: totalAmount,
+                totalAmount,
                 status: 'Pending',
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                paymentMethod: paymentMethod
             };
 
-            push(ref(db, 'orders')).then(newRef => {
-                return set(newRef, orderData);
-            }).then(() => {
-                
-                // INSTANT TELEGRAM NOTIFICATION DISPATCH
-                try {
-                    const tgToken = '8979073333:AAGXx_VL9pGcmxZDkwKEJRRNlgJejR78Wqg';
-                    const tgChatId = '8403752648';
-                    const tgText = `*🚨 NEW NOVALREVOLT ORDER*\n\n*Buyer Name:* ${name}\n*Phone:* ${phone}\n*Cart Value:* ${formatCurrency(totalAmount)}\n*Status:* Confirmed`;
-                    
-                    fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: tgChatId, text: tgText, parse_mode: 'Markdown' })
-                    }).catch(err => console.warn("Telegram Dispatch Failed Silently:", err));
-                } catch(e) { console.warn("Telegram Dispatch Error:", e); }
-
-                state.cart = [];
-                localStorage.removeItem('novarevolt_cart');
-                updateCartBadge();
-                window.app.closeCheckout();
-                showToast('Order Confirmed');
-                const form = document.getElementById('checkout-form');
-                if(form) form.reset();
-                window.app.navigate('orders');
-            }).catch(err => {
-                showToast('Failed to order.');
-            }).finally(() => {
-                if(btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
-            });
-        };
-
-        const fetchAndRenderOrders = async () => {
-            const container = document.getElementById('orders-container');
-            if(!container) return;
-            
-            showLoader();
-            container.innerHTML = '';
-            
-            if(!state.user && state.userId.startsWith('user_')) {
-                container.innerHTML = `<div class="empty-state"><p>Login to view orders.</p><button class="btn-primary" onclick="window.app.openAuth()" style="width:auto; margin:20px auto; padding:15px 35px;">Sign In</button></div>`;
-                hideLoader();
+            if (paymentMethod === 'COD') {
+                baseOrderData.paymentId = 'COD_' + Date.now();
+                window.app.finalizeOrder(baseOrderData);
                 return;
             }
 
             try {
-                if (!db) throw new Error("Firebase DB not initialized.");
-                const snap = await get(child(ref(db), 'orders'));
-                if (snap.exists()) {
-                    const data = snap.val();
-                    state.orders = Object.keys(data).map(k => ({id: k, ...data[k]}))
-                                   .filter(o => o.userId === state.userId)
-                                   .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-                } else { state.orders = []; }
+                const lockRef = ref(db, 'payment_gateway/lock');
+                const lockSnap = await get(lockRef);
 
-                if (state.orders.length === 0) {
-                    container.innerHTML = `<div class="empty-state">No orders found.</div>`;
-                } else {
-                    state.orders.forEach(o => {
-                        const d = new Date(o.timestamp);
-                        const itemsHtml = o.items.map(i => `<div style="font-size:0.9rem; margin-bottom:8px; display:flex; justify-content:space-between;"><span>${i.qty}x ${i.title} (${i.size}, ${i.color})</span><span>${formatCurrency(i.price * i.qty)}</span></div>`).join('');
-                        
-                        const statusText = o.status || 'Confirmed';
-                        const statusMap = { 'pending': 0, 'processing': 0, 'confirmed': 0, 'packed': 1, 'shipped': 2, 'dispatched': 2, 'out for delivery': 3, 'delivered': 4 };
-                        const stKey = statusText.toLowerCase();
-                        const currentStage = statusMap[stKey] !== undefined ? statusMap[stKey] : 0;
-                        const stages = ['Confirmed', 'Packed', 'Shipped', 'Out For Delivery', 'Delivered'];
-                        const percentage = (currentStage / (stages.length - 1)) * 100;
-                        
-                        const trackingHtml = `
-                            <div class="tracking-wrapper">
-                                <div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom: 5px;">Order Status</div>
-                                <div class="tracking-container">
-                                    <div class="tracking-progress-bg"><div class="tracking-progress-fill" style="width: ${percentage}%"></div></div>
-                                    ${stages.map((stage, idx) => `
-                                        <div class="tracking-stage ${idx <= currentStage ? 'active' : ''}">
-                                            <div class="tracking-dot"></div>
-                                            <div class="tracking-label" style="${idx === stages.length - 1 ? 'text-align: right;' : (idx === 0 ? 'text-align: left;' : 'text-align: center;')}">${stage}</div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `;
-
-                        const trackBtn = o.deliveryLink ? `<a href="${o.deliveryLink}" target="_blank" style="padding:12px; background:#000; color:#fff; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; text-align:center; display:block; margin-top:20px; text-decoration:none; transition: 0.3s; border-radius: 0;">Track Package Live</a>` : '';
-                        
-                        let deliveryBoyHtml = '';
-                        if (o.deliveryBoy && o.deliveryBoy.name && o.deliveryBoy.phone) {
-                            deliveryBoyHtml = `
-                                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);">
-                                    <div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Delivery Partner Info</div>
-                                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                                        <div>
-                                            <div style="font-weight:700; font-size:0.95rem; text-transform:uppercase;">${o.deliveryBoy.name}</div>
-                                            <div style="font-size:0.85rem; color:#444;">${o.deliveryBoy.phone}</div>
-                                        </div>
-                                        <a href="tel:${o.deliveryBoy.phone}" style="background:#000; color:#fff; padding:10px 15px; font-size:0.8rem; font-weight:700; text-transform:uppercase; text-decoration:none; display:flex; align-items:center; gap:5px; transition: 0.3s;">
-                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call
-                                        </a>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                        
-                        const el = document.createElement('div');
-                        el.className = 'order-card';
-                        el.innerHTML = `
-                            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:20px;">
-                                <span style="font-size:0.8rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">#${o.id.substring(1, 9)}</span>
-                                <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">${d.toLocaleDateString()}</span>
-                            </div>
-                            <div style="margin-bottom:20px;">${itemsHtml}</div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                <span style="font-weight:800; font-size:1.3rem;">${formatCurrency(o.totalAmount)}</span>
-                            </div>
-                            ${trackingHtml}
-                            ${trackBtn}
-                            ${deliveryBoyHtml}
-                        `;
-                        container.appendChild(el);
-                    });
-                }
-            } catch (error) { 
-                container.innerHTML = '<div class="empty-state">Failed to load orders.</div>'; 
-            } finally { hideLoader(); }
-        };
-
-        const fetchReels = async () => {
-            showLoader();
-            const container = document.getElementById('reels-container');
-            if(!container) { hideLoader(); return; }
-            
-            try {
-                if (!db) throw new Error("Firebase DB not initialized.");
-                const snap = await get(child(ref(db), 'reels'));
-                if (snap.exists()) {
-                    const rData = snap.val();
-                    state.reels = Array.isArray(rData) ? rData : Object.keys(rData).map(k => ({id: k, ...rData[k]}));
-                    renderReels();
-                } else { container.innerHTML = '<div class="empty-state" style="color:#fff; padding-top:50vh;">No collection available.</div>'; }
-            } catch (error) { 
-                container.innerHTML = '<div class="empty-state" style="color:#fff; padding-top:50vh;">Error loading content.</div>'; 
-            } finally { hideLoader(); }
-        };
-
-        window.app.toggleReel = (wrapperId) => {
-            const wrapper = document.getElementById(wrapperId);
-            if(!wrapper) return;
-            const video = wrapper.querySelector('video');
-            if(!video) return;
-
-            document.querySelectorAll('.reel-item.is-playing, .reel-item.is-buffering').forEach(item => {
-                if (item.id !== wrapperId) {
-                    const otherVid = item.querySelector('video');
-                    if (otherVid) {
-                        otherVid.pause();
-                        otherVid.removeAttribute('src');
-                        otherVid.load();
+                if (lockSnap.exists()) {
+                    const lockData = lockSnap.val();
+                    const ageMs = Date.now() - lockData.timestamp;
+                    
+                    if (ageMs < 120000 && lockData.status === 'pending' && lockData.userId !== state.userId) {
+                        document.getElementById('checkout-modal').classList.remove('active');
+                        document.getElementById('payment-gateway-screen').classList.remove('hidden');
+                        document.getElementById('pg-main-ui').classList.add('hidden');
+                        document.getElementById('pg-timeout-screen').classList.add('hidden');
+                        document.getElementById('pg-success-screen').classList.add('hidden');
+                        document.getElementById('pg-queue-screen').classList.remove('hidden');
+                        if (btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
+                        return;
                     }
-                    item.classList.remove('is-playing', 'is-buffering');
                 }
-            });
 
-            if (video.paused || !video.src) {
-                if (!video.src && video.dataset.src) {
-                    video.src = video.dataset.src;
-                    video.load();
-                }
-                wrapper.classList.add('is-buffering');
-                video.muted = false; 
+                await set(lockRef, { userId: state.userId, amount: totalAmount, timestamp: Date.now(), status: 'pending' });
+                baseOrderData.paymentId = 'PAY_' + Date.now() + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+                window.app.currentOrderData = baseOrderData; 
+                window.app.currentUpiString = `upi://pay?pa=9266135090@ptyes&pn=NOVALREVOLT&am=${totalAmount}&cu=INR`;
+
+                // Launch Transition
+                document.getElementById('checkout-modal').classList.remove('active');
+                document.getElementById('payment-gateway-screen').classList.remove('hidden');
                 
-                const playPromise = video.play();
-                if(playPromise !== undefined) {
-                    playPromise.then(() => {
-                    }).catch(e => {
-                        wrapper.classList.remove('is-buffering');
-                        console.warn("Stream play intercepted safely.");
-                    });
-                }
-            } else {
-                video.pause();
+                document.getElementById('pg-queue-screen').classList.add('hidden');
+                document.getElementById('pg-timeout-screen').classList.add('hidden');
+                document.getElementById('pg-success-screen').classList.add('hidden');
+                document.getElementById('pg-main-ui').classList.remove('hidden');
+
+                document.getElementById('gw-qr-section').classList.add('hidden');
+                document.getElementById('gw-qr-chevron').style.transform = 'rotate(0deg)';
+
+                document.getElementById('gw-address').innerText = `Delivering to ${address}`;
+                document.getElementById('gw-amount').innerText = formatCurrency(totalAmount);
+                document.getElementById('gw-qr-amount-text').innerText = formatCurrency(totalAmount);
+
+                const qrContainer = document.getElementById('gw-qrcode-container');
+                qrContainer.innerHTML = '';
+
+                if (typeof QRCode === 'undefined') throw new Error("QR Library failed to load");
+
+                new QRCode(qrContainer, {
+                    text: window.app.currentUpiString,
+                    width: 220,
+                    height: 220,
+                    colorDark: "#111111",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                let timeLeft = 120;
+                const timerEl = document.getElementById('gw-qr-timer');
+                if (timerEl) timerEl.innerText = '02:00';
+
+                if (window.app.countdownInterval) clearInterval(window.app.countdownInterval);
+                window.app.countdownInterval = setInterval(async () => {
+                    timeLeft--;
+                    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                    const s = (timeLeft % 60).toString().padStart(2, '0');
+                    if (timerEl) timerEl.innerText = `${m}:${s}`;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(window.app.countdownInterval);
+                        if (window.app.paymentListenerUnsubscribe) {
+                            window.app.paymentListenerUnsubscribe();
+                            window.app.paymentListenerUnsubscribe = null;
+                        }
+                        const checkSnap = await get(lockRef);
+                        if (checkSnap.exists() && checkSnap.val().userId === state.userId) {
+                            await set(lockRef, null);
+                        }
+                        document.getElementById('pg-main-ui').classList.add('hidden');
+                        document.getElementById('pg-timeout-screen').classList.remove('hidden');
+                    }
+                }, 1000);
+
+                const paymentStatusRef = ref(db, `payment_gateway/lock/status`);
+                if (window.app.paymentListenerUnsubscribe) window.app.paymentListenerUnsubscribe();
+                
+                window.app.paymentListenerUnsubscribe = onValue(paymentStatusRef, async (snapshot) => {
+                    const status = snapshot.val();
+                    if (status && (status === 'success' || status.toString().toLowerCase() === 'success')) {
+                        window.app.finalizeOrder(window.app.currentOrderData);
+                    }
+                });
+
+                if (btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message);
+                if (btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
             }
         };
 
-        const renderReels = () => {
-            const container = document.getElementById('reels-container');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            state.reels.forEach(r => {
-                const mediaSrc = r.videoUrl || r.videoFilename;
-                const videoUrl = resolveMediaUrl(mediaSrc);
-                const posterSrc = resolveMediaUrl(r.posterUrl || r.imageUrl || '');
-                const vidId = 'reel-vid-' + r.id;
+        window.app.finalizeOrder = (orderData) => {
+            if (window.app.paymentListenerUnsubscribe) {
+                window.app.paymentListenerUnsubscribe();
+                window.app.paymentListenerUnsubscribe = null;
+            }
+            if (window.app.countdownInterval) {
+                clearInterval(window.app.countdownInterval);
+                window.app.countdownInterval = null;
+            }
+
+            if (db) {
+                set(ref(db, 'payment_gateway/lock'), null).catch(() => {});
+            }
+
+            push(ref(db, 'orders')).then(newRef => set(newRef, orderData)).then(() => {
+                try {
+                    const tgToken = '8979073333:AAGXx_VL9pGcmxZDkwKEJRRNlgJejR78Wqg';
+                    const tgChatId = '8403752648';
+                    const tgText = `*🚨 NEW NOVALREVOLT ORDER*\n\n*Buyer Name:* ${orderData.customer.name}\n*Phone:* ${orderData.customer.phone}\n*Cart Value:* ${formatCurrency(orderData.totalAmount)}\n*Payment Method:* ${orderData.paymentMethod}\n*Status:* Confirmed`;
+                    fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: tgChatId, text: tgText, parse_mode: 'Markdown' })
+                    }).catch(() => {});
+                } catch (e) {}
+
+                state.cart = [];
+                localStorage.removeItem('novarevolt_cart');
+                updateCartBadge();
                 
-                const el = document.createElement('div');
-                el.className = 'reel-item';
-                el.id = vidId;
-                el.onclick = () => window.app.toggleReel(vidId);
-                
-                el.innerHTML = `
-                    <img src="${posterSrc}" class="reel-poster" alt="Reel thumbnail">
-                    <div class="reel-play-btn">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                    <div class="reel-loader"></div>
-                    <video preload="none" playsinline webkit-playsinline loop muted data-src="${videoUrl}"></video>
-                    <div class="reel-overlay">
-                        <img src="logo.png" class="creator-avatar" alt="NovalRevolt Motif">
-                        <div class="reel-text">
-                            <div style="display:flex; align-items:center; gap:4px; margin-bottom:2px;">
-                                <span class="creator-name">@novalrevolt</span>
-                                <svg class="verified-badge" viewBox="0 0 24 24" width="15" height="15" fill="#3b82f6"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.3L6 12.2l1.4-1.4 2.7 2.7 6.5-6.5 1.4 1.4-7.9 7.9z"/></svg>
-                            </div>
-                            <div class="reel-caption">${r.title || 'Exclusive streetwear drop. Elevate your aesthetic.'}</div>
-                        </div>
-                    </div>
-                `;
-                
-                const videoEl = el.querySelector('video');
-                
-                if (videoEl) {
-                    videoEl.addEventListener('waiting', () => {
-                        el.classList.add('is-buffering');
-                    });
-                    videoEl.addEventListener('playing', () => {
-                        el.classList.remove('is-buffering');
-                        el.classList.add('is-playing');
-                    });
-                    videoEl.addEventListener('canplay', () => {
-                        el.classList.remove('is-buffering');
-                    });
-                    videoEl.addEventListener('pause', () => {
-                        el.classList.remove('is-playing', 'is-buffering');
-                    });
-                    videoEl.addEventListener('error', () => {
-                        el.classList.remove('is-buffering');
-                    });
+                if (orderData.paymentMethod === 'UPI') {
+                    document.getElementById('pg-main-ui').classList.add('hidden');
+                    document.getElementById('pg-queue-screen').classList.add('hidden');
+                    document.getElementById('pg-timeout-screen').classList.add('hidden');
+                    document.getElementById('pg-success-screen').classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        document.getElementById('payment-gateway-screen').classList.add('hidden');
+                        window.app.navigate('orders');
+                    }, 2500);
+                } else {
+                    showToast('Order Confirmed via COD');
+                    document.getElementById('checkout-modal').classList.remove('active');
+                    window.app.navigate('orders');
                 }
                 
-                container.appendChild(el);
-            });
-
-            setupReelsObserver();
+                document.getElementById('checkout-form')?.reset();
+            }).catch(() => showToast('Order placement failed. Contact Support.'));
         };
 
-        const setupReelsObserver = () => {
-            if (reelObserver) reelObserver.disconnect();
-            const container = document.getElementById('reels-container');
-            if(!container) return;
-
-            const options = { root: container, threshold: 0 };
-            
-            reelObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const reelItem = entry.target;
-                    const video = reelItem.querySelector('video');
-                    if(!video) return;
-                    
-                    if (!entry.isIntersecting) {
-                        if (!video.paused) {
-                            video.pause();
-                        }
-                        reelItem.classList.remove('is-playing', 'is-buffering');
-                        
-                        if (video.src) {
-                            video.removeAttribute('src');
-                            video.load();
-                        }
-                    }
-                });
-            }, options);
-
-            document.querySelectorAll('.reel-item').forEach(item => reelObserver.observe(item));
-        };
-
-        window.addEventListener('DOMContentLoaded', () => { window.app.navigate('home'); });
-
+        const fetchAndRenderOrders=async()=>{const container=document.getElementById('orders-container');if(!container)return;showLoader();container.innerHTML='';if(!state.user&&state.userId.startsWith('user_')){container.innerHTML=`<div class="empty-state"><p>Login to view orders.</p><button class="btn-primary" onclick="window.app.openAuth()" style="width:auto; margin:20px auto; padding:15px 35px;">Sign In</button></div>`;hideLoader();return}try{if(!db)throw new Error("DB missing");const snap=await get(child(ref(db),'orders'));if(snap.exists()){const data=snap.val();state.orders=Object.keys(data).map(k=>({id:k,...data[k]})).filter(o=>o.userId===state.userId).sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp))}else state.orders=[];if(state.orders.length===0)container.innerHTML=`<div class="empty-state">No orders found.</div>`;else{container.innerHTML=state.orders.map(o=>{const itemsHtml=o.items.map(i=>`<div style="font-size:0.9rem; margin-bottom:8px; display:flex; justify-content:space-between;"><span>${i.qty}x ${i.title} (${i.size}, ${i.color})</span><span>${formatCurrency(i.price*i.qty)}</span></div>`).join('');const stages=['Confirmed','Packed','Shipped','Out For Delivery','Delivered'];const statusMap={'pending':0,'processing':0,'confirmed':0,'packed':1,'shipped':2,'dispatched':2,'out for delivery':3,'delivered':4};const currentStage=statusMap[(o.status||'Confirmed').toLowerCase()]||0;const paymentModeText=o.paymentMethod?`<div style="font-size: 0.75rem; background: #eee; padding: 4px 8px; border-radius: 2px; display: inline-block; margin-top: 5px; font-weight: 600;">${o.paymentMethod}</div>`:'';const trackingHtml=`<div class="tracking-wrapper"><div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom: 5px;">Order Status</div><div class="tracking-container"><div class="tracking-progress-bg"><div class="tracking-progress-fill" style="width: ${(currentStage/4)*100}%"></div></div>${stages.map((stage,idx)=>`<div class="tracking-stage ${idx<=currentStage?'active':''}"><div class="tracking-dot"></div><div class="tracking-label" style="${idx===4?'text-align: right;':(idx===0?'text-align: left;':'text-align: center;')}">${stage}</div></div>`).join('')}</div></div>`;const trackBtn=o.deliveryLink?`<a href="${o.deliveryLink}" target="_blank" style="padding:12px; background:#000; color:#fff; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; text-align:center; display:block; margin-top:20px; text-decoration:none; transition: 0.3s; border-radius: 0;">Track Package Live</a>`:'';const deliveryBoyHtml=o.deliveryBoy?.name&&o.deliveryBoy?.phone?`<div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);"><div style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Delivery Partner Info</div><div style="display:flex; justify-content:space-between; align-items:center;"><div><div style="font-weight:700; font-size:0.95rem; text-transform:uppercase;">${o.deliveryBoy.name}</div><div style="font-size:0.85rem; color:#444;">${o.deliveryBoy.phone}</div></div><a href="tel:${o.deliveryBoy.phone}" style="background:#000; color:#fff; padding:10px 15px; font-size:0.8rem; font-weight:700; text-transform:uppercase; text-decoration:none; display:flex; align-items:center; gap:5px; transition: 0.3s;"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Call</a></div></div>`:'';return`<div class="order-card"><div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:20px;"><span style="font-size:0.8rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">#${o.id.substring(1,9)}</span><span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">${new Date(o.timestamp).toLocaleDateString()}</span></div><div style="margin-bottom:20px;">${itemsHtml}</div><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><span style="font-weight:800; font-size:1.3rem;">${formatCurrency(o.totalAmount)}</span>${paymentModeText}</div>${trackingHtml} ${trackBtn} ${deliveryBoyHtml}</div>`}).join('')}}catch(error){container.innerHTML='<div class="empty-state">Failed to load orders.</div>'}finally{hideLoader()}};
+        const fetchReels=async()=>{showLoader();const container=document.getElementById('reels-container');if(!container)return hideLoader();try{const snap=await get(child(ref(db),'reels'));if(snap.exists()){const rData=snap.val();state.reels=Array.isArray(rData)?rData:Object.keys(rData).map(k=>({id:k,...rData[k]}));renderReels()}else container.innerHTML='<div class="empty-state" style="color:#fff; padding-top:50vh;">No collection available.</div>'}catch(error){container.innerHTML='<div class="empty-state" style="color:#fff; padding-top:50vh;">Error loading content.</div>'}finally{hideLoader()}};
+        window.app.toggleReel=(wrapperId)=>{const wrapper=document.getElementById(wrapperId),video=wrapper?.querySelector('video');if(!video)return;document.querySelectorAll('.reel-item.is-playing, .reel-item.is-buffering').forEach(item=>{if(item.id!==wrapperId){const otherVid=item.querySelector('video');if(otherVid){otherVid.pause();otherVid.removeAttribute('src');otherVid.load()}item.classList.remove('is-playing','is-buffering')}});if(video.paused||!video.src){if(!video.src&&video.dataset.src){video.src=video.dataset.src;video.load()}wrapper.classList.add('is-buffering');video.muted=false;const playPromise=video.play();if(playPromise!==undefined)playPromise.catch(()=>wrapper.classList.remove('is-buffering'))}else video.pause()};
+        const renderReels=()=>{const container=document.getElementById('reels-container');if(!container)return;container.innerHTML=state.reels.map(r=>{const vidId='reel-vid-'+r.id;return`<div class="reel-item" id="${vidId}" onclick="window.app.toggleReel('${vidId}')"><img src="${resolveMediaUrl(r.posterUrl||r.imageUrl||'')}" class="reel-poster" alt="Reel thumbnail"><div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="reel-loader"></div><video preload="none" playsinline webkit-playsinline loop muted data-src="${resolveMediaUrl(r.videoUrl||r.videoFilename)}"></video><div class="reel-overlay"><img src="logo.png" class="creator-avatar" alt="NovalRevolt Motif"><div class="reel-text"><div style="display:flex; align-items:center; gap:4px; margin-bottom:2px;"><span class="creator-name">@novalrevolt</span><svg class="verified-badge" viewBox="0 0 24 24" width="15" height="15" fill="#3b82f6"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.3L6 12.2l1.4-1.4 2.7 2.7 6.5-6.5 1.4 1.4-7.9 7.9z"/></svg></div><div class="reel-caption">${r.title||'Exclusive streetwear drop. Elevate your aesthetic.'}</div></div></div></div>`}).join('');document.querySelectorAll('.reel-item video').forEach(v=>{const el=v.parentElement;v.addEventListener('waiting',()=>el.classList.add('is-buffering'));v.addEventListener('playing',()=>{el.classList.remove('is-buffering');el.classList.add('is-playing')});v.addEventListener('canplay',()=>el.classList.remove('is-buffering'));v.addEventListener('pause',()=>el.classList.remove('is-playing','is-buffering'));v.addEventListener('error',()=>el.classList.remove('is-buffering'))});setupReelsObserver()};
+        const setupReelsObserver=()=>{if(reelObserver)reelObserver.disconnect();const container=document.getElementById('reels-container');if(!container)return;reelObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{const video=entry.target.querySelector('video');if(!video)return;if(!entry.isIntersecting){if(!video.paused)video.pause();entry.target.classList.remove('is-playing','is-buffering');if(video.src){video.removeAttribute('src');video.load()}}})},{root:container,threshold:0});document.querySelectorAll('.reel-item').forEach(item=>reelObserver.observe(item))};
+        window.addEventListener('DOMContentLoaded',()=>window.app.navigate('home'));
     </script>
 </body>
 </html>
