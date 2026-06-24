@@ -1,3 +1,5 @@
+--- START OF FILE ai_studio_code (35).html ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,12 +144,39 @@
         .auth-toggle{text-align:center;font-size:.85rem;margin-top:25px;color:var(--text-secondary);cursor:pointer;text-decoration:underline;font-weight:500}
         .btn-google{background:#fff;color:#222;border:1px solid #ddd;width:100%;padding:15px;display:flex;justify-content:center;align-items:center;gap:10px;font-weight:600;margin-top:15px;font-size:.9rem;border-radius:0}
         .btn-google:active{transform:scale(.98);background:#f9f9f9}
-        .payment-methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px}
-        .payment-method-card{display:block;cursor:pointer;position:relative}
-        .payment-method-card input{position:absolute;opacity:0;cursor:pointer}
-        .pm-content{border:1px solid var(--border-color);padding:15px;text-align:center;border-radius:4px;transition:.3s;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);display:flex;flex-direction:column;align-items:center;gap:8px;background:#fff}
-        .pm-content svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2}
-        .payment-method-card input:checked~.pm-content{border-color:var(--text-color);color:var(--text-color);background:#fafafa}
+        
+        /* Updated Checkout Option UI */
+        .payment-method-card { display: block; cursor: pointer; position: relative; margin-bottom: 12px; }
+        .payment-method-card input { position: absolute; opacity: 0; cursor: pointer; }
+        .pm-content-new {
+            border: 2px solid var(--border-color);
+            padding: 18px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+        }
+        .payment-method-card input:checked ~ .pm-content-new {
+            border-color: #0a2540;
+            background: #f8fafc;
+        }
+        .radio-circle {
+            width: 20px; height: 20px; border-radius: 50%; border: 2px solid #ccc;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .radio-circle-inner {
+            width: 10px; height: 10px; border-radius: 50%; background: #0a2540;
+            display: none;
+        }
+        .payment-method-card input:checked ~ .pm-content-new .radio-circle {
+            border-color: #0a2540;
+        }
+        .payment-method-card input:checked ~ .pm-content-new .radio-circle-inner {
+            display: block;
+        }
+        
         .cart-item{display:flex;gap:20px;padding:25px 0;border-bottom:1px solid var(--border-color);transition:opacity .3s ease}
         .cart-item-img{width:90px;aspect-ratio:3/4;background:#f4f4f4;object-fit:cover}
         .cart-item-details{flex:1;display:flex;flex-direction:column;justify-content:space-between}
@@ -187,11 +216,16 @@
         .empty-state{text-align:center;padding:80px 20px;color:var(--text-secondary);font-size:.95rem;font-weight:500}
         #toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:#111;color:#fff;padding:14px 28px;font-size:.85rem;z-index:30000;transition:transform .4s cubic-bezier(0.25,1,0.5,1);font-weight:500;border-radius:4px;will-change:transform;box-shadow:0 4px 12px rgba(0,0,0,.15);letter-spacing:.05em}
         #toast.show{transform:translateX(-50%) translateY(0)}
-        .payment-loader{margin-top:20px;display:flex;flex-direction:column;align-items:center}.payment-loader p{text-align:center}
-        #gw-qrcode-container img,#gw-qrcode-container canvas{margin:0 auto;display:block;border-radius:8px;}
-        .app-icon-btn {display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;}
-        .app-icon-btn:active {transform:scale(0.95);box-shadow:0 2px 6px rgba(0,0,0,0.03) !important;}
-        .pg-primary-card:active {transform:scale(0.96) !important;box-shadow:0 4px 12px rgba(15,166,84,0.1) !important;}
+        .payment-loader{margin-top:10px;display:flex;flex-direction:column;align-items:center}.payment-loader p{text-align:center}
+        #gw-qrcode-container img, #gw-qrcode-container canvas { margin:0 auto; display:block; }
+        
+        /* Premium COD Animation CSS */
+        .cod-anim-svg { width: 80px; height: 80px; border-radius: 50%; display: block; stroke-width: 2; stroke: #fff; stroke-miterlimit: 10; margin: 0 auto; box-shadow: inset 0px 0px 0px #16a34a; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
+        .cod-anim-circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #16a34a; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+        .cod-anim-check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 50px #16a34a; } }
     </style>
 </head>
 <body>
@@ -300,133 +334,131 @@
                 <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" id="co-phone" class="form-input" required placeholder="+91 9876543210"></div>
                 <div class="form-group"><label class="form-label">Delivery Address</label><textarea id="co-address" class="form-input" required placeholder="Apartment, suite, etc." style="resize:vertical;min-height:60px;padding-top:10px"></textarea></div>
                 <div class="form-group" style="margin-bottom:25px;background:#fafafa;padding:20px;border:1px solid var(--border-color)"><label class="form-label" style="font-size:.7rem">Precise Location (Recommended)</label><button type="button" class="btn-primary" style="background:0 0;color:#222;border:1px solid #ddd;margin-top:10px;padding:12px;font-size:.75rem" onclick="window.app.fetchLocation()">Fetch Current Location GPS</button><input type="hidden" id="co-gps-link"><div id="co-gps-status" style="font-size:.75rem;margin-top:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em"></div></div>
-                <div class="form-group" style="margin-bottom:35px"><label class="form-label">Select Payment Method</label><div class="payment-methods-grid"><label class="payment-method-card"><input type="radio" name="payment_method" value="UPI" checked><div class="pm-content"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg><span>UPI / QR Pay</span></div></label><label class="payment-method-card"><input type="radio" name="payment_method" value="COD"><div class="pm-content"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>Cash on Delivery</span></div></label></div></div>
+                
+                <div class="form-group" style="margin-bottom:35px">
+                    <label class="form-label">Select Payment Method</label>
+                    <div class="payment-methods-grid" style="grid-template-columns: 1fr;">
+                        <label class="payment-method-card" style="margin-bottom:12px;">
+                            <input type="radio" name="payment_method" value="UPI" checked>
+                            <div class="pm-content-new">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" width="36" alt="UPI" style="border-radius:4px; border:1px solid #eee; padding:2px;">
+                                    <div style="text-align:left;">
+                                        <div style="font-size:1rem; font-weight:800; color:#111; text-transform:none;">Pay via any UPI</div>
+                                        <div style="font-size:0.75rem; color:#16a34a; font-weight:700; text-transform:none; margin-top:2px;">Save ₹150 Instantly • Fast Delivery</div>
+                                    </div>
+                                </div>
+                                <div class="radio-circle"><div class="radio-circle-inner"></div></div>
+                            </div>
+                        </label>
+                        <label class="payment-method-card">
+                            <input type="radio" name="payment_method" value="COD">
+                            <div class="pm-content-new">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div style="width:36px; height:36px; background:#f4f4f4; border-radius:6px; display:flex; justify-content:center; align-items:center; border:1px solid #eee;">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="#555" fill="none" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                    </div>
+                                    <div style="text-align:left;">
+                                        <div style="font-size:0.95rem; font-weight:700; color:#333; text-transform:none;">Cash on Delivery</div>
+                                        <div style="font-size:0.75rem; color:#777; font-weight:600; text-transform:none; margin-top:2px;">Standard Delivery in 3-4 Days</div>
+                                    </div>
+                                </div>
+                                <div class="radio-circle"><div class="radio-circle-inner"></div></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-primary" id="btn-place-order">Complete Purchase</button>
             </form>
         </div>
     </div>
 
-    <!-- FULL SCREEN PROFESSIONAL PAYMENT GATEWAY -->
-    <div id="payment-gateway-screen" class="hidden" style="position:fixed;inset:0;background:#f4f6f8;z-index:99999;display:flex;flex-direction:column;transform:translateZ(0);font-family:'Inter', sans-serif;">
+    <!-- COD SUCCESS ANIMATION SCREEN -->
+    <div id="cod-success-screen" class="hidden" style="position: fixed; inset: 0; background: #fff; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <svg class="cod-anim-svg" viewBox="0 0 52 52">
+            <circle class="cod-anim-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="cod-anim-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+        <h2 style="margin-top: 30px; font-weight: 900; color: #111; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 0.05em;">Order Confirmed</h2>
+        <p style="color: #666; font-size: 1rem; margin-top: 10px; font-weight: 500;">Your premium streetwear is being prepared.</p>
+    </div>
+
+    <!-- FULL SCREEN PROFESSIONAL PAYMENT GATEWAY (DARK SLATE THEME) -->
+    <div id="payment-gateway-screen" class="hidden" style="position:fixed;inset:0;background:#0a2540;z-index:99999;display:flex;flex-direction:column;transform:translateZ(0);font-family:'Inter', sans-serif;">
         <!-- MAIN GATEWAY UI -->
-        <div id="pg-main-ui" style="flex:1;overflow-y:auto;padding-bottom:50px;">
-            <div style="background:#fff;padding:16px 20px;display:flex;align-items:center;gap:15px;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
-                <button onclick="window.app.closePaymentGateway()" style="padding:8px;margin-left:-8px;background:#f8f9fa;border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-                <div style="flex:1;">
-                    <div style="font-size:1.15rem;font-weight:900;color:#111;letter-spacing:-0.02em;">Secure Checkout</div>
-                    <div style="font-size:0.75rem;color:#666;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw;" id="gw-address"></div>
-                </div>
-                <div style="display:flex;align-items:center;gap:4px;background:#e8f5e9;color:#0fa654;padding:4px 8px;border-radius:20px;font-size:0.7rem;font-weight:800;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/></svg> 100% Safe
-                </div>
-            </div>
-
-            <div style="margin:20px 16px;background:linear-gradient(135deg, #111 0%, #222 100%);border-radius:20px;padding:24px;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;">
-                <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
-                <div style="position:relative;z-index:2;">
-                    <div style="font-size:0.8rem;color:#aaa;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Amount Payable</div>
-                    <div style="font-size:1.8rem;font-weight:900;letter-spacing:-0.02em;" id="gw-amount"></div>
-                </div>
-                <div style="position:relative;z-index:2;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.1);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:center;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <div id="pg-main-ui" style="flex:1; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden;">
+            
+            <!-- Header (Dark) -->
+            <div style="padding: 15px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff; flex-shrink: 0;">
+                <button onclick="window.app.closePaymentGateway()" style="color:#fff; padding:8px; margin-left:-8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; opacity: 0.9;">
+                    Secured by <span style="font-weight:800;">NOVALREVOLT Payments</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#4ade80"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
             </div>
 
-            <div style="margin:25px 16px 10px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Preferred Payment</div>
-            <div style="margin:0 16px 20px;background:#fff;border-radius:20px;padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(15,166,84,0.12);border:2px solid #0fa654;transition:transform 0.2s;" onclick="window.app.triggerAppIntent('upi://pay')" class="pg-primary-card">
-                <div style="display:flex;align-items:center;gap:16px;">
-                    <div style="width:60px;height:60px;border-radius:14px;background:#f9fafb;display:flex;justify-content:center;align-items:center;padding:6px;border:1px solid #eee;">
-                        <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" style="width:100%;height:100%;object-fit:contain;" alt="UPI">
-                    </div>
-                    <div>
-                        <div style="font-size:1.15rem;font-weight:900;color:#111;margin-bottom:4px;">Pay by any UPI App</div>
-                        <div style="font-size:0.75rem;color:#0fa654;font-weight:700;display:flex;align-items:center;gap:5px;">
-                            <span style="display:inline-block;width:6px;height:6px;background:#0fa654;border-radius:50%;box-shadow:0 0 0 2px rgba(15,166,84,0.3);animation:pulse 2s infinite;"></span>
-                            Fastest & Secure
-                        </div>
-                    </div>
-                </div>
-                <div style="width:36px;height:36px;border-radius:50%;background:#0fa654;color:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 4px 12px rgba(15,166,84,0.3);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <!-- Amount Section (Dark) -->
+            <div style="text-align:center; padding: 5px 20px 25px; flex-shrink: 0;">
+                <div style="font-size:0.85rem; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing: 0.1em; margin-bottom:8px;">Amount Payable</div>
+                <div style="font-size:2.8rem; font-weight:900; color:#fff; letter-spacing: -0.02em; line-height: 1;" id="gw-amount">₹0</div>
+                
+                <div style="display:inline-flex; align-items:center; gap:6px; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.3); color: #4ade80; padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; margin-top: 15px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    ₹150 UPI Discount Applied
                 </div>
             </div>
 
-            <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Quick Select</div>
-            <div style="display:flex;gap:12px;margin:0 16px 25px;">
-                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('tez://upi/pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
-                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
-                        <img src="https://www.image2url.com/r2/default/images/1782113842622-7744483a-65d5-4bf8-b5e3-44a3cdf729d8.png" alt="GPay" style="width:24px;">
-                    </div>
-                    <div style="font-size:0.8rem;font-weight:700;color:#333;">GPay</div>
+            <!-- Clean White QR Card Area -->
+            <div style="background:#fff; border-radius:24px 24px 0 0; flex:1; padding:25px 20px 20px; box-shadow:0 -10px 30px rgba(0,0,0,0.15); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <span style="font-size: 0.95rem; color: #333;">Scan and pay with</span>
+                    <img src="https://www.image2url.com/r2/default/images/1782113842622-7744483a-65d5-4bf8-b5e3-44a3cdf729d8.png" width="22" style="border-radius: 4px;">
+                    <img src="https://www.image2url.com/r2/default/images/1782113416023-cd7d9a7f-a350-412f-8a42-c48da5933fe9.png" width="22" style="border-radius: 4px;">
+                    <img src="https://www.image2url.com/r2/default/images/1782113304392-66690640-3203-4657-9dae-d6bc3c309233.png" width="22" style="border-radius: 4px;">
+                    <span style="font-size: 0.95rem; color: #333;">or other UPI apps</span>
                 </div>
-                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('paytmmp://pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
-                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
-                        <img src="https://www.image2url.com/r2/default/images/1782113304392-66690640-3203-4657-9dae-d6bc3c309233.png" alt="Paytm" style="width:28px;">
-                    </div>
-                    <div style="font-size:0.8rem;font-weight:700;color:#333;">Paytm</div>
+
+                <div style="font-size: 1.05rem; color: #666; margin-bottom: 20px;">
+                    Expires in <span id="gw-qr-timer" style="color: #c28b26; font-weight: 500;">03:00</span> mins
                 </div>
-                <div class="app-icon-btn" onclick="window.app.triggerAppIntent('phonepe://pay')" style="flex:1;background:#fff;border-radius:16px;padding:15px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
-                    <div style="width:40px;height:40px;margin:0 auto 10px;border-radius:50%;background:#f9fafb;display:flex;justify-content:center;align-items:center;">
-                        <img src="https://www.image2url.com/r2/default/images/1782113416023-cd7d9a7f-a350-412f-8a42-c48da5933fe9.png" alt="PhonePe" style="width:26px;">
+
+                <!-- Pure QR Code Section -->
+                <div style="position:relative; display:inline-block; padding:15px; background:#fff; border:1px solid #e2e8f0; border-radius:16px; box-shadow:0 12px 35px rgba(0,0,0,0.06); margin-bottom: 25px;">
+                    <div id="gw-qrcode-container"></div>
+                    
+                    <!-- Middle Logo superimposed on QR -->
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; background:#fff; border-radius:10px; display:flex; justify-content:center; align-items:center; box-shadow:0 0 0 4px #fff, 0 4px 12px rgba(0,0,0,0.1); padding:2px;">
+                        <img src="logo.png" style="width:100%; height:100%; object-fit:contain; border-radius:8px; background:#000;">
                     </div>
-                    <div style="font-size:0.8rem;font-weight:700;color:#333;">PhonePe</div>
+                </div>
+                
+                <div class="payment-loader" style="margin-top:auto; padding-bottom: 10px;">
+                    <div class="spinner" style="margin:0 auto 12px; border-width:3px; border-top-color:#0a2540; width:28px; height:28px;"></div>
+                    <p style="font-size:0.8rem; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:0.05em;">Awaiting Payment Confirmation...</p>
                 </div>
             </div>
-
-            <div style="margin:30px 16px 12px;font-size:0.8rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Other Options</div>
-            <div style="margin:0 16px 20px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.04);">
-                <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="window.app.toggleQRView()">
-                    <div style="display:flex;align-items:center;gap:15px;">
-                        <div style="width:48px;height:48px;border-radius:12px;background:#f4f6f8;display:flex;justify-content:center;align-items:center;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size:1.05rem;font-weight:800;color:#111;">Scan QR Code</div>
-                            <div style="font-size:0.75rem;color:#777;font-weight:600;margin-top:2px;">Scan via any app on another phone</div>
-                        </div>
-                    </div>
-                    <svg id="gw-qr-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.3s;"><path d="M9 18l6-6-6-6"/></svg>
-                </div>
-
-                <div id="gw-qr-section" class="hidden" style="margin-top:20px;padding-top:25px;border-top:1px dashed #e5e5e5;text-align:center;">
-                    <div style="font-size:.9rem;color:#666;margin-bottom:10px;text-transform:uppercase;font-weight:700;letter-spacing:.05em">Scan to pay <strong style="color:#111;font-size:1.4rem;display:block;margin-top:5px;font-weight:900;" id="gw-qr-amount-text"></strong></div>
-                    <div id="gw-qr-timer" style="font-size:2.2rem;font-weight:900;color:#d92468;margin-bottom:20px;letter-spacing:2px;font-variant-numeric: tabular-nums;">03:00</div>
-                    <div style="display:flex;justify-content:center;margin-bottom:25px">
-                        <div id="gw-qrcode-container" style="padding:20px;background:#fff;border:1px solid #eee;border-radius:20px;display:inline-block;box-shadow:0 12px 30px rgba(0,0,0,.08);transition:opacity 0.3s ease;"></div>
-                    </div>
-                    <div class="payment-loader">
-                        <div class="spinner" style="margin:0 auto 15px;width:35px;height:35px;border-width:3px;border-top-color:#0fa654;"></div>
-                        <p style="font-size:.85rem;font-weight:800;color:#333;text-transform:uppercase;letter-spacing:.05em">Awaiting Payment...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7-SEC VERIFICATION OVERLAY -->
-        <div id="pg-checking-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
-            <div class="spinner" style="margin:0 auto 25px;border-width:3px;border-top-color:#0fa654;"></div>
-            <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Verifying Payment</h3>
-            <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Securely fetching status from bank...<br>Please wait.</p>
         </div>
 
         <div id="pg-queue-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
-            <div class="spinner" style="margin:0 auto 25px;border-top-color:#0fa654;"></div>
+            <div class="spinner" style="margin:0 auto 25px;border-top-color:#0a2540;"></div>
             <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Queue Busy</h3>
             <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;font-weight:500;">Another user is making a payment.<br>Please wait 1-2 minutes.</p>
-            <button class="btn-primary" style="background:#0fa654;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="document.getElementById('btn-place-order').click()">Try Again</button>
+            <button class="btn-primary" style="background:#0a2540;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="document.getElementById('btn-place-order').click()">Try Again</button>
             <button style="margin-top:20px;color:#666;font-weight:600;text-decoration:underline;font-size:0.9rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
         </div>
         
         <div id="pg-timeout-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#fff;height:100%;text-align:center;">
-            <div style="width:70px;height:70px;border-radius:50%;border:3px solid #e02b2b;color:#e02b2b;display:flex;justify-content:center;align-items:center;margin:0 auto 25px"><svg viewBox="0 0 24 24" width="35" height="35" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+            <div style="width:70px;height:70px;border-radius:50%;border:3px solid #ef4444;color:#ef4444;display:flex;justify-content:center;align-items:center;margin:0 auto 25px"><svg viewBox="0 0 24 24" width="35" height="35" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
             <h3 style="font-size:1.3rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;color:#111;">Payment Timeout</h3>
             <p style="font-size:.95rem;color:var(--text-secondary);margin-bottom:30px;font-weight:500;">You did not complete the payment in time. The lock has been released.</p>
-            <button class="btn-primary" style="background:#0fa654;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
+            <button class="btn-primary" style="background:#0a2540;border-radius:8px;padding:15px 30px;font-size:1rem;" onclick="window.app.closePaymentGateway()">Back to Checkout</button>
         </div>
         
-        <div id="pg-success-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#0fa654;height:100%;text-align:center;">
+        <div id="pg-success-screen" class="hidden" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;background:#0a2540;height:100%;text-align:center;">
             <div style="display:flex;justify-content:center;margin-bottom:30px">
-                <div style="width:80px;height:80px;border-radius:50%;background:#fff;color:#0fa654;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.1);"><svg viewBox="0 0 24 24" width="45" height="45" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                <div style="width:80px;height:80px;border-radius:50%;background:#fff;color:#0a2540;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.1);"><svg viewBox="0 0 24 24" width="45" height="45" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             </div>
             <h3 style="font-size:1.6rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;color:#fff;">Payment Successful</h3>
             <p style="font-size:1rem;color:rgba(255,255,255,0.9);margin-bottom:35px;font-weight:500;">Your streetwear is secured.</p>
@@ -456,10 +488,8 @@
         const updateCartBadge=()=>{const badge=document.getElementById('nav-cart-badge');if(!badge)return;if(state.cart.length>0){badge.innerText=state.cart.length;badge.classList.remove('hidden')}else{badge.classList.add('hidden')}};
         const showSkeletonProducts=()=>{const grid=document.getElementById('home-product-grid');if(!grid)return;if(state.products.length===0){grid.innerHTML=Array(4).fill(`<div class="product-card"><div class="product-image-container skeleton"></div><div class="product-info" style="padding-top:5px;"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-short"></div></div></div>`).join('')}};
         
-        window.app={history:[],paymentListenerUnsubscribe:null,countdownInterval:null,verifyInterval:null,currentUpiString:'',currentOrderData:null,upiAppClicked:false};
+        window.app={history:[],paymentListenerUnsubscribe:null,countdownInterval:null,currentOrderData:null};
         
-        document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&window.app.upiAppClicked&&!document.getElementById('payment-gateway-screen').classList.contains('hidden')){window.app.upiAppClicked=false;document.getElementById('pg-main-ui').classList.add('hidden');document.getElementById('pg-checking-screen').classList.remove('hidden');let checks=0;if(window.app.verifyInterval)clearInterval(window.app.verifyInterval);window.app.verifyInterval=setInterval(()=>{checks++;if(checks>=7){clearInterval(window.app.verifyInterval);if(document.getElementById('pg-success-screen').classList.contains('hidden')){document.getElementById('pg-checking-screen').classList.add('hidden');const ts=document.getElementById('pg-timeout-screen');ts.classList.remove('hidden');ts.querySelector('h3').innerText='Payment Failed';ts.querySelector('p').innerText='We could not verify your payment. Any deducted amount will be refunded in 3-5 days.';if(window.app.countdownInterval)clearInterval(window.app.countdownInterval);if(db&&state.userId)set(ref(db,'payment_gateway/lock'),null).catch(()=>{})}}},1000)}});
-
         window.app.navigate=(screenId,isBack=false)=>{const currentScreen=document.querySelector('.screen.active');const currentId=currentScreen?currentScreen.id.replace('-screen',''):null;if(!isBack&&currentId&&currentId!==screenId){if(['home','reels','orders','cart'].includes(screenId))window.app.history=[];else window.app.history.push(currentId)}document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const targetScreen=document.getElementById(`${screenId}-screen`);if(targetScreen)targetScreen.classList.add('active');const navBtn=document.querySelector(`.nav-item[onclick="window.app.navigate('${screenId}')"]`);if(navBtn)navBtn.classList.add('active');const backBtn=document.getElementById('back-btn');if(backBtn){if(window.app.history.length>0)backBtn.classList.remove('hidden');else backBtn.classList.add('hidden')}if(screenId!=='reels'&&screenId!=='product-detail'){document.querySelectorAll('video').forEach(v=>{v.muted=true;const w=v.closest('.video-wrapper, .reel-item');if(w)w.classList.remove('is-playing','is-buffering');if(w&&w.classList.contains('reel-item'))v.pause();else{const playPromise=v.play();if(playPromise!==undefined)playPromise.then(()=>v.pause()).catch(()=>v.pause());else v.pause()}})}if(screenId==='cart')renderCart();if(screenId==='orders')fetchAndRenderOrders();if(screenId==='home'){if(state.products.length===0)fetchHomeData();else renderProducts(state.products)}if(screenId==='reels'){if(state.reels.length===0)fetchReels()}window.scrollTo({top:0,behavior:'smooth'})};
         window.app.goBack=()=>{if(window.app.history.length>0)window.app.navigate(window.app.history.pop(),true)};
         const fetchHomeData=async()=>{showSkeletonProducts();try{if(!db)throw new Error("DB missing");const[bannersSnap,productsSnap]=await Promise.all([get(child(ref(db),'banners')),get(child(ref(db),'products'))]);if(bannersSnap.exists()){const bData=bannersSnap.val();state.banners=Array.isArray(bData)?bData:Object.keys(bData).map(k=>({id:k,...bData[k]}));renderBanners()}if(productsSnap.exists()){const pData=productsSnap.val();state.products=Array.isArray(pData)?pData:Object.keys(pData).map(k=>({id:k,...pData[k]}));renderProducts(state.products)}}catch(error){const grid=document.getElementById('home-product-grid');if(grid)grid.innerHTML=`<div class="empty-state">Unable to load collection.</div>`}finally{updateCartBadge();hideSplash()}};
@@ -532,34 +562,11 @@
             }else{status.innerText="Not supported.";status.style.color="red"}
         };
 
-        window.app.toggleQRView = () => {
-            const qrSection = document.getElementById('gw-qr-section');
-            const chevron = document.getElementById('gw-qr-chevron');
-            if (qrSection.classList.contains('hidden')) {
-                qrSection.classList.remove('hidden');
-                chevron.style.transform = 'rotate(90deg)';
-                setTimeout(() => { document.getElementById('pg-main-ui').scrollTo({ top: document.getElementById('pg-main-ui').scrollHeight, behavior: 'smooth' }); }, 100);
-            } else {
-                qrSection.classList.add('hidden');
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        };
-
-        window.app.triggerAppIntent = (scheme) => {
-            window.app.upiAppClicked = true;
-            if (!window.app.currentUpiString) return;
-            let url = window.app.currentUpiString;
-            if (scheme !== 'upi://pay') url = url.replace('upi://pay', scheme);
-            window.location.href = url;
-        };
-
         window.app.closePaymentGateway = async () => {
             document.getElementById('payment-gateway-screen').classList.add('hidden');
-            window.app.upiAppClicked = false;
             if (window.app.countdownInterval) clearInterval(window.app.countdownInterval);
             if (window.app.paymentListenerUnsubscribe) window.app.paymentListenerUnsubscribe();
-            if (window.app.verifyInterval) clearInterval(window.app.verifyInterval);
-            document.getElementById('pg-checking-screen').classList.add('hidden');
+            
             const ts = document.getElementById('pg-timeout-screen');
             if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
             try {if (db && state.userId) {const lockRef = ref(db, 'payment_gateway/lock');const snap = await get(lockRef);if (snap.exists() && snap.val().userId === state.userId && snap.val().status === 'pending') await set(lockRef, null);}} catch (e) {}
@@ -587,14 +594,27 @@
             const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'UPI';
             localStorage.setItem('novarevolt_checkout_info', JSON.stringify({ name, phone, address, gpsLink }));
 
-            const totalAmount = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const totalAmountBase = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discountAmount = paymentMethod === 'UPI' ? 150 : 0; 
+            const finalTotalAmount = Math.max(1, totalAmountBase - discountAmount);
+
             const mappedItems = state.cart.map(i => ({ productId: i.productId, title: i.title, price: i.price, qty: i.qty, image: i.image, size: i.size || 'N/A', color: i.color || 'N/A' }));
 
-            const baseOrderData = {userId: state.userId,customer: { name, phone, address, lat, lng, gpsLink },items: mappedItems,totalAmount,status: 'Pending',timestamp: new Date().toISOString(),paymentMethod: paymentMethod};
+            const baseOrderData = {userId: state.userId,customer: { name, phone, address, lat, lng, gpsLink },items: mappedItems, totalAmount: finalTotalAmount, discountApplied: discountAmount, status: 'Pending',timestamp: new Date().toISOString(),paymentMethod: paymentMethod};
 
             if (paymentMethod === 'COD') {
                 baseOrderData.paymentId = 'COD_' + Date.now();
-                window.app.finalizeOrder(baseOrderData);
+                document.getElementById('checkout-modal').classList.remove('active');
+                
+                // COD ANIMATION TRIGGER
+                const codScreen = document.getElementById('cod-success-screen');
+                codScreen.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    codScreen.classList.add('hidden');
+                    window.app.finalizeOrder(baseOrderData);
+                }, 2000);
+                
                 return;
             }
 
@@ -609,7 +629,6 @@
                         document.getElementById('checkout-modal').classList.remove('active');
                         document.getElementById('payment-gateway-screen').classList.remove('hidden');
                         document.getElementById('pg-main-ui').classList.add('hidden');
-                        document.getElementById('pg-checking-screen').classList.add('hidden');
                         document.getElementById('pg-timeout-screen').classList.add('hidden');
                         document.getElementById('pg-success-screen').classList.add('hidden');
                         document.getElementById('pg-queue-screen').classList.remove('hidden');
@@ -618,12 +637,11 @@
                     }
                 }
 
-                await set(lockRef, { userId: state.userId, amount: totalAmount, timestamp: Date.now(), status: 'pending' });
+                await set(lockRef, { userId: state.userId, amount: finalTotalAmount, timestamp: Date.now(), status: 'pending' });
                 baseOrderData.paymentId = 'PAY_' + Date.now() + Math.random().toString(36).substring(2, 7).toUpperCase();
 
                 window.app.currentOrderData = baseOrderData; 
-                window.app.currentUpiString = `upi://pay?pa=9266135090@ptyes&pn=NOVALREVOLT&am=${totalAmount}&cu=INR`;
-                window.app.upiAppClicked = false;
+                const upiString = `upi://pay?pa=9266135090@ptyes&pn=NOVALREVOLT&am=${finalTotalAmount}&cu=INR`;
 
                 const ts = document.getElementById('pg-timeout-screen');
                 if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
@@ -632,15 +650,10 @@
                 document.getElementById('payment-gateway-screen').classList.remove('hidden');
                 document.getElementById('pg-queue-screen').classList.add('hidden');
                 document.getElementById('pg-timeout-screen').classList.add('hidden');
-                document.getElementById('pg-checking-screen').classList.add('hidden');
                 document.getElementById('pg-success-screen').classList.add('hidden');
                 document.getElementById('pg-main-ui').classList.remove('hidden');
-                document.getElementById('gw-qr-section').classList.add('hidden');
-                document.getElementById('gw-qr-chevron').style.transform = 'rotate(0deg)';
-
-                document.getElementById('gw-address').innerText = `Delivering to ${address}`;
-                document.getElementById('gw-amount').innerText = formatCurrency(totalAmount);
-                document.getElementById('gw-qr-amount-text').innerText = formatCurrency(totalAmount);
+                
+                document.getElementById('gw-amount').innerText = formatCurrency(finalTotalAmount);
 
                 const qrContainer = document.getElementById('gw-qrcode-container');
                 qrContainer.innerHTML = '';
@@ -649,7 +662,7 @@
                 if (typeof QRCode === 'undefined') throw new Error("QR Library failed to load");
 
                 new QRCode(qrContainer, {
-                    text: window.app.currentUpiString,
+                    text: upiString,
                     width: 220,
                     height: 220,
                     colorDark: "#111111",
@@ -699,8 +712,6 @@
         window.app.finalizeOrder = (orderData) => {
             if (window.app.paymentListenerUnsubscribe) { window.app.paymentListenerUnsubscribe(); window.app.paymentListenerUnsubscribe = null; }
             if (window.app.countdownInterval) { clearInterval(window.app.countdownInterval); window.app.countdownInterval = null; }
-            if (window.app.verifyInterval) { clearInterval(window.app.verifyInterval); window.app.verifyInterval = null; }
-            document.getElementById('pg-checking-screen')?.classList.add('hidden');
 
             if (db) set(ref(db, 'payment_gateway/lock'), null).catch(() => {});
 
@@ -716,8 +727,6 @@
                     document.getElementById('pg-success-screen').classList.remove('hidden');
                     setTimeout(() => { document.getElementById('payment-gateway-screen').classList.add('hidden'); window.app.navigate('orders'); }, 2500);
                 } else {
-                    showToast('Order Confirmed via COD');
-                    document.getElementById('checkout-modal').classList.remove('active');
                     window.app.navigate('orders');
                 }
                 document.getElementById('checkout-form')?.reset();
@@ -733,3 +742,4 @@
     </script>
 </body>
 </html>
+--- END OF FILE ai_studio_code (35).html ---
