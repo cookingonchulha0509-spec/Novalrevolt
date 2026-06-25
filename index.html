@@ -245,6 +245,14 @@
             <div class="banner-slider"><div class="banner-track" id="banner-track"><div class="banner-slide skeleton" style="width: 100%; height: 100%;"></div></div></div>
             <div class="section-header"><h2 class="section-title">New Arrivals</h2></div>
             <div class="product-grid" id="home-product-grid"></div>
+            
+            <div style="text-align: center; margin: 40px 15px 0;">
+                <button onclick="window.location.href='affiliate.html'" style="display:inline-flex; align-items:center; gap:8px; padding:16px 30px; background:#000; color:#fff; font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; border:none; cursor:pointer; width:100%; justify-content:center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Affiliate Program
+                </button>
+            </div>
+            
             <footer class="dark-footer">
                 <div class="footer-grid">
                     <div>
@@ -254,6 +262,7 @@
                             <li><a href="#">Shop Collection</a></li>
                             <li><a href="#">About Us</a></li>
                             <li><a href="#" onclick="window.app.navigate('orders')">Track Your Order</a></li>
+                            <li><a href="affiliate.html">Affiliate Program</a></li>
                         </ul>
                     </div>
                     <div>
@@ -337,20 +346,20 @@
                     <label class="form-label">Select Payment Method</label>
                     <div class="payment-methods-grid" style="grid-template-columns: 1fr;">
                         <label class="payment-method-card" style="margin-bottom:12px;">
-                            <input type="radio" name="payment_method" value="UPI" checked>
+                            <input type="radio" name="payment_method" value="UPI" checked onchange="window.app.updateCheckoutTotal()">
                             <div class="pm-content-new">
                                 <div style="display:flex; align-items:center; gap:12px;">
                                     <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" width="36" alt="UPI" style="border-radius:4px; border:1px solid #eee; padding:2px;">
                                     <div style="text-align:left;">
                                         <div style="font-size:1rem; font-weight:800; color:#111; text-transform:none;">Pay via any UPI</div>
-                                        <div style="font-size:0.75rem; color:#16a34a; font-weight:700; text-transform:none; margin-top:2px;">Save ₹150 Instantly • Fast Delivery</div>
+                                        <div style="font-size:0.75rem; color:#16a34a; font-weight:700; text-transform:none; margin-top:2px;">Save ₹100 Instantly • Fast Delivery: 3-4 Days</div>
                                     </div>
                                 </div>
                                 <div class="radio-circle"><div class="radio-circle-inner"></div></div>
                             </div>
                         </label>
                         <label class="payment-method-card">
-                            <input type="radio" name="payment_method" value="COD">
+                            <input type="radio" name="payment_method" value="COD" onchange="window.app.updateCheckoutTotal()">
                             <div class="pm-content-new">
                                 <div style="display:flex; align-items:center; gap:12px;">
                                     <div style="width:36px; height:36px; background:#f4f4f4; border-radius:6px; display:flex; justify-content:center; align-items:center; border:1px solid #eee;">
@@ -358,13 +367,19 @@
                                     </div>
                                     <div style="text-align:left;">
                                         <div style="font-size:0.95rem; font-weight:700; color:#333; text-transform:none;">Cash on Delivery</div>
-                                        <div style="font-size:0.75rem; color:#777; font-weight:600; text-transform:none; margin-top:2px;">Standard Delivery in 3-4 Days</div>
+                                        <div style="font-size:0.75rem; color:#777; font-weight:600; text-transform:none; margin-top:2px;">Standard Delivery: 6-7 Days</div>
                                     </div>
                                 </div>
                                 <div class="radio-circle"><div class="radio-circle-inner"></div></div>
                             </div>
                         </label>
                     </div>
+                </div>
+
+                <div id="co-amount-summary" style="margin-bottom:20px; padding:15px; background:#fafafa; border:1px solid var(--border-color);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem;"><span>Subtotal</span><span id="co-subtotal">₹0</span></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem; color:#16a34a;" id="co-discount-row"><span>UPI Discount</span><span>-₹100</span></div>
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.1rem; border-top:1px solid #ddd; padding-top:10px; margin-top:10px;"><span>Total Payable</span><span id="co-total-amount">₹0</span></div>
                 </div>
 
                 <button type="submit" class="btn-primary" id="btn-place-order">Complete Purchase</button>
@@ -403,7 +418,7 @@
                 
                 <div style="display:inline-flex; align-items:center; gap:6px; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.3); color: #4ade80; padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; margin-top: 15px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    ₹150 UPI Discount Applied
+                    ₹100 UPI Discount Applied
                 </div>
             </div>
 
@@ -514,6 +529,29 @@
         window.app.handleEmailAuth=async(e)=>{e.preventDefault();const email=document.getElementById('auth-email')?.value,pass=document.getElementById('auth-pass')?.value;if(!email||!pass)return;showLoader();try{let cred=state.authMode==='signup'?await createUserWithEmailAndPassword(auth,email,pass):await signInWithEmailAndPassword(auth,email,pass);state.user=cred.user;state.userId=cred.user.uid;localStorage.setItem('novarevolt_userid',state.userId);showToast(state.authMode==='signup'?"Account created.":"Logged in.");window.app.closeAuth();if(document.getElementById('cart-screen').classList.contains('active'))window.app.openCheckout();else if(document.getElementById('orders-screen').classList.contains('active'))fetchAndRenderOrders()}catch(err){showToast(err.message.replace('Firebase: ',''))}finally{hideLoader()}};
         window.app.handleGoogleLogin=async()=>{showLoader();try{const result=await signInWithPopup(auth,googleProvider);state.user=result.user;state.userId=result.user.uid;localStorage.setItem('novarevolt_userid',state.userId);showToast("Logged in.");window.app.closeAuth();if(document.getElementById('cart-screen').classList.contains('active'))window.app.openCheckout();else if(document.getElementById('orders-screen').classList.contains('active'))fetchAndRenderOrders()}catch(err){showToast("Login failed.")}finally{hideLoader()}};
         
+        window.app.updateCheckoutTotal = () => {
+            const paymentMethodInput = document.querySelector('input[name="payment_method"]:checked');
+            const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'UPI';
+            const totalAmountBase = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discountAmount = paymentMethod === 'UPI' ? 100 : 0;
+            const finalTotalAmount = Math.max(1, totalAmountBase - discountAmount);
+            
+            const subtotalEl = document.getElementById('co-subtotal');
+            const totalEl = document.getElementById('co-total-amount');
+            const discountRow = document.getElementById('co-discount-row');
+            
+            if(subtotalEl) subtotalEl.innerText = formatCurrency(totalAmountBase);
+            if(totalEl) totalEl.innerText = formatCurrency(finalTotalAmount);
+            if(discountRow) {
+                if(paymentMethod === 'UPI') {
+                    discountRow.classList.remove('hidden');
+                    discountRow.innerHTML = `<span>UPI Discount</span><span style="color:#16a34a;">-${formatCurrency(100)}</span>`;
+                } else {
+                    discountRow.classList.add('hidden');
+                }
+            }
+        };
+
         window.app.openCheckout=()=>{
             if(!state.user)return window.app.openAuth();
             document.getElementById('checkout-form').classList.remove('hidden');
@@ -523,6 +561,9 @@
             if(window.app.paymentListenerUnsubscribe){window.app.paymentListenerUnsubscribe();window.app.paymentListenerUnsubscribe=null}
             if(window.app.countdownInterval){clearInterval(window.app.countdownInterval);window.app.countdownInterval=null}
             document.getElementById('checkout-modal')?.classList.add('active');
+            
+            window.app.updateCheckoutTotal();
+            
             try{
                 const saved=JSON.parse(localStorage.getItem('novarevolt_checkout_info')||'{}');
                 ['name','phone','address'].forEach(k=>{
@@ -593,7 +634,7 @@
             localStorage.setItem('novarevolt_checkout_info', JSON.stringify({ name, phone, address, gpsLink }));
 
             const totalAmountBase = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const discountAmount = paymentMethod === 'UPI' ? 150 : 0; 
+            const discountAmount = paymentMethod === 'UPI' ? 100 : 0; 
             const finalTotalAmount = Math.max(1, totalAmountBase - discountAmount);
 
             const mappedItems = state.cart.map(i => ({ productId: i.productId, title: i.title, price: i.price, qty: i.qty, image: i.image, size: i.size || 'N/A', color: i.color || 'N/A' }));
@@ -740,4 +781,3 @@
     </script>
 </body>
 </html>
---- END OF FILE ai_studio_code (35).html ---
