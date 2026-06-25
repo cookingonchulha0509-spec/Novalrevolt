@@ -25,7 +25,7 @@
         #global-loader { position: fixed; inset: 0; background: rgba(250,250,250,0.95); z-index: 99999; display: flex; justify-content: center; align-items: center; }
         .spinner { width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--cta-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        #toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -100px); background: #111; color: #fff; padding: 14px 28px; font-size: 0.85rem; z-index: 100000; font-weight: 500; border-radius: 4px; transition: transform 0.4s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15); letter-spacing: 0.05em; white-space: nowrap; }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -100px); background: #111; color: #fff; padding: 14px 28px; font-size: 0.85rem; z-index: 100000; font-weight: 500; border-radius: 4px; transition: transform 0.4s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15); letter-spacing: 0.05em; text-align: center; }
         #toast.show { transform: translate(-50%, 0); }
 
         /* Success Animation */
@@ -89,17 +89,10 @@
         .badge.approved { background: #bbf7d0; color: #166534; }
         .badge.rejected { background: #fecaca; color: #991b1b; }
         .action-btn { font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 4px; cursor: pointer; border: 1px solid; margin-right: 5px;}
-
-        /* Customer Landing View */
-        .landing-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
-        @media (min-width: 768px) { .landing-container { flex-direction: row; align-items: flex-start; } .landing-img-wrap { flex: 1; position: sticky; top: 80px; } .landing-form-wrap { flex: 1; } }
-        .landing-img { width: 100%; border-radius: 8px; background: #f4f4f4; object-fit: cover; aspect-ratio: 3/4; }
-        .landing-box { background: #fff; padding: 30px; border: 1px solid var(--border-color); border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- Global Elements -->
     <div id="global-loader"><div class="spinner"></div></div>
     <div id="toast"></div>
 
@@ -121,7 +114,7 @@
         <button class="btn-primary" style="margin-top: 30px; max-width: 200px;" onclick="window.app.closeSuccess()">Continue to Dashboard</button>
     </div>
 
-    <!-- AUTH SCREEN (LOGIN / SIGNUP) -->
+    <!-- AUTH SCREEN -->
     <div id="auth-screen" class="screen">
         <div class="auth-container" id="auth-box">
             <h2 style="font-size:1.5rem; text-align:center; margin-bottom:25px; text-transform:uppercase;" id="auth-title">Join Affiliate Program</h2>
@@ -184,16 +177,14 @@
             <button class="btn-secondary" style="width:auto; padding:10px 25px; font-size:0.8rem; border-color:#ccc; color:#333;" onclick="window.app.switchTab('history')">Order History</button>
         </div>
 
-        <!-- Tab: Products -->
         <div id="tab-products" class="dash-tab">
             <h3 class="section-title">Promote & Earn</h3>
             <div class="products-grid" id="aff-products-list"></div>
         </div>
 
-        <!-- Tab: Withdraw -->
         <div id="tab-withdraw" class="dash-tab hidden">
             <h3 class="section-title">Request Withdrawal</h3>
-            <div class="landing-box" style="max-width:500px; margin-bottom:40px;">
+            <div style="background:#fff; padding:30px; border:1px solid var(--border-color); border-radius:8px; max-width:500px; margin-bottom:40px;">
                 <div style="font-size:0.9rem; color:#555; margin-bottom:20px;">Minimum withdrawal is ₹500. Processing takes 24-48 hours. Payments sent to your registered UPI ID.</div>
                 <div class="form-group">
                     <label class="form-label">Withdrawal Amount (₹)</label>
@@ -210,7 +201,6 @@
             </div>
         </div>
 
-        <!-- Tab: Order History -->
         <div id="tab-history" class="dash-tab hidden">
             <h3 class="section-title">Your Successful Referrals</h3>
             <div class="table-container">
@@ -259,44 +249,6 @@
         </div>
     </div>
 
-    <!-- CUSTOMER LANDING VIEW (Purchasing via Affiliate Link) -->
-    <div id="customer-screen" class="screen">
-        <div class="landing-container">
-            <div class="landing-img-wrap" id="landing-img-container"></div>
-            <div class="landing-form-wrap">
-                <div class="landing-box">
-                    <h2 id="landing-title" style="font-size:1.6rem; margin-bottom:10px;">Premium Product</h2>
-                    <div id="landing-price" style="font-size:1.4rem; font-weight:800; margin-bottom:25px;">₹0</div>
-                    
-                    <div style="padding:15px; background:rgba(22, 163, 74, 0.1); border:1px solid rgba(22, 163, 74, 0.3); border-radius:4px; margin-bottom:25px; display:flex; align-items:center; gap:10px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success-color)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        <span style="font-size:0.85rem; font-weight:600; color:var(--success-color);">Secure Checkout Verified</span>
-                    </div>
-
-                    <h3 style="font-size:1rem; margin-bottom:15px; text-transform:uppercase; border-bottom:1px solid #eee; padding-bottom:10px;">Delivery Details</h3>
-                    <form onsubmit="window.app.submitCustomerOrder(event)">
-                        <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="cust-name" class="form-input" required></div>
-                        <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" id="cust-phone" class="form-input" required></div>
-                        <div class="form-group"><label class="form-label">Complete Delivery Address</label><textarea id="cust-address" class="form-input" required style="min-height:80px;"></textarea></div>
-                        
-                        <div class="form-group" style="margin-top:25px;">
-                            <label class="form-label">Payment Method</label>
-                            <div style="border:2px solid var(--cta-color); padding:15px; border-radius:4px; display:flex; align-items:center; gap:10px; background:#f8fafc;">
-                                <input type="radio" checked disabled>
-                                <div>
-                                    <div style="font-weight:700; font-size:0.95rem;">Cash on Delivery (COD)</div>
-                                    <div style="font-size:0.75rem; color:var(--text-secondary);">Pay when your order arrives.</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-primary" style="padding:18px; font-size:1rem; margin-top:20px;" id="btn-cust-buy">Confirm Order</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal for Admin Edit Balance -->
     <div id="admin-modal" class="success-overlay hidden" style="background:rgba(0,0,0,0.8); align-items:center;">
         <div style="background:#fff; padding:30px; border-radius:8px; width:100%; max-width:400px; text-align:left;">
@@ -334,17 +286,20 @@
         const formatCurrency = (amt) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amt || 0);
         const showLoader = () => document.getElementById('global-loader').classList.remove('hidden');
         const hideLoader = () => document.getElementById('global-loader').classList.add('hidden');
-        const showToast = (msg) => { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); };
+        
+        const showToast = (msg) => { 
+            const t = document.getElementById('toast'); 
+            t.innerHTML = msg; 
+            t.classList.add('show'); 
+            setTimeout(() => t.classList.remove('show'), 3500); 
+        };
         
         const state = { 
-            user: null, affiliateProfile: null, products: [], 
-            urlParams: new URLSearchParams(window.location.search),
-            customerProduct: null
+            user: null, affiliateProfile: null, products: []
         };
 
         window.app = {};
 
-        // Navigation / Routing
         const showScreen = (id) => {
             document.querySelectorAll('.screen, .success-overlay').forEach(el => {
                 if(el.id !== 'global-loader' && el.id !== 'toast' && el.id !== 'admin-modal') el.classList.remove('active', 'hidden');
@@ -376,7 +331,6 @@
             document.getElementById('admin-login-box').classList.remove('hidden');
         };
 
-        // Auth Logic
         window.app.handleSignup = async (e) => {
             e.preventDefault();
             const name = document.getElementById('reg-name').value.trim();
@@ -415,19 +369,17 @@
             catch (err) { hideLoader(); showToast("Invalid credentials"); }
         };
 
-        window.app.logout = () => { signOut(auth); window.location.href = 'affiliate.html'; };
+        window.app.logout = () => { signOut(auth); window.location.reload(); };
         
         window.app.closeSuccess = () => {
             document.getElementById('success-screen').classList.add('hidden');
             initDashboard();
         };
 
-        // Dashboard Logic
         const initDashboard = async () => {
             showScreen('dashboard-screen');
             showLoader();
             
-            // Listen to profile
             onValue(ref(db, `affiliates/${state.user.uid}`), (snap) => {
                 if(snap.exists()) {
                     state.affiliateProfile = snap.val();
@@ -439,7 +391,6 @@
                 }
             });
 
-            // Fetch Products
             try {
                 const pSnap = await get(ref(db, 'products'));
                 if(pSnap.exists()) {
@@ -449,7 +400,6 @@
                 }
             } catch (e) {}
 
-            // Fetch Withdrawals & Orders History
             fetchHistory();
             hideLoader();
         };
@@ -490,37 +440,53 @@
             }).join('');
         };
 
+        // ==========================================
+        // 🚀 NEW SECURE LINK COPY LOGIC FOR REAL DOMAIN
+        // ==========================================
         window.app.copyLink = (pid) => {
-            if(!state.affiliateProfile) return;
-            const link = `${window.location.origin}${window.location.pathname}?product=${pid}&ref=${state.affiliateProfile.affId}`;
+            if(!state.affiliateProfile) {
+                showToast("Please wait, profile is loading...");
+                return;
+            }
             
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(link)
-                    .then(() => showToast('Tracking Link Copied!'))
-                    .catch(() => showToast('Failed to copy'));
-            } else {
+            // Format URL straight to the actual domain's index.html
+            // Origin example: https://www.novalrevolt.in
+            let originPath = window.location.origin;
+            const fullLink = `${originPath}/index.html?id=${pid}&ref=${state.affiliateProfile.affId}`;
+            
+            // Function to handle the actual copy mechanism
+            const executeCopy = (text) => {
                 try {
                     const textArea = document.createElement("textarea");
-                    textArea.value = link;
+                    textArea.value = text;
                     textArea.style.position = "fixed";
-                    textArea.style.top = "0";
-                    textArea.style.left = "0";
                     textArea.style.opacity = "0";
+                    textArea.style.top = "0";
                     document.body.appendChild(textArea);
                     
                     textArea.focus();
                     textArea.select();
                     
                     const successful = document.execCommand('copy');
-                    if (successful) {
-                        showToast('Tracking Link Copied!');
-                    } else {
-                        showToast('Failed to copy');
-                    }
                     document.body.removeChild(textArea);
+                    
+                    if (successful) {
+                        showToast(`Link Copied!<br><span style="font-size:0.7rem; color:#aaa;">${text}</span>`);
+                    } else {
+                        showToast('Failed to copy. Try again.');
+                    }
                 } catch (err) {
-                    showToast('Failed to copy');
+                    showToast('Error copying link.');
                 }
+            };
+
+            // Attempt modern Clipboard API first, fallback if it fails or isn't secure
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(fullLink)
+                    .then(() => showToast(`Link Copied!<br><span style="font-size:0.7rem; color:#aaa;">${fullLink}</span>`))
+                    .catch(() => executeCopy(fullLink)); // Fallback
+            } else {
+                executeCopy(fullLink); // Fallback
             }
         };
 
@@ -574,57 +540,6 @@
                     <td><span class="badge ${o.status.toLowerCase()==='delivered'?'approved':'pending'}">${o.status}</span></td>
                 </tr>`).join('') || '<tr><td colspan="5">No referrals yet.</td></tr>';
             });
-        };
-
-        // Customer View Logic (Landing Page)
-        const initCustomerLanding = async (pid, refId) => {
-            showLoader();
-            try {
-                const snap = await get(ref(db, `products/${pid}`));
-                if(!snap.exists()) { document.body.innerHTML = '<h2 style="text-align:center; padding:50px;">Product not found</h2>'; return; }
-                const p = snap.val(); p.id = pid;
-                state.customerProduct = p;
-                
-                const img = resolveMediaUrl(p.imageUrl || (p.images ? p.images[0] : null) || p.image);
-                document.getElementById('landing-img-container').innerHTML = `<img src="${img}" class="landing-img">`;
-                document.getElementById('landing-title').innerText = p.title;
-                document.getElementById('landing-price').innerText = formatCurrency(p.price);
-                
-                showScreen('customer-screen');
-            } catch (e) { console.error(e); }
-            finally { hideLoader(); }
-        };
-
-        window.app.submitCustomerOrder = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-cust-buy');
-            btn.innerText = 'Processing...'; btn.disabled = true;
-
-            const name = document.getElementById('cust-name').value;
-            const phone = document.getElementById('cust-phone').value;
-            const address = document.getElementById('cust-address').value;
-            const p = state.customerProduct;
-            const commission = Math.round(p.price * 0.167);
-
-            const order = {
-                affiliateRef: state.urlParams.get('ref'),
-                productId: p.id, productTitle: p.title, price: p.price, commission: commission,
-                customerName: name, customerPhone: phone, customerAddress: address,
-                status: 'Pending', timestamp: Date.now()
-            };
-
-            try {
-                await push(ref(db, 'affiliateOrders'), order);
-                document.getElementById('customer-screen').innerHTML = `
-                    <div class="success-overlay" style="position:static; min-height:80vh;">
-                        <svg class="cod-anim-svg" viewBox="0 0 52 52"><circle class="cod-anim-circle" cx="26" cy="26" r="25" fill="none"/><path class="cod-anim-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
-                        <h2 style="font-size:1.8rem; margin-bottom:15px; color:#111;">Order Confirmed</h2>
-                        <p style="color:#555;">Your premium product will be delivered soon.<br>Payment to be collected on delivery.</p>
-                    </div>`;
-            } catch (err) {
-                showToast('Failed to place order');
-                btn.innerText = 'Confirm Order'; btn.disabled = false;
-            }
         };
 
         // Admin Portal Logic
@@ -717,7 +632,6 @@
             showLoader();
             try {
                 await update(ref(db, `affiliateOrders/${orderId}`), { status: 'Delivered' });
-                // Find affiliate by ref
                 const idSnap = await get(ref(db, `affiliateIds/${affRef}`));
                 if(idSnap.exists()) {
                     const uid = idSnap.val();
@@ -760,22 +674,24 @@
 
         // Initialization
         const init = () => {
-            const pid = state.urlParams.get('product');
-            const refId = state.urlParams.get('ref');
-            const isAdmin = state.urlParams.get('admin');
-
-            if(pid && refId) {
-                initCustomerLanding(pid, refId);
-            } else if(isAdmin === 'true') {
+            // Check if admin login requested directly
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('admin') === 'true') {
                 showScreen('auth-screen');
                 window.app.showAdminLogin();
                 hideLoader();
-            } else {
-                onAuthStateChanged(auth, (user) => {
-                    if(user) { state.user = user; initDashboard(); }
-                    else { showScreen('auth-screen'); hideLoader(); }
-                });
+                return;
             }
+
+            onAuthStateChanged(auth, (user) => {
+                if(user) { 
+                    state.user = user; 
+                    initDashboard(); 
+                } else { 
+                    showScreen('auth-screen'); 
+                    hideLoader(); 
+                }
+            });
         };
 
         window.addEventListener('DOMContentLoaded', init);
