@@ -755,6 +755,30 @@
             if (db) set(ref(db, 'payment_gateway/lock'), null).catch(() => {});
 
             push(ref(db, 'orders')).then(newRef => set(newRef, orderData)).then(() => {
+                // Affiliate Tracking Logic start
+                try {
+                    const affRef = localStorage.getItem('novarevolt_affiliate_ref');
+                    if (affRef && db) {
+                        let totalCommission = 0;
+                        let productTitle = orderData.items[0]?.title || 'Store Order';
+                        if (orderData.items.length > 1) productTitle += ' + more';
+                        orderData.items.forEach(item => {
+                            totalCommission += Math.round(item.price * 0.167) * item.qty;
+                        });
+
+                        const affOrderData = {
+                            affiliateRef: affRef,
+                            commission: totalCommission,
+                            customerName: orderData.customer.name || 'Guest',
+                            productTitle: productTitle,
+                            status: 'Pending',
+                            timestamp: Date.now()
+                        };
+                        push(ref(db, 'affiliateOrders'), affOrderData).catch(e => console.error(e));
+                    }
+                } catch(err) { console.error(err); }
+                // Affiliate Tracking Logic end
+
                 state.cart = [];
                 localStorage.removeItem('novarevolt_cart');
                 updateCartBadge();
@@ -777,7 +801,28 @@
         window.app.toggleReel=(wrapperId)=>{const wrapper=document.getElementById(wrapperId),video=wrapper?.querySelector('video');if(!video)return;document.querySelectorAll('.reel-item.is-playing, .reel-item.is-buffering').forEach(item=>{if(item.id!==wrapperId){const otherVid=item.querySelector('video');if(otherVid){otherVid.pause();otherVid.removeAttribute('src');otherVid.load()}item.classList.remove('is-playing','is-buffering')}});if(video.paused||!video.src){if(!video.src&&video.dataset.src){video.src=video.dataset.src;video.load()}wrapper.classList.add('is-buffering');video.muted=false;const playPromise=video.play();if(playPromise!==undefined)playPromise.catch(()=>wrapper.classList.remove('is-buffering'))}else video.pause()};
         const renderReels=()=>{const container=document.getElementById('reels-container');if(!container)return;container.innerHTML=state.reels.map(r=>{const vidId='reel-vid-'+r.id;return`<div class="reel-item" id="${vidId}" onclick="window.app.toggleReel('${vidId}')"><img src="${resolveMediaUrl(r.posterUrl||r.imageUrl||'')}" class="reel-poster" alt="Reel thumbnail"><div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="reel-loader"></div><video preload="none" playsinline webkit-playsinline loop muted data-src="${resolveMediaUrl(r.videoUrl||r.videoFilename)}"></video><div class="reel-overlay"><img src="logo.png" class="creator-avatar" alt="NovalRevolt Motif"><div class="reel-text"><div style="display:flex; align-items:center; gap:4px; margin-bottom:2px;"><span class="creator-name">@novalrevolt</span><svg class="verified-badge" viewBox="0 0 24 24" width="15" height="15" fill="#3b82f6"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.3L6 12.2l1.4-1.4 2.7 2.7 6.5-6.5 1.4 1.4-7.9 7.9z"/></svg></div><div class="reel-caption">${r.title||'Exclusive streetwear drop. Elevate your aesthetic.'}</div></div></div></div>`}).join('');document.querySelectorAll('.reel-item video').forEach(v=>{const el=v.parentElement;v.addEventListener('waiting',()=>el.classList.add('is-buffering'));v.addEventListener('playing',()=>{el.classList.remove('is-buffering');el.classList.add('is-playing')});v.addEventListener('canplay',()=>el.classList.remove('is-buffering'));v.addEventListener('pause',()=>el.classList.remove('is-playing','is-buffering'));v.addEventListener('error',()=>el.classList.remove('is-buffering'))});setupReelsObserver()};
         const setupReelsObserver=()=>{if(reelObserver)reelObserver.disconnect();const container=document.getElementById('reels-container');if(!container)return;reelObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{const video=entry.target.querySelector('video');if(!video)return;if(!entry.isIntersecting){if(!video.paused)video.pause();entry.target.classList.remove('is-playing','is-buffering');if(video.src){video.removeAttribute('src');video.load()}}})},{root:container,threshold:0});document.querySelectorAll('.reel-item').forEach(item=>reelObserver.observe(item))};
-        window.addEventListener('DOMContentLoaded',()=>window.app.navigate('home'));
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const affRef = urlParams.get('ref');
+            const productId = urlParams.get('id');
+            
+            if (affRef) {
+                localStorage.setItem('novarevolt_affiliate_ref', affRef);
+            }
+            
+            window.app.navigate('home');
+            
+            if (productId) {
+                const checkInterval = setInterval(() => {
+                    if (state.products && state.products.length > 0) {
+                        clearInterval(checkInterval);
+                        window.app.openProduct(productId);
+                    }
+                }, 100);
+                setTimeout(() => clearInterval(checkInterval), 5000);
+            }
+        });
     </script>
 </body>
 </html>
