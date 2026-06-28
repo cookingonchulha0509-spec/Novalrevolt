@@ -352,7 +352,7 @@
                                     <img src="https://www.image2url.com/r2/default/images/1782114115314-750da5d4-c2d0-4e6d-8a7e-9a0160575c91.png" width="36" alt="UPI" style="border-radius:4px; border:1px solid #eee; padding:2px;">
                                     <div style="text-align:left;">
                                         <div style="font-size:1rem; font-weight:800; color:#111; text-transform:none;">Pay via any UPI</div>
-                                        <div style="font-size:0.75rem; color:#16a34a; font-weight:700; text-transform:none; margin-top:2px;">Save ₹100 Instantly • Fast Delivery: 3-4 Days</div>
+                                        <div style="font-size:0.75rem; color:#16a34a; font-weight:700; text-transform:none; margin-top:2px;">Save ₹80 Instantly • Fast Delivery: 3-4 Days</div>
                                     </div>
                                 </div>
                                 <div class="radio-circle"><div class="radio-circle-inner"></div></div>
@@ -378,7 +378,7 @@
 
                 <div id="co-amount-summary" style="margin-bottom:20px; padding:15px; background:#fafafa; border:1px solid var(--border-color);">
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem;"><span>Subtotal</span><span id="co-subtotal">₹0</span></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem; color:#16a34a;" id="co-discount-row"><span>UPI Discount</span><span>-₹100</span></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem; color:#16a34a;" id="co-discount-row"><span>UPI Discount</span><span>-₹80</span></div>
                     <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.1rem; border-top:1px solid #ddd; padding-top:10px; margin-top:10px;"><span>Total Payable</span><span id="co-total-amount">₹0</span></div>
                 </div>
 
@@ -418,7 +418,7 @@
                 
                 <div style="display:inline-flex; align-items:center; gap:6px; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.3); color: #4ade80; padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; margin-top: 15px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    ₹100 UPI Discount Applied
+                    ₹80 UPI Discount Applied
                 </div>
             </div>
 
@@ -533,7 +533,7 @@
             const paymentMethodInput = document.querySelector('input[name="payment_method"]:checked');
             const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'UPI';
             const totalAmountBase = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const discountAmount = paymentMethod === 'UPI' ? 100 : 0;
+            const discountAmount = paymentMethod === 'UPI' ? 80 : 0;
             const finalTotalAmount = Math.max(1, totalAmountBase - discountAmount);
             
             const subtotalEl = document.getElementById('co-subtotal');
@@ -545,7 +545,7 @@
             if(discountRow) {
                 if(paymentMethod === 'UPI') {
                     discountRow.classList.remove('hidden');
-                    discountRow.innerHTML = `<span>UPI Discount</span><span style="color:#16a34a;">-${formatCurrency(100)}</span>`;
+                    discountRow.innerHTML = `<span>UPI Discount</span><span style="color:#16a34a;">-${formatCurrency(80)}</span>`;
                 } else {
                     discountRow.classList.add('hidden');
                 }
@@ -634,7 +634,7 @@
             localStorage.setItem('novarevolt_checkout_info', JSON.stringify({ name, phone, address, gpsLink }));
 
             const totalAmountBase = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const discountAmount = paymentMethod === 'UPI' ? 100 : 0; 
+            const discountAmount = paymentMethod === 'UPI' ? 80 : 0; 
             const finalTotalAmount = Math.max(1, totalAmountBase - discountAmount);
 
             const mappedItems = state.cart.map(i => ({ productId: i.productId, title: i.title, price: i.price, qty: i.qty, image: i.image, size: i.size || 'N/A', color: i.color || 'N/A' }));
@@ -680,7 +680,7 @@
                 baseOrderData.paymentId = 'PAY_' + Date.now() + Math.random().toString(36).substring(2, 7).toUpperCase();
 
                 window.app.currentOrderData = baseOrderData; 
-                const upiString = `upi://pay?pa=8449011906@ptsbi&pn=NOVALREVOLT&am=${finalTotalAmount}&cu=INR`;
+                const upiString = `upi://pay?pa=9226135090@ptyes&pn=NOVALREVOLT&am=${finalTotalAmount}&cu=INR`;
 
                 const ts = document.getElementById('pg-timeout-screen');
                 if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
