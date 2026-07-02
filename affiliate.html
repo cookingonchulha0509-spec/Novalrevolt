@@ -241,13 +241,8 @@
         // ==========================================
         // 🚀 CENTRALIZED COMMISSION CALCULATION LOGIC
         // ==========================================
-        window.app.calculateCommission = (productPrice, isPercentageApplicable = false) => {
-            // Real business rule: Fixed commission amount ₹60 per successful product sale.
-            // Also maintain 8% commission calculation logic where applicable.
-            if (isPercentageApplicable) {
-                return Math.round((productPrice || 0) * 0.08);
-            }
-            // Standard Fixed Commission
+        window.app.calculateCommission = () => {
+            // STRICT RULE: Hardcode ₹60 Fixed commission
             return 60;
         };
 
@@ -369,10 +364,9 @@
             list.innerHTML = state.products.map(p => {
                 if(!p.price) return '';
                 
-                // Use single source of truth for calculation
-                const isPercentage = p.commissionType === 'percentage';
-                const commission = window.app.calculateCommission(p.price, isPercentage);
-                const commissionLabel = isPercentage ? '8%' : 'Fixed';
+                // STRICT RULE: Hardcode ₹60 Fixed commission 
+                const commission = window.app.calculateCommission();
+                const commissionLabel = 'Fixed';
                 
                 const img = resolveMediaUrl(p.imageUrl || (p.images ? p.images[0] : null) || p.image);
                 return `
@@ -457,15 +451,17 @@
                 });
                 showToast('Withdrawal Requested');
                 document.getElementById('withdraw-amt').value = '';
-                fetchHistory();
+                // No need to re-fetch manually here; the real-time onValue listener will automatically update the UI.
             } catch (e) { showToast('Error processing request'); }
             finally { hideLoader(); }
         };
 
-        const fetchHistory = async () => {
+        // Real-Time Listener Initialization
+        const fetchHistory = () => {
             if(!state.affiliateProfile) return;
-            // Withdrawals
-            get(ref(db, 'withdrawRequests')).then(snap => {
+
+            // Withdrawals Sync - Live Listener
+            onValue(ref(db, 'withdrawRequests'), (snap) => {
                 const tbody = document.querySelector('#withdraw-history-table tbody');
                 if(!snap.exists()) { tbody.innerHTML = '<tr><td colspan="4">No requests found.</td></tr>'; return; }
                 const data = snap.val();
@@ -477,8 +473,9 @@
                     <td><span class="badge ${r.status.toLowerCase()}">${r.status}</span></td>
                 </tr>`).join('') || '<tr><td colspan="4">No requests found.</td></tr>';
             });
-            // Orders
-            get(ref(db, 'affiliateOrders')).then(snap => {
+            
+            // Orders Sync - Live Listener
+            onValue(ref(db, 'affiliateOrders'), (snap) => {
                 const tbody = document.querySelector('#aff-orders-table tbody');
                 if(!snap.exists()) { tbody.innerHTML = '<tr><td colspan="5">No referrals yet.</td></tr>'; return; }
                 const data = snap.val();
@@ -487,7 +484,7 @@
                     <td>${new Date(o.timestamp).toLocaleDateString()}</td>
                     <td>${o.productTitle}</td>
                     <td>${o.customerName}</td>
-                    <td style="font-weight:700; color:var(--success-color);">${formatCurrency(o.commission)}</td>
+                    <td style="font-weight:700; color:var(--success-color);">${formatCurrency(60)}</td>
                     <td><span class="badge ${o.status.toLowerCase()==='delivered'?'approved':'pending'}">${o.status}</span></td>
                 </tr>`).join('') || '<tr><td colspan="5">No referrals yet.</td></tr>';
             });
