@@ -522,7 +522,7 @@
         window.app.selectOption=(type,val)=>{state.selections[type]=val;document.querySelectorAll(`#pd-${type}s .selector-btn`).forEach(btn=>btn.innerText===val?btn.classList.add('selected'):btn.classList.remove('selected'))};
         window.app.updateQty=(delta)=>{let newQty=Math.max(1,state.selections.qty+delta);state.selections.qty=newQty;const qtyEl=document.getElementById('pd-qty');if(qtyEl)qtyEl.innerText=newQty};
         window.app.addToCart=()=>{const product=state.currentProduct;if(!product)return;state.cart.push({cartId:Date.now().toString(),productId:product.id,title:product.title,price:product.price,image:product.imageUrl||(product.images?product.images[0]:null)||product.image,size:state.selections.size,color:state.selections.color,qty:state.selections.qty});localStorage.setItem('novarevolt_cart',JSON.stringify(state.cart));updateCartBadge();showToast('Added to Cart')};
-        const renderCart=()=>{const container=document.getElementById('cart-container'),summaryWrapper=document.getElementById('cart-summary-wrapper');if(!container||!summaryWrapper)return;if(state.cart.length===0){container.innerHTML=`<div class="empty-state">Your cart is empty.</div>`;summaryWrapper.classList.add('hidden');return}let subtotal=0;container.innerHTML=state.cart.map(item=>{subtotal+=(item.price*item.qty);return`<div class="cart-item"><img src="${resolveMediaUrl(item.image)}" class="cart-item-img"><div class="cart-item-details"><div><div class="cart-item-title">${item.title}</div><div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; text-transform:uppercase; letter-spacing:0.05em;">${item.size?`Size: ${item.size}`:''} | Qty: ${item.qty}</div></div><div style="display:flex; justify-content:space-between; align-items:center;"><div class="cart-item-price">${formatCurrency(item.price*item.qty)}</div><span class="cart-remove" onclick="window.app.removeFromCart('${item.cartId}')">Remove</span></div></div></div>`}).join('');const subtotalEl=document.getElementById('cart-subtotal'),totalEl=document.getElementById('cart-total');if(subtotalEl)subtotalEl.innerText=formatCurrency(subtotal);if(totalEl)totalEl.innerText=formatCurrency(subtotal);summaryWrapper.classList.remove('hidden')};
+        const renderCart=()=>{const container=document.getElementById('cart-container'),summaryWrapper=document.getElementById('cart-summary-wrapper');if(!container||summaryWrapper===null)return;if(state.cart.length===0){container.innerHTML=`<div class="empty-state">Your cart is empty.</div>`;summaryWrapper.classList.add('hidden');return}let subtotal=0;container.innerHTML=state.cart.map(item=>{subtotal+=(item.price*item.qty);return`<div class="cart-item"><img src="${resolveMediaUrl(item.image)}" class="cart-item-img"><div class="cart-item-details"><div><div class="cart-item-title">${item.title}</div><div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; text-transform:uppercase; letter-spacing:0.05em;">${item.size?`Size: ${item.size}`:''} | Qty: ${item.qty}</div></div><div style="display:flex; justify-content:space-between; align-items:center;"><div class="cart-item-price">${formatCurrency(item.price*item.qty)}</div><span class="cart-remove" onclick="window.app.removeFromCart('${item.cartId}')">Remove</span></div></div></div>`}).join('');const subtotalEl=document.getElementById('cart-subtotal'),totalEl=document.getElementById('cart-total');if(subtotalEl)subtotalEl.innerText=formatCurrency(subtotal);if(totalEl)totalEl.innerText=formatCurrency(subtotal);summaryWrapper.classList.remove('hidden')};
         window.app.removeFromCart=(cartId)=>{state.cart=state.cart.filter(i=>i.cartId!==cartId);localStorage.setItem('novarevolt_cart',JSON.stringify(state.cart));updateCartBadge();renderCart()};
         window.app.openAuth=()=>document.getElementById('auth-modal')?.classList.add('active');window.app.closeAuth=()=>document.getElementById('auth-modal')?.classList.remove('active');
         window.app.toggleAuthMode=()=>{state.authMode=state.authMode==='login'?'signup':'login';const titleEl=document.getElementById('auth-title'),btnEl=document.getElementById('btn-auth-submit'),toggleEl=document.getElementById('auth-toggle-text');if(titleEl)titleEl.innerText=state.authMode==='login'?'LOGIN':'REGISTER';if(btnEl)btnEl.innerText=state.authMode==='login'?'Sign In':'Create Account';if(toggleEl)toggleEl.innerText=state.authMode==='login'?"Create an account":"Sign in to existing account"};
@@ -802,6 +802,122 @@
         const renderReels=()=>{const container=document.getElementById('reels-container');if(!container)return;container.innerHTML=state.reels.map(r=>{const vidId='reel-vid-'+r.id;return`<div class="reel-item" id="${vidId}" onclick="window.app.toggleReel('${vidId}')"><img src="${resolveMediaUrl(r.posterUrl||r.imageUrl||'')}" class="reel-poster" alt="Reel thumbnail"><div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="reel-loader"></div><video preload="none" playsinline webkit-playsinline loop muted data-src="${resolveMediaUrl(r.videoUrl||r.videoFilename)}"></video><div class="reel-overlay"><img src="logo.png" class="creator-avatar" alt="NovalRevolt Motif"><div class="reel-text"><div style="display:flex; align-items:center; gap:4px; margin-bottom:2px;"><span class="creator-name">@novalrevolt</span><svg class="verified-badge" viewBox="0 0 24 24" width="15" height="15" fill="#3b82f6"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.3L6 12.2l1.4-1.4 2.7 2.7 6.5-6.5 1.4 1.4-7.9 7.9z"/></svg></div><div class="reel-caption">${r.title||'Exclusive streetwear drop. Elevate your aesthetic.'}</div></div></div></div>`}).join('');document.querySelectorAll('.reel-item video').forEach(v=>{const el=v.parentElement;v.addEventListener('waiting',()=>el.classList.add('is-buffering'));v.addEventListener('playing',()=>{el.classList.remove('is-buffering');el.classList.add('is-playing')});v.addEventListener('canplay',()=>el.classList.remove('is-buffering'));v.addEventListener('pause',()=>el.classList.remove('is-playing','is-buffering'));v.addEventListener('error',()=>el.classList.remove('is-buffering'))});setupReelsObserver()};
         const setupReelsObserver=()=>{if(reelObserver)reelObserver.disconnect();const container=document.getElementById('reels-container');if(!container)return;reelObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{const video=entry.target.querySelector('video');if(!video)return;if(!entry.isIntersecting){if(!video.paused)video.pause();entry.target.classList.remove('is-playing','is-buffering');if(video.src){video.removeAttribute('src');video.load()}}})},{root:container,threshold:0});document.querySelectorAll('.reel-item').forEach(item=>reelObserver.observe(item))};
         
+        /* =========================================================
+           ADMIN PANEL LOGIC (Injected per instructions)
+           Since this is the storefront file (index.html), the requested 
+           Admin logic is appended here so you can seamlessly integrate it 
+           into your actual Admin UI codebase.
+           ========================================================= */
+
+        // 1. Display Affiliate ID in Order Details Modal
+        window.app.openOrderDetailsModal = async (orderId, orderData) => {
+            showLoader();
+            let affiliateRef = null;
+            try {
+                const affSnap = await get(child(ref(db), 'affiliateOrders'));
+                if (affSnap.exists()) {
+                    const affOrders = affSnap.val();
+                    const orderCustomerName = orderData.customer?.name || orderData.name || orderData.customer?.username;
+                    for (const key in affOrders) {
+                        if (affOrders[key].customerName === orderCustomerName) {
+                            affiliateRef = affOrders[key].affiliateRef;
+                            break;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching affiliate orders", err);
+            } finally {
+                hideLoader();
+            }
+
+            const affiliateBadge = affiliateRef 
+                ? `<div class="badge success" style="margin-bottom:10px; padding:5px 10px; background:#16a34a; color:#fff; border-radius:4px; display:inline-block; font-size:0.8rem; font-weight:bold;">Referred By: ${affiliateRef}</div>` 
+                : '';
+
+            // Example integration into your existing admin modal HTML generation:
+            // const modalHtml = `
+            //    <div class="customer-profile">
+            //        ${affiliateBadge}
+            //        <!-- Rest of the customer profile -->
+            //    </div>
+            // `;
+            // document.getElementById('order-modal-content').innerHTML = modalHtml;
+            // document.getElementById('order-modal').classList.add('active');
+            
+            return affiliateBadge;
+        };
+
+   
+        // 2. Real-time Affiliate Payout on Delivery (STRICT ₹60 FLAT RULE & CUSTOMER MATCHING)
+        window.app.attachAdminStatusListener = (orderId, orderData) => {
+            const statusDropdown = document.getElementById(`status-${orderId}`);
+            if (!statusDropdown) return;
+            
+            // Clone to replace any existing listeners
+            const newDropdown = statusDropdown.cloneNode(true);
+            statusDropdown.parentNode.replaceChild(newDropdown, statusDropdown);
+            
+            newDropdown.addEventListener('change', async (e) => {
+                const newStatus = e.target.value;
+                showLoader();
+                try {
+                    // Update main order status
+                    await update(ref(db, `orders/${orderId}`), { status: newStatus });
+                    
+                    if (newStatus === 'Delivered') {
+                        const affSnap = await get(child(ref(db), 'affiliateOrders'));
+                        if (affSnap.exists()) {
+                            const affOrders = affSnap.val();
+                            let matchingKey = null;
+                            let affiliateRef = null;
+                            const orderCustomerName = orderData.customer?.name || orderData.name || orderData.customer?.username;
+                            
+                            for (const key in affOrders) {
+                                if (affOrders[key].customerName === orderCustomerName && affOrders[key].status !== 'Delivered') {
+                                    matchingKey = key;
+                                    affiliateRef = affOrders[key].affiliateRef;
+                                    break;
+                                }
+                            }
+                            
+                            if (matchingKey && affiliateRef) {
+                                const uidSnap = await get(child(ref(db), `affiliateIds/${affiliateRef}`));
+                                if (uidSnap.exists()) {
+                                    const uid = uidSnap.val();
+                                    const statsSnap = await get(child(ref(db), `affiliates/${uid}`));
+                                    if (statsSnap.exists()) {
+                                        const stats = statsSnap.val();
+                                        
+                                        // STRICT ₹60 FLAT RULE & Update Totals
+                                        await update(ref(db, `affiliates/${uid}`), {
+                                            balance: (stats.balance || 0) + 60,
+                                            totalCommission: (stats.totalCommission || 0) + 60,
+                                            totalOrders: (stats.totalOrders || 0) + 1
+                                        });
+                                        
+                                        // Update matching affiliate order
+                                        await update(ref(db, `affiliateOrders/${matchingKey}`), {
+                                            status: 'Delivered',
+                                            commission: 60
+                                        });
+                                        
+                                        showToast('Affiliate Payout Added (₹60 FLAT)');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    showToast('Order status updated');
+                } catch (err) {
+                    console.error("Status update error", err);
+                    showToast('Failed to update status');
+                } finally {
+                    hideLoader();
+                }
+            });
+        };
+
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const affRef = urlParams.get('ref');
