@@ -763,7 +763,7 @@
                         let productTitle = orderData.items[0]?.title || 'Store Order';
                         if (orderData.items.length > 1) productTitle += ' + more';
                         orderData.items.forEach(item => {
-                            totalCommission += Math.round(item.price * 0.167) * item.qty;
+                            totalCommission += Math.round(item.price * 0.08) * item.qty; // 8% per product
                         });
 
                         const affOrderData = {
@@ -809,7 +809,7 @@
            into your actual Admin UI codebase.
            ========================================================= */
 
-        // 1. Display Affiliate ID in Order Details Modal
+       // 1. Display Affiliate ID in Order Details Modal
         window.app.openOrderDetailsModal = async (orderId, orderData) => {
             showLoader();
             let affiliateRef = null;
@@ -849,7 +849,7 @@
         };
 
    
-        // 2. Real-time Affiliate Payout on Delivery (STRICT ₹60 FLAT RULE & CUSTOMER MATCHING)
+        // 2. Real-time Affiliate Payout on Delivery (8% Logic Sync & CUSTOMER MATCHING)
         window.app.attachAdminStatusListener = (orderId, orderData) => {
             const statusDropdown = document.getElementById(`status-${orderId}`);
             if (!statusDropdown) return;
@@ -888,21 +888,21 @@
                                     const statsSnap = await get(child(ref(db), `affiliates/${uid}`));
                                     if (statsSnap.exists()) {
                                         const stats = statsSnap.val();
+                                        const earnedCommission = affOrders[matchingKey].commission || 0;
                                         
-                                        // STRICT ₹60 FLAT RULE & Update Totals
+                                        // Dynamic payout from exact commission calculated
                                         await update(ref(db, `affiliates/${uid}`), {
-                                            balance: (stats.balance || 0) + 60,
-                                            totalCommission: (stats.totalCommission || 0) + 60,
+                                            balance: (stats.balance || 0) + earnedCommission,
+                                            totalCommission: (stats.totalCommission || 0) + earnedCommission,
                                             totalOrders: (stats.totalOrders || 0) + 1
                                         });
                                         
                                         // Update matching affiliate order
                                         await update(ref(db, `affiliateOrders/${matchingKey}`), {
-                                            status: 'Delivered',
-                                            commission: 60
+                                            status: 'Delivered'
                                         });
                                         
-                                        showToast('Affiliate Payout Added (₹60 FLAT)');
+                                        showToast(`Affiliate Payout Added (₹${earnedCommission})`);
                                     }
                                 }
                             }
