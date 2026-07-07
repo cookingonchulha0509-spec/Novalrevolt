@@ -680,7 +680,7 @@
                 baseOrderData.paymentId = 'PAY_' + Date.now() + Math.random().toString(36).substring(2, 7).toUpperCase();
 
                 window.app.currentOrderData = baseOrderData; 
-                const upiString = `upi://pay?pa=9226135090@ptyes&pn=NOVALREVOLT&am=${finalTotalAmount}&cu=INR`;
+                const upiString = `upi://pay?pa=9266135090@ptyes&pn=NOVALREVOLT&am=${finalTotalAmount}&cu=INR`;
 
                 const ts = document.getElementById('pg-timeout-screen');
                 if(ts) { ts.querySelector('h3').innerText = 'Payment Timeout'; ts.querySelector('p').innerText = 'You did not complete the payment in time. The lock has been released.'; }
